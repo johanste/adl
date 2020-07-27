@@ -1,0 +1,10 @@
+
+/**
+ * Response to force reboot for Redis cache.
+ */
+model RedisForceRebootResponse {
+    /**
+     * Status message
+     */
+    message: [readonly] [optional] string;
+}

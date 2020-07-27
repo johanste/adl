@@ -1,0 +1,14 @@
+/**
+ * Redis cache access keys.
+*/
+model RedisAccessKeys {
+    /**
+     * The current primary key that clients can use to authenticate with Redis cache.
+     */
+    primaryKey: [readonly] [optional] string;
+
+    /**
+     * The current secondary key that clients can use to authenticate with Redis cache.
+    */
+    secondaryKey: [readonly] [optional] string;
+}

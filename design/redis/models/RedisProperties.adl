@@ -1,0 +1,40 @@
+/**
+ * Properties of the redis cache.
+ */
+model RedisProperties extends RedisCreateProperties {
+    /**
+     * Redis version.
+     */
+    redisVersion: [readonly] [optional] string;
+
+    /**
+     * Redis instance provisioning status.
+
+     */
+    provisioningState: [readonly] [optional] ProvisioningState;
+
+    /**
+     * Redis host name.
+     */
+    hostName: [readonly] [optional] string;
+
+    /**
+     * Redis non-SSL port.
+     */
+    port: [readonly] [optional] int32;
+
+    /**
+     * Redis SSL port.
+     */
+    sslPort: [readonly] [optional] int32;
+
+    /**
+     * The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
+     */
+    accessKeys: [readonly] [optional] RedisAccessKeys;
+
+    /**
+     * List of the linked servers associated with the cache
+     */
+    linkedServers: [readonly] [optional] Array<RedisLinkedServer>;
+}

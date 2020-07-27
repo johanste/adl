@@ -1,0 +1,9 @@
+/**
+ * Specifies which Redis access keys to reset.
+ */
+model RedisRegenerateKeyParameters {
+    /**
+     * The Redis access key to regenerate.
+     */
+    keyType: RedisKeyType;
+}

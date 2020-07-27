@@ -1,0 +1,10 @@
+/**
+ * List of patch schedules for a Redis cache.
+ */
+model ScheduleEntries {
+    /**
+     * List of patch schedules for a Redis cache.
+     * @clientName ScheduleEntries
+     */
+    scheduleEntries: Array<ScheduleEntry>;
+}

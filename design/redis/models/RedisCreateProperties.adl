@@ -1,0 +1,19 @@
+/**
+ * Properties supplied to Create Redis operation.
+ */
+model RedisCreateProperties extends RedisCommonProperties {
+    /**
+     * The SKU of the Redis cache to deploy.
+     */
+    sku: Sku;
+
+    /**
+     * The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
+    */
+    subnetId: [optional] [RegularExpression("^/subscriptions/[^/]*/resourceGroups/[^/]*/providers/Microsoft.(ClassicNetwork|Network)/virtualNetworks/[^/]*/subnets/[^/]*$")] string;
+    
+    /**
+     * Static IP address. Required when deploying a Redis cache inside an existing Azure Virtual Network.
+     */
+    staticIP: [optional] [RegularExpression("^\\d+\\.\\d+\\.\\d+\\.\\d+$")] string;
+}

@@ -1,0 +1,15 @@
+
+/**
+ * Parameters supplied to the Update Redis operation.
+ */
+model RedisUpdateParameters {
+    /**
+     * Redis cache properties.
+     */
+    properties: [optional] RedisUpdateProperties;
+    
+    /**
+     * Resource tags.
+     */
+    tags: [optional] Dictionary<string>;
+}

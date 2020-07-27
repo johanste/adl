@@ -1,0 +1,21 @@
+
+/**
+ * Properties of upgrade notification.
+
+ */
+model UpgradeNotification {
+    /**
+     * Name of upgrade notification.
+     */
+    name: [readonly] [optional] string;
+
+    /**
+     * Timestamp when upgrade notification occurred.
+     */
+    timestamp: [readonly] [optional] dateTime;
+
+    /**
+     * Details about this upgrade notification
+     */
+     upsellNotification: [optional] Dictionary<string>;
+}
