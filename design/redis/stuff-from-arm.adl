@@ -1,116 +1,101 @@
-/**
- * The Resource definition.
- */
+/// The Resource definition.
 model Resource<T> {
-  /**
-   * Resource ID.
-   */
-  id: [readonly] [optional] string;
+  /// Resource ID.
+    id: @readonly @optional string;
 
-  /**
-   * Resource name.
-   */
-  name: [readonly] [optional] string;
+  /// Resource name.
+    name: @readonly @optional string;
 
-  /**
-   * Resource type.
-   */
-  type: [readonly] [optional] string;
+  /// Resource type.
+    type: @readonly @optional string;
 
-  /**
-   * Resource Properties
-   */
-  properties: T;
+  /// Resource Properties
+    properties: T;
 }
 
 
-/**
- * The resource model definition for a ARM tracked top level resource
-*/
-model TrackedResource<T> extends Resource<T> {
-  /**
-   * Resource tags.
-   */
-  tags: [optional] Dictionary<string>;
+/// The resource model definition for a ARM tracked top level resource
+model TrackedResource<T> : Resource<T> {
+  /// Resource tags.
+  tags: @optional Dictionary<string>;
   
-  /**
-   * The geo-location where the resource lives
-   */
+  /// The geo-location where the resource lives
   location: string;
 }
 
 
-model ProxyResource<T> extends Resource<T> {
+model ProxyResource<T> : Resource<T> {
 
 }
 
-/** Pageable Results from an operation. */
+/// Pageable Results from an operation. 
 model Pageable<T> {
-   /**
-     * Array of values in this page of the result set.
-     */
-    value: [optional] Array<T>;
+  /// Array of values in this page of the result set.
+  value: @optional Array<T>;
 
-    /**
-     * Link for next page of results.
-     */
-    nextLink:  [readonly] [optional] string;
+  /// Link for next page of results.
+  nextLink:  @readonly @optional string;
 }
 
 
-/**
- * REST API operation
- */
+/// REST API operation
 model Operation {
-    /**
-     * Operation name: {provider}/{resource}/{operation}
-     */
-    name: [optional] string;
+  /// Operation name: {provider}/{resource}/{operation}
+  name: @optional string;
 
-    /**
-     * The object that describes the operation.
-     */
-    display: [optional] {
-        provider: [optional] string;
-        operation: [optional] string;
-        resource: [optional] string;
-        description: [optional] string;
+  /// The object that describes the operation.
+  display: @optional {
+  provider: @optional string;
+  operation: @optional string;
+  resource: @optional string;
+  description: @optional string;
     };
 }
 
-annotation Arm.Operations() {
-  // implies the operations interface for the service. 
-    /**
-     * Lists all of the available REST API operations of the provider.
+annotation Arm.Operations(namespace:string) {
+  // this annotation adds the operations to the interface: 
 
-     * @http GET /providers/Microsoft.Cache/operations
-     * @tag Operations
-     * @return 200 - Success. The response describes the list of operations.
-     */
-    // List(api_version: ApiVersionParameter, body: [optional]Body<file, "application/json">): Arm.PageableResponse<Operation>;
+  /*
+  /// Lists all of the available REST API operations of the provider.
+  /// - tag Operations
+  /// - return 200 - Success. The response describes the list of operations.
+  @get('/providers/Microsoft.Cache/operations')
+  List(ApiVersionParameter): Arm.PageableResponse<Operation>;
+  */
 }
 
-/** Anything not handled is a cloud error */
-response Arm.DefaultResponse { 
+/// Anything not handled is a cloud error
+@statusCode('default')
+response DefaultResponse(content: @body @raw string ) => throw new CloudError(content);
 
+/// Typical Arm Response, 200 returns T
+alias Response<T> {
+  DefaultResponse,
+
+  @statusCode(200)
+  @contentType('application/json')
+  response Ok(content: @body T) => content;
 }
 
-/** Typical Arm Response, 200 returns T */
-response Arm.Response<T> extends Arm.DefaultResponse {
-  
+/// Typical Pageable Arm Response
+alias PageableResponse<T>  {
+  DefaultResponse,
+
+  @statusCode(200)
+  @contentType('application/json')
+  response Ok(content: @body Pageable<T>) => content;
 }
 
-/** Typical Pageable Arm Response */
-response Arm.PageableResponse<T> extends Arm.DefaultResponse {
-  
+/// for a long running api, 200 response returns true, everything else is false
+alias Arm.Ok<T> { 
+  @statusCode(200)
+  response Ok() => true;
+
+  @statusCode('default')
+  response DefaultResponse() => false;
 }
 
-/** for a long running api, 200 response returns true, everything else is false */
-response Arm.Ok<T> { 
-
-}
-
-/** for a long running api, 200 response returns true, everything else is false */
+/// for a long running api, 200 response returns true, everything else is false
 response Arm.LongRunningOk<T> { 
 
 }

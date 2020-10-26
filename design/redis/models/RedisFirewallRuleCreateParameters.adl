@@ -1,9 +1,6 @@
-/**
- * Parameters required for creating a firewall rule on redis cache.
+/// Parameters required for creating a firewall rule on redis cache.
 */
 model RedisFirewallRuleCreateParameters {
-    /**
-     * Properties required to create a firewall rule .
-     */
-    properties: RedisFirewallRuleProperties;
+  /// Properties required to create a firewall rule .
+  properties: RedisFirewallRuleProperties;
 }

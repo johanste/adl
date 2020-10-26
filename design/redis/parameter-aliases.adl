@@ -1,0 +1,6 @@
+/// Client Api Version.
+alias ApiVersionParameter = @query('api-version') string;
+
+/// Gets subscription credentials which uniquely identify the Microsoft Azure subscription. 
+/// The subscription ID forms part of the URI for every service call.
+alias SubscriptionIdParameter = @path('subscriptionId') string;

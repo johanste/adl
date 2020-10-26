@@ -1,7 +1,5 @@
 
-/**
- * The Redis access key to regenerate.
- */
+/// The Redis access key to regenerate.
 enum RedisKeyType {
     Primary: "Primary",
     Secondary: "Secondary"

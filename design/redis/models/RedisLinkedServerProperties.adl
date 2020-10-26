@@ -1,9 +1,5 @@
-/**
- * Properties of a linked server to be returned in get/put response
- */
-model RedisLinkedServerProperties extends RedisLinkedServerCreateProperties {
-    /**
-     * Terminal state of the link between primary and secondary redis cache.
-     */
-    provisioningState: [readonly] [optional] string;
+/// Properties of a linked server to be returned in get/put response
+model RedisLinkedServerProperties : RedisLinkedServerCreateProperties {
+  /// Terminal state of the link between primary and secondary redis cache.
+  provisioningState: @readonly @optional string;
 }

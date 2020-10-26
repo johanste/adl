@@ -1,83 +1,68 @@
-namespace Microsoft.Cache {
-  /** Every ARM service must expose the Operations interface for their service */
-  [Arm.Operations]  // see note0
-  interface Operations;
- 
-  /**
-   * Redis cache resource
-   */
-  [Arm.TrackedResource('Redis',RedisResource)] // see Note1
-  resource Redis {
-      /**
-       * Checks that the redis cache name is valid and is not already in use.
-       * @param parameters - Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource type is 'Microsoft.Cache/redis'
-       * @return 200 - Name is available
-       */
-      [post('/subscriptions/{subscriptionId}/providers/Microsoft.Cache/CheckNameAvailability')] // see Note2
-      CheckNameAvailability(subscriptionId: SubscriptionIdParameter, parameters: [body] CheckNameAvailabilityParameters ): Arm.Ok<boolean>;
+from Arm import { Operations, TrackedResource, OkResponse, Response, LongRunning, LongRunningOkResponse }
 
-      /**
-       * Gets any upgrade notifications for a Redis cache.
-       * @tag Redis
-       * @return 200 - All upgrade notifications in given time range
-       */
-      [get] 
-      ListUpgradeNotifications(...): Arm.Response<NotificationListResponse>;
-      
-      /**
-       * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
-       * @return 200 - Lists the keys for the specified Redis cache.
-       */
-      [post('.../listKeys')] 
-      ListKeys(...): Arm.Response<RedisAccessKeys>;
+/// Every ARM service must expose the Operations interface for their service  
+@Operations('Microsoft.Cache')                 // see note0
+interface Operations;
 
-      /**
-       * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
-       * @param parameters - Specifies which key to regenerate.
-       * @return 200 - Lists the regenerated keys for Redis Cache
-       */
-      [post('.../regenerateKey')] 
-      RegenerateKey(..., parameters: [body] RedisRegenerateKeyParameters): Arm.Response<RedisAccessKeys>;
-      /**
-       * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
-       * @param parameters - Specifies which Redis node(s) to reboot.
-       * @return 200 - Reboot operation successfully enqueued
-       */
-      [post('.../forceReboot')]
-      ForceReboot(..., parameters: [body] RedisRebootParameters):Arm.Response<RedisForceRebootResponse>;
+/// Redis cache resource
+@TrackedResource<RedisResource>('Redis','Microsoft.Cache') // see Note1
+interface Redis {
+    /// Checks that the redis cache name is valid and is not already in use.
+    /// - parameters - Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource type is 'Microsoft.Cache/redis'
+    /// - returns 200 - Name is available
+    @post('/subscriptions/{subscriptionId}/providers/Microsoft.Cache/CheckNameAvailability') // see Note2
+    CheckNameAvailability(subscriptionId: SubscriptionIdParameter, parameters: @body CheckNameAvailabilityParameters ): OkResponse<boolean>;
 
-      /**
-       * Import data into Redis cache.
-       * @param parameters - Parameters for Redis import operation.
-       * @return 200/204 - Import operation succeeded.
-       * @return 202 - Import operation successfully enqueued; follow the Location header to poll for final outcome.
-       */
-      [post('.../import')] 
-      [azureLongRunning("Location")] 
-      ImportData(..., parameters: [body] ImportRDBParameters): Arm.LongRunningOk<boolean>;
+    /// Gets any upgrade notifications for a Redis cache.
+    /// - tag Redis
+    /// - return 200 - All upgrade notifications in given time range
+    @get 
+    ListUpgradeNotifications(...): Response<NotificationListResponse>;
+    
+    /// Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
+    /// - returns 200 - Lists the keys for the specified Redis cache.
+    @post('./listKeys') 
+    ListKeys(...): Response<RedisAccessKeys>;
 
-      /**
-       * Export data from the redis cache to blobs in a container.
-       * @param parameters - Parameters for Redis export operation.
-       * @return 200/204 - Export operation succeeded.
-       * @return 202 - Export operation successfully enqueued; follow the Location header to poll for final outcome.
-       */
-      [post('.../export')] 
-      [Arm.LongRunning("Location")] 
-      ExportData(..., parameters: [body] ExportRDBParameters): Arm.LongRunningOk<boolean>;
-      
-      /** Redis Patch Schedule Resource */
-      [Arm.ProxySubResource('patchSchedules', RedisPatchSchedule)]  // see note3
-      resource PatchSchedules;
+    /// Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
+    /// - param parameters - Specifies which key to regenerate.
+    /// - return 200 - Lists the regenerated keys for Redis Cache
+    @post('./regenerateKey') 
+    RegenerateKey(..., parameters: @body RedisRegenerateKeyParameters): Response<RedisAccessKeys>;
+    
+    /// Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
+    /// - param parameters - Specifies which Redis node(s) to reboot.
+    /// - return 200 - Reboot operation successfully enqueued
+    @post('./forceReboot')
+    ForceReboot(..., parameters: @body RedisRebootParameters):Response<RedisForceRebootResponse>;
 
-      /** Redis Linked Server Resource */
-      [Arm.ProxySubResource('linkedServers', RedisLinkedServerWithProperties)] // see note4
-      resource LinkedServers;
+    /// Import data into Redis cache.
+    /// - parameter parameters - Parameters for Redis import operation.
+    /// - return 200/204 - Import operation succeeded.
+    /// - return 202 - Import operation successfully enqueued; follow the Location header to poll for final outcome.
+    @post('./import') 
+    @azureLongRunning("Location") 
+    ImportData(..., parameters: @body ImportRDBParameters): LongRunningOkResponse<boolean>;
 
-      /** Redis Firewall Rule Resource */
-      [Arm.ProxySubResource('firewallRules', RedisFirewallRule)] // see note5
-      resource FirewallRules;
-  }
+    /// Export data from the redis cache to blobs in a container.
+    /// - parameter parameters - Parameters for Redis export operation.
+    /// - return 200/204 - Export operation succeeded.
+    /// - return 202 - Export operation successfully enqueued; follow the Location header to poll for final outcome.
+    @post('./export') 
+    @LongRunning("Location") 
+    ExportData(..., parameters: @body ExportRDBParameters): LongRunningOkResponse<boolean>;
+    
+    /// Redis Patch Schedule Resource      
+    @ProxySubResource<RedisPatchSchedule>('patchSchedules')  // see note3
+    resource PatchSchedules;
+
+    /// Redis Linked Server Resource      
+    @ProxySubResource<RedisLinkedServerWithProperties>('linkedServers') // see note4
+    resource LinkedServers;
+
+    /// Redis Firewall Rule Resource
+    @ProxySubResource<RedisFirewallRule>('firewallRules') // see note5
+    resource FirewallRules;
 }
 
 

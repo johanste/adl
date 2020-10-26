@@ -1,7 +1,5 @@
 
-/**
- * Role of the linked server.
- */
+/// Role of the linked server.
 enum ReplicationRole {
     Primary: "Primary",
     Secondary: "Secondary"

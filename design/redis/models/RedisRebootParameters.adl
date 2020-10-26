@@ -1,14 +1,8 @@
-/**
- * Specifies which Redis node(s) to reboot.
- */
+/// Specifies which Redis node(s) to reboot.
 model RedisRebootParameters {
-    /**
-     * Which Redis node(s) to reboot. Depending on this value data loss is possible.
-     */
-    rebootType: RebootType;
+  /// Which Redis node(s) to reboot. Depending on this value data loss is possible.
+  rebootType: RebootType;
     
-    /**
-     * If clustering is enabled, the ID of the shard to be rebooted.
-     */
-    shardId: [optional] int32;
+  /// If clustering is enabled, the ID of the shard to be rebooted.
+  shardId: @optional int32;
 }

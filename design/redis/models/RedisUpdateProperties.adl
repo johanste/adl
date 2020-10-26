@@ -1,9 +1,5 @@
-/**
- * Patchable properties of the redis cache.
- */
-model RedisUpdateProperties extends RedisCommonProperties {
-    /**
-     * The SKU of the Redis cache to deploy.
-     */
-    sku: [optional] Sku;
+/// Patchable properties of the redis cache.
+model RedisUpdateProperties : RedisCommonProperties {
+  /// The SKU of the Redis cache to deploy.
+  sku: @optional Sku;
 }

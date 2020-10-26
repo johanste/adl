@@ -1,9 +1,5 @@
-/**
- * Parameter required for creating a linked server to redis cache.
- */
+/// Parameter required for creating a linked server to redis cache.
 model RedisLinkedServerCreateParameters {
-    /**
-     * Properties required to create a linked server.
-     */
-    properties: RedisLinkedServerCreateProperties;
+  /// Properties required to create a linked server.
+  properties: RedisLinkedServerCreateProperties;
 }

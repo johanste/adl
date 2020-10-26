@@ -1,7 +1,5 @@
 
-/**
- * Default string modeled as parameter for auto generation to work correctly.
- */
-[extensible] enum defaultName {
+/// Default string modeled as parameter for auto generation to work correctly.
+@extensible enum defaultName {
     default: "default"
 }

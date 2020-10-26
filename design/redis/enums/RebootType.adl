@@ -1,8 +1,6 @@
 
-/**
- * Which Redis node(s) to reboot. Depending on this value data loss is possible.
- */
-[extensible] enum RebootType {
+/// Which Redis node(s) to reboot. Depending on this value data loss is possible.
+@extensible enum RebootType {
     PrimaryNode: "PrimaryNode",
     SecondaryNode: "SecondaryNode",
     AllNodes: "AllNodes"

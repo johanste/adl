@@ -1,19 +1,11 @@
-/**
- * Patch schedule entry for a Premium Redis Cache.
- */
+/// Patch schedule entry for a Premium Redis Cache.
 model ScheduleEntry {
-    /**
-     * Day of the week when a cache can be patched.
-     */
-    dayOfWeek: DayOfWeek;
+  /// Day of the week when a cache can be patched.
+  dayOfWeek: DayOfWeek;
 
-    /**
-     * Start hour after which cache patching can start.
-     */
-    startHourUtc: int32;
+  /// Start hour after which cache patching can start.
+  startHourUtc: int32;
 
-    /**
-     * ISO8601 timespan specifying how much time cache patching can take.
-     */
-    maintenanceWindow: [optional] duration;
+  /// ISO8601 timespan specifying how much time cache patching can take.
+  maintenanceWindow: @optional duration;
 }

@@ -1,8 +1,6 @@
 
-/**
- * Redis instance provisioning status.
- */
-[extensible] enum ProvisioningState {
+/// Redis instance provisioning status.
+@extensible enum ProvisioningState {
     Creating: "Creating",
     Deleting: "Deleting",
     Disabled: "Disabled",

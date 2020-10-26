@@ -1,7 +1,5 @@
 
-/**
- * Day of the week when a cache can be patched.
- */
+/// Day of the week when a cache can be patched.
 enum DayOfWeek {
     Monday: "Monday",
     Tuesday: "Tuesday",

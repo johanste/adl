@@ -1,15 +1,9 @@
 
-/**
- * Parameters for Redis import operation.
+/// Parameters for Redis import operation.
 
- */
 model ImportRDBParameters {
-    /**
-     * File format.
-     */
-    format: [optional] string;
-    /**
-     * files to import.
-     */
-    files: Array<string>;
+  /// File format.
+  format: @optional string;
+  /// files to import.
+  files: Array<string>;
 }

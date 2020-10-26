@@ -1,0 +1,29 @@
+/// Response to put/get patch schedules for Redis cache.
+alias RedisPatchSchedule = Arm.ProxyResource<ScheduleEntries>;
+
+/// A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted to connect
+alias  RedisFirewallRule =  Arm.ProxyResource<RedisFirewallRuleProperties>;
+
+/// linked server (with properties) for Redis cache.
+alias RedisLinkedServerWithProperties = Arm.ProxyResource<RedisLinkedServerProperties>;
+
+/// Reference to a Linked server
+alias RedisLinkedServer = Arm.ResourceReference;
+
+/// The response of listUpgradeNotifications.
+alias NotificationListResponse = Arm.Pageable<UpgradeNotification>;
+
+/// Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the next set of results.
+alias OperationListResult = Arm.Pageable<Operation>;
+
+/// The response of list firewall rules Redis operation.
+alias  RedisFirewallRuleListResult = Arm.Pageable<RedisFirewallRule>;
+
+/// List of linked servers (with properties) of a Redis cache.
+alias RedisLinkedServerWithPropertiesList  = Arm.Pageable<RedisLinkedServerWithProperties>;
+
+/// The response of list Redis operation.
+alias RedisListResult = Arm.Pageable<RedisResource>;
+
+/// The response of list patch schedules Redis operation.
+alias RedisPatchScheduleListResult = Arm.Pageable<RedisPatchSchedule>;

@@ -1,10 +1,6 @@
 
-/**
- * Response to force reboot for Redis cache.
- */
+/// Response to force reboot for Redis cache.
 model RedisForceRebootResponse {
-    /**
-     * Status message
-     */
-    message: [readonly] [optional] string;
+  /// Status message
+  message: @readonly @optional string;
 }

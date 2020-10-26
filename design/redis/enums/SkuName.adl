@@ -1,8 +1,6 @@
 
-/**
- * The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)
- */
-[extensible] enum SkuName {
+/// The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)
+@extensible enum SkuName {
     Basic: "Basic",
     Standard: "Standard",
     Premium: "Premium"

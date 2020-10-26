@@ -1,8 +1,6 @@
 
-/**
- * Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
- */
-[extensible] enum TlsVersion {
+/// Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
+@extensible enum TlsVersion {
     OnePointZero: "1.0",
     OnePointOne: "1.1",
     OnePointTwo: "1.2"

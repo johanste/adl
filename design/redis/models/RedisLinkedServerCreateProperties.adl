@@ -1,19 +1,11 @@
-/**
- * Create properties for a linked server
- */
+/// Create properties for a linked server
 model RedisLinkedServerCreateProperties {
-    /**
-     * Fully qualified resourceId of the linked redis cache.
-     */
-    linkedRedisCacheId: string;
+  /// Fully qualified resourceId of the linked redis cache.
+  linkedRedisCacheId: string;
 
-    /**
-     * Location of the linked redis cache.
-     */
-    linkedRedisCacheLocation: string;
+  /// Location of the linked redis cache.
+  linkedRedisCacheLocation: string;
 
-    /**
-     * Role of the linked server.
-     */
-    serverRole: ReplicationRole;
+  /// Role of the linked server.
+  serverRole: ReplicationRole;
 }

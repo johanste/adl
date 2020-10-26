@@ -1,11 +1,7 @@
-/**
- * A single Redis resource 
- */
-model RedisResource extends Arm.TrackedResource<RedisProperties> {
-  /**
-   * A list of availability zones denoting where the resource needs to come from.
-   */
-  zones: [optional] Array<string>;
+/// A single Redis resource 
+model RedisResource : Arm.TrackedResource<RedisProperties> {
+  /// A list of availability zones denoting where the resource needs to come from.
+  zones: @optional Array<string>;
 }
 
 //# Notes: This is an interesting case, where the resource adds something to the TrackedResource envelope. 

@@ -1,18 +1,10 @@
 
-/**
- * Parameters for Redis export operation.
- */
+/// Parameters for Redis export operation.
 model ExportRDBParameters {
-    /**
-     * File format.
-     */
-    format: [optional] string;
-    /**
-     * Prefix to use for exported files.
-     */
-    prefix: string;
-    /**
-     * Container name to export to.
-     */
-    container: string;
+  /// File format.
+  format: @optional string;
+  /// Prefix to use for exported files.
+  prefix: string;
+  /// Container name to export to.
+  container: string;
 }
