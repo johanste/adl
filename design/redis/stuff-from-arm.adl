@@ -1,16 +1,16 @@
 /// The Resource definition.
 model Resource<T> {
   /// Resource ID.
-    id: @readonly @optional string;
+  id: @readonly @optional string;
 
   /// Resource name.
-    name: @readonly @optional string;
+  name: @readonly @optional string;
 
   /// Resource type.
-    type: @readonly @optional string;
+  type: @readonly @optional string;
 
   /// Resource Properties
-    properties: T;
+  properties: T;
 }
 
 
