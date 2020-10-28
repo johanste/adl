@@ -68,7 +68,7 @@ export interface Service {
      * @return 200 - Tweets recent search response
      * @return default - The request has failed.
      */
-    tweetsRecentSearch(query: Query<string & MaxLength<512> & MinLength<1>>, start_time?: Query<dateTime>, end_time?: Query<dateTime>, since_id?: Query<TweetID>, until_id?: Query<TweetID>, max_results?: Query<int32 & Minimum<10> & Maximum<100>>, next_token?: Query<string>, expansions?: TweetExpansionsParameter, tweet_fields?: TweetFieldsParameter, user_fields?: UserFieldsParameter, media_fields?: MediaFieldsParameter, place_fields?: PlaceFieldsParameter, poll_fields?: PollFieldsParameter): [(code: 200, mediaType: "application/json") => {
+    tweetsRecentSearch(query: Query<string & MaxLength<512> & MinLength<1>>, start_time?: Query<datetime>, end_time?: Query<datetime>, since_id?: Query<TweetID>, until_id?: Query<TweetID>, max_results?: Query<int32 & Minimum<10> & Maximum<100>>, next_token?: Query<string>, expansions?: TweetExpansionsParameter, tweet_fields?: TweetFieldsParameter, user_fields?: UserFieldsParameter, media_fields?: MediaFieldsParameter, place_fields?: PlaceFieldsParameter, poll_fields?: PollFieldsParameter): [(code: 200, mediaType: "application/json") => {
         body: TweetSearchResponse;
     }, HttpErrorResponse<"default", true>];
     /**

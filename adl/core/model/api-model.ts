@@ -136,11 +136,14 @@ export function isModelInterface(declaration: InterfaceDeclaration) {
 
 export class Files {
   readonly api: ApiModel;
-  readonly files!: Array<ExtendedSourceFile>;
+  #files!: Array<ExtendedSourceFile>;
+  public get files(): Array<ExtendedSourceFile> {
+    return this.#files;
+  }
 
   protected constructor(api?: ApiModel, sourceFiles?: Array<ExtendedSourceFile>) {
     if (api) {
-      this.files = sourceFiles || api.files;
+      this.#files = sourceFiles || api.files;
     }
     this.api = api || (this instanceof ApiModel ? this : fail('requires api model in constructor'));
 
@@ -625,8 +628,14 @@ use:
     return { name, file };
   }
 
-  createModelType(identity: Identity, initializer: any): any {
-    throw new Error('not implemented');
+  createModelType(identity: Identity, initializer: {text?: string}): ModelType {
+    if (initializer.text) {
+      const { name, file } =  this.getNameAndFile(identity, 'model');
+      file.insertText(file.getEnd(), `interface ${name} ${initializer.text}`);
+      return new ModelType(file.getInterfaces().last!);
+    }
+
+    throw new Error('Models currently can only be created from text.');
   }
 
   createEnumType(name: string) {

@@ -34,11 +34,11 @@ export interface TenantConfigurationSyncStateContract {
      *
      * @since 2019-12-01
      */
-    syncDate?: dateTime;
+    syncDate?: datetime;
     /**
      * @description The date of the latest configuration change. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      * @since 2019-12-01
      */
-    configurationChangeDate?: dateTime;
+    configurationChangeDate?: datetime;
 }

@@ -18,12 +18,12 @@ export interface ApiRevisionContract {
      * @description The time the API Revision was created. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
      * @since 2019-12-01
      */
-    readonly createdDateTime?: dateTime;
+    readonly createdDateTime?: datetime;
     /**
      * @description The time the API Revision were updated. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
      * @since 2019-12-01
      */
-    readonly updatedDateTime?: dateTime;
+    readonly updatedDateTime?: datetime;
     /**
      * @description Description of the API Revision.
      * @since 2019-12-01

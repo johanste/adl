@@ -19,5 +19,5 @@ export interface CertificateContractProperties {
      *
      * @since 2019-12-01
      */
-    expirationDate: dateTime;
+    expirationDate: datetime;
 }

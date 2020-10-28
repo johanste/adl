@@ -21,12 +21,12 @@ export interface Observation {
      * @description The time when the observation was first detected, in epoch seconds.
      * @since 2018-11-25
      */
-    StartTime?: dateTime;
+    StartTime?: datetime;
     /**
      * @description The time when the observation ended, in epoch seconds.
      * @since 2018-11-25
      */
-    EndTime?: dateTime;
+    EndTime?: datetime;
     /**
      * @description The source type of the observation.
      * @since 2018-11-25
@@ -46,7 +46,7 @@ export interface Observation {
      * @description The timestamp in the CloudWatch Logs that specifies when the matched line occurred.
      * @since 2018-11-25
      */
-    LineTime?: dateTime;
+    LineTime?: datetime;
     /**
      * @description The log text of the observation.
      * @since 2018-11-25

@@ -1,15 +1,15 @@
 export { Fix, LinterDiagnostic, Rule, RuleResult, RuleSeverity } from './linter/rule';
-export { ApiModel } from './model/api-model';
+export { ApiModel, ExtendedSourceFile } from './model/api-model';
 export { Method } from './model/http/operation';
 export { OperationGroup } from './model/operation';
 export { Protocol } from './model/project/protocol';
 export { NamedElement } from './model/typescript/named-element';
 export * from './model/typescript/position';
-export { Declaration, isDeclaration, isReference, Reference } from './model/typescript/reference';
+export { Declaration, isDeclaration, isInline, isReference, Reference } from './model/typescript/reference';
 export { exportFromPlugin } from './plugin/export-from-plugin';
 export * from './support/doc-tag';
 export { FileSystem, getAbsolutePath, getRelativePath, UrlFileSystem } from './support/file-system';
 export { Messages, ProcessingMessages } from './support/message-channels';
 export * from './support/typescript';
 import { TSElement } from './model/typescript/typescript-element';
-export type Element  = TSElement<any>;
+export type Element = TSElement<any>;

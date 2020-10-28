@@ -8,7 +8,7 @@ export interface IssueContractBaseProperties {
      * @description Date and time when the issue was created.
      * @since 2019-12-01
      */
-    createdDate?: dateTime;
+    createdDate?: datetime;
     /**
      * @description Status of the issue.
      * @since 2019-12-01

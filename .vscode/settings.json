@@ -60,6 +60,10 @@
     },
     {
       "changeProcessCWD": true,
+      "directory": "./adl/language",
+    },
+    {
+      "changeProcessCWD": true,
       "directory": "./adl/cli",
     },
     {

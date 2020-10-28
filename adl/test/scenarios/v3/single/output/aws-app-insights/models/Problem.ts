@@ -37,12 +37,12 @@ export interface Problem {
      * @description The time when the problem started, in epoch seconds.
      * @since 2018-11-25
      */
-    StartTime?: dateTime;
+    StartTime?: datetime;
     /**
      * @description The time when the problem ended, in epoch seconds.
      * @since 2018-11-25
      */
-    EndTime?: dateTime;
+    EndTime?: datetime;
     /**
      * @description A measure of the level of impact of the problem.
      * @since 2018-11-25

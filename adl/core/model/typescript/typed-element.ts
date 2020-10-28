@@ -1,5 +1,6 @@
 import { QuestionTokenableNode, ts, TypedNode } from 'ts-morph';
 import { TypeSyntax } from '../../support/codegen';
+import { addImportsTo, createImportsFor } from '../../support/typescript';
 import { TypeReference } from '../schema/type';
 import { NamedElement, NamedElementNode } from './named-element';
 
@@ -14,6 +15,8 @@ export class TypedElement<TNode extends TypedElementNode> extends NamedElement<T
   }
   set type(value: TypeReference) {
     this.node.setType(value.declaration.text);
+    const file = this.node.getSourceFile();
+    addImportsTo(file, createImportsFor(file, value));
   }
 
   get required() {

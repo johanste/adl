@@ -1,6 +1,7 @@
-import { FunctionTypeNode, InterfaceDeclaration, Node, ParameterDeclaration, TupleTypeNode, TypeAliasDeclaration, TypeLiteralNode, TypeNode, TypeParameterDeclaration, TypeReferenceNode } from 'ts-morph';
+import { FunctionTypeNode, InterfaceDeclaration, Node, ParameterDeclaration, ts, TupleTypeNode, TypeAliasDeclaration, TypeLiteralNode, TypeNode, TypeParameterDeclaration, TypeReferenceNode } from 'ts-morph';
 import { getDefinition } from '../../support/typescript';
 import { Parameter, Response, ResponseCollection, Result } from '../operation';
+import { TypeReference } from '../schema/type';
 import { NamedElement } from './named-element';
 import { TSElement } from './typescript-element';
 
@@ -10,6 +11,10 @@ export function isReference<T>(instance: T | Reference<T>): instance is Referenc
 
 export function isDeclaration<T>(instance: T | Declaration<T>): instance is Declaration<T> {
   return instance instanceof Declaration;
+}
+
+export function isInline(typeReference: TypeReference): boolean {
+  return ts.isTypeLiteralNode(typeReference.declaration.node);
 }
 
 export type NodeType<T> =

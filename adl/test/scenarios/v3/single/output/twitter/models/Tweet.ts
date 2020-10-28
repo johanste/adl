@@ -33,7 +33,7 @@ export interface Tweet {
      * @description Creation time of the Tweet.
      * @since 2.3
      */
-    created_at?: dateTime;
+    created_at?: datetime;
     /**
      *
      * @since 2.3

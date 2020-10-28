@@ -29,31 +29,31 @@ export interface SubscriptionContractProperties {
      *
      * @since 2019-12-01
      */
-    readonly createdDate?: dateTime;
+    readonly createdDate?: datetime;
     /**
      * @description Subscription activation date. The setting is for audit purposes only and the subscription is not automatically activated. The subscription lifecycle can be managed by using the `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      * @since 2019-12-01
      */
-    startDate?: dateTime;
+    startDate?: datetime;
     /**
      * @description Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired. The subscription lifecycle can be managed by using the `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      * @since 2019-12-01
      */
-    expirationDate?: dateTime;
+    expirationDate?: datetime;
     /**
      * @description Date when subscription was cancelled or expired. The setting is for audit purposes only and the subscription is not automatically cancelled. The subscription lifecycle can be managed by using the `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      * @since 2019-12-01
      */
-    endDate?: dateTime;
+    endDate?: datetime;
     /**
      * @description Upcoming subscription expiration notification date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      * @since 2019-12-01
      */
-    notificationDate?: dateTime;
+    notificationDate?: datetime;
     /**
      * @description Subscription primary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
      * @since 2019-12-01

@@ -25,7 +25,7 @@ export interface UserContractProperties extends UserEntityBaseParameters {
      *
      * @since 2019-12-01
      */
-    registrationDate?: dateTime;
+    registrationDate?: datetime;
     /**
      * @description Collection of groups user is part of.
      * @since 2019-12-01

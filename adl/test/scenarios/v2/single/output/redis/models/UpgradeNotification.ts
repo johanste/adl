@@ -13,7 +13,7 @@ export interface UpgradeNotification {
      * @description Timestamp when upgrade notification occurred.
      * @since 2018-03-01
      */
-    readonly timestamp?: dateTime;
+    readonly timestamp?: datetime;
     /**
      * @description Details about this upgrade notification
      * @since 2018-03-01

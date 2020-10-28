@@ -132,6 +132,7 @@ function getDocumentSettings(resource: string): Thenable<ExampleSettings> {
   if (!hasConfigurationCapability) {
     return Promise.resolve(globalSettings);
   }
+
   let result = documentSettings.get(resource);
   if (!result) {
     result = connection.workspace.getConfiguration({
@@ -163,11 +164,13 @@ async function documentChanged(change: TextDocumentChangeEvent<TextDocument>) {
     if (change.document.uri.endsWith('/api.yaml')) {
       return;
     }
+
     const changedPath = getRelativePath(apiModel.fileSystem, change.document.uri);
     const changedFile = apiModel.where(each => each.relativePath === changedPath);
     if (changedFile.files[0]) {
       changedFile.files[0].replaceWithText(change.document.getText());
     }
+
     await lintDocument(change.document);
   }
 }

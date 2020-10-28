@@ -13,7 +13,7 @@ export interface User {
      * @description Creation time of this user.
      * @since 2.3
      */
-    created_at?: dateTime;
+    created_at?: datetime;
     /**
      * @description The text of this user's profile description (also known as bio), if the user provided one.
      * @since 2.3

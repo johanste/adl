@@ -18,7 +18,7 @@ export interface SubscriptionUpdateParameterProperties {
      * @description Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired. The subscription lifecycle can be managed by using the `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      * @since 2019-12-01
      */
-    expirationDate?: dateTime;
+    expirationDate?: datetime;
     /**
      * @description Subscription name.
      * @since 2019-12-01

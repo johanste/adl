@@ -14,7 +14,7 @@ export interface ReportRecordContract {
      *
      * @since 2019-12-01
      */
-    timestamp?: dateTime;
+    timestamp?: datetime;
     /**
      * @description Length of aggregation period.  Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
      * @since 2019-12-01

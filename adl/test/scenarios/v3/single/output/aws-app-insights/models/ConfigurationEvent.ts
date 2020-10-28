@@ -24,7 +24,7 @@ export interface ConfigurationEvent {
      * @description  The timestamp of the event.
      * @since 2018-11-25
      */
-    EventTime?: dateTime;
+    EventTime?: datetime;
     /**
      * @description  The details of the event in plain text.
      * @since 2018-11-25

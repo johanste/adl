@@ -14,7 +14,7 @@ export interface Poll {
      *
      * @since 2.3
      */
-    end_datetime?: dateTime;
+    end_datetime?: datetime;
     /**
      *
      * @since 2.3

@@ -13,12 +13,12 @@ export interface ApiReleaseContractProperties {
      * @description The time the API was released. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
      * @since 2019-12-01
      */
-    readonly createdDateTime?: dateTime;
+    readonly createdDateTime?: datetime;
     /**
      * @description The time the API release was updated.
      * @since 2019-12-01
      */
-    readonly updatedDateTime?: dateTime;
+    readonly updatedDateTime?: datetime;
     /**
      * @description Release Notes
      * @since 2019-12-01

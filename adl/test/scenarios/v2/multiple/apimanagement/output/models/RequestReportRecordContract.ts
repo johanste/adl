@@ -58,7 +58,7 @@ export interface RequestReportRecordContract {
      * @description The date and time when this request was received by the gateway in ISO 8601 format.
      * @since 2019-12-01
      */
-    timestamp?: dateTime;
+    timestamp?: datetime;
     /**
      * @description Specifies if response cache was involved in generating the response. If the value is none, the cache was not used. If the value is hit, cached response was returned. If the value is miss, the cache was used but lookup resulted in a miss and request was fulfilled by the backend.
      * @since 2019-12-01

@@ -14,5 +14,5 @@ export interface GatewayTokenRequestContract {
      *
      * @since 2019-12-01
      */
-    expiry: dateTime;
+    expiry: datetime;
 }

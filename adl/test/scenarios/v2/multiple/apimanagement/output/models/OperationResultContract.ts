@@ -21,13 +21,13 @@ export interface OperationResultContract {
      *
      * @since 2019-12-01
      */
-    started?: dateTime;
+    started?: datetime;
     /**
      * @description Last update time of an async operation. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      * @since 2019-12-01
      */
-    updated?: dateTime;
+    updated?: datetime;
     /**
      * @description Optional result info.
      * @since 2019-12-01

@@ -51,7 +51,7 @@ export const Primitives = {
   date: createPrimitiveType('date'),
   time: createPrimitiveType('time'),
   unixtime: createPrimitiveType('unixtime'),
-  dateTime: createPrimitiveType('dateTime'),
+  datetime: createPrimitiveType('datetime'),
   duration: createPrimitiveType('duration'),
   uuid: createPrimitiveType('uuid'),
   uri: createPrimitiveType('uri'),

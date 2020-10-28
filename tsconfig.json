@@ -5,6 +5,9 @@
       "path": "adl/cli/tsconfig.json"
     },
     {
+      "path": "adl/language/tsconfig.json"
+    },
+    {
       "path": "adl/core/tsconfig.json"
     },
     {

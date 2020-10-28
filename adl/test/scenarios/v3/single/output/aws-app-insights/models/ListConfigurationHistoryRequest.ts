@@ -15,12 +15,12 @@ export interface ListConfigurationHistoryRequest {
      * @description The start time of the event.
      * @since 2018-11-25
      */
-    StartTime?: dateTime;
+    StartTime?: datetime;
     /**
      * @description The end time of the event.
      * @since 2018-11-25
      */
-    EndTime?: dateTime;
+    EndTime?: datetime;
     /**
      * @description The status of the configuration update event. Possible values include INFO, WARN, and ERROR.
      * @since 2018-11-25

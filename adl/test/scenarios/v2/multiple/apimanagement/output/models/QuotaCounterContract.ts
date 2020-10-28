@@ -19,13 +19,13 @@ export interface QuotaCounterContract {
      *
      * @since 2019-12-01
      */
-    periodStartTime: dateTime;
+    periodStartTime: datetime;
     /**
      * @description The date of the end of Counter Period. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      *
      * @since 2019-12-01
      */
-    periodEndTime: dateTime;
+    periodEndTime: datetime;
     /**
      * @description Quota Value Properties
      * @since 2019-12-01

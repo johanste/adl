@@ -71,7 +71,7 @@ export async function processTimeSchema<T extends OAIModel>(schema: v3.Schema|v2
 export async function processDateTimeSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>, encoding?: EncodingReference): Promise<SchemaTypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.primitives.dateTime, $, encoding);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.datetime, $, encoding);
 }
 
 export async function processDurationSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<SchemaTypeReference> {
