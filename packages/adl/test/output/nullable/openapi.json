@@ -64,6 +64,10 @@
         "str": {
           "type": "string"
         },
+        "when": {
+          "type": "string",
+          "format": "time"
+        },
         "strOrNull": {
           "type": "string",
           "x-nullable": true,
@@ -109,6 +113,7 @@
       },
       "required": [
         "str",
+        "when",
         "strOrNull",
         "modelOrNull",
         "literalsOrNull",
