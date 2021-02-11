@@ -1,0 +1,93 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "(title)",
+    "version": "0000-00-00"
+  },
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/time": {
+      "get": {
+        "operationId": "Time_get",
+        "summary": "Get time value \"11:34:56\"",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Error"
+          }
+        }
+      },
+      "put": {
+        "operationId": "Time_put",
+        "summary": "Put time value \"08:07:56\"",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "value",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "x-adl-name": "{}"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "description": "Error",
+      "required": [
+        "status",
+        "message"
+      ]
+    }
+  },
+  "parameters": {}
+}

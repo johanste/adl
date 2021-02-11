@@ -13,7 +13,8 @@ const sampleFolders = [
   "confluent",
   "nullable",
   "testserver/media-types",
-  "testserver/body-boolean"
+  "testserver/body-boolean",
+  "testserver/body-time",
 ];
 
 function resolvePath(...parts) {
