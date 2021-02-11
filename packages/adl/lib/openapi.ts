@@ -854,6 +854,8 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
             return { type: "string", format: "date" };
           case "datetime":
             return { type: "string", format: "date-time" };
+          case "time":
+            return { type: "string", format: "time" };
           case "Map":
             // We assert on valType because Map types always have a type
             const valType = adlType.properties.get("v");
