@@ -2,8 +2,8 @@
   "changes": [
     {
       "packageName": "@azure-tools/adl",
-      "comment": "Add body-time testserver sample",
-      "type": "patch"
+      "comment": "",
+      "type": "none"
     }
   ],
   "packageName": "@azure-tools/adl",
