@@ -21,7 +21,7 @@
           "200": {
             "schema": {
               "type": "string",
-              "format": "date-time"
+              "format": "time"
             }
           },
           "default": {
@@ -48,7 +48,7 @@
             "required": true,
             "schema": {
               "type": "string",
-              "format": "date-time"
+              "format": "time"
             }
           }
         ],
