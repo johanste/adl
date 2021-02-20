@@ -13,6 +13,7 @@ const sampleFolders = [
   "confluent",
   "documentation",
   "nullable",
+  "tags",
   "testserver/media-types",
   "testserver/body-boolean",
   "visibility"

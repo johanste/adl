@@ -7,6 +7,7 @@
   "schemes": [
     "https"
   ],
+  "tags": [],
   "paths": {
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Confluent/organizations/{name}": {
       "get": {
