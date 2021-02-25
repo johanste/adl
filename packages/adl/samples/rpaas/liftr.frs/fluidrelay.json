@@ -1,0 +1,670 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Azure Fluid Relay Service",
+    "version": "2021-03-01-preview"
+  },
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "security": [
+    {
+      "azure_auth": [
+        "user_impersonation"
+      ]
+    }
+  ],
+  "securityDefinitions": {
+    "azure_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "https://login.microsoftonline.com/common/oauth2/authorize",
+      "flow": "implicit",
+      "description": "Azure Active Directory OAuth2 Flow.",
+      "scopes": {
+        "user_impersonation": "impersonate your user account"
+      }
+    }
+  },
+  "paths": {
+    "/providers/Microsoft.FluidRelay/operations": {
+      "get": {
+        "tags": [
+          "FluidRelayOperations"
+        ],
+        "summary": "List all operations provided by Microsoft.FluidRelay.",
+        "operationId": "FluidRelayOperations_List",
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation completed synchronously.",
+            "schema": {
+              "$ref": "#/definitions/OperationListResult"
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            },
+            "description": "Error in operation."
+          }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidClusters/{name}": {
+      "get": {
+        "operationId": "FluidClusters_Get",
+        "tags": [
+          "FluidClusters"
+        ],
+        "summary": "Get a fluid cluster.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionId"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroup"
+          },
+          {
+            "$ref": "#/parameters/ResourceName"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/FluidCluster"
+            },
+            "description": "Request completed synchronously.",
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            },
+            "description": "Error in operation."
+          }
+        }
+      },
+      "put": {
+        "operationId": "FluidClusters_CreateOrUpdate",
+        "tags": [
+          "FluidClusters"
+        ],
+        "summary": "Create or Update a fluid Cluster.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionId"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroup"
+          },
+          {
+            "$ref": "#/parameters/ResourceName"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FluidCluster"
+            },
+            "description": "The details of the fluid cluster resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/FluidCluster"
+            },
+            "description": "Request completed synchronously.",
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            },
+            "description": "Error in operation."
+          }
+        }
+      },
+      "patch": {
+        "operationId": "FluidClusters_Update",
+        "tags": [
+          "FluidClusters"
+        ],
+        "summary": "Update a fluid cluster.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionId"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroup"
+          },
+          {
+            "$ref": "#/parameters/ResourceName"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FluidUpdate"
+            },
+            "description": "The updatable details of the fluid cluster resource."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/FluidCluster"
+            },
+            "description": "Request Completed Synchronously.",
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            },
+            "description": "Error in operation."
+          }
+        }
+      },
+      "delete": {
+        "operationId": "FluidClusters_Delete",
+        "tags": [
+          "FluidClusters"
+        ],
+        "summary": "Delete a fluid cluster.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionId"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroup"
+          },
+          {
+            "$ref": "#/parameters/ResourceName"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request completed Synchronously.",
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            }
+          },
+          "204": {
+            "description": "Request completed Synchronously.",
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            },
+            "description": "Error in operation."
+          }
+        }
+      }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidClusters/{name}/regenerateKey": {
+      "post": {
+        "operationId": "FluidClusters_RegenerateKey",
+        "summary": "Regenerate the primary or secondary key for this cluster.",
+        "tags": [
+          "FluidClusters"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionId"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroup"
+          },
+          {
+            "$ref": "#/parameters/ResourceName"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "name": "parameters",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegenerateKeyRequest"
+            },
+            "description": "The details of which keys to generate."
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ClusterKeys"
+            },
+            "description": "Request Completed Synchronously.",
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            },
+            "description": "Error in operation."
+          }
+        }
+      }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidClusters/{name}/getKeys": {
+      "post": {
+        "operationId": "FluidClusters_GetKeys",
+        "summary": "Regenerate the primary or secondary key for this cluster.",
+        "tags": [
+          "FluidClusters"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionId"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroup"
+          },
+          {
+            "$ref": "#/parameters/ResourceName"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/ClusterKeys"
+            },
+            "description": "Request Completed Synchronously.",
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            },
+            "description": "Error in operation."
+          }
+        }
+      }
+    },
+    "/subscriptions/{subscriptionId}/providers/Microsoft.FluidRelay/fluidClusters": {
+      "get": {
+        "operationId": "FluidClusters_ListBySubscription",
+        "summary": "List all fluid clusters in a subscription.",
+        "tags": [
+          "FluidClusters"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionId"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/FluidClusterList"
+            },
+            "description": "Paged response",
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            },
+            "description": "Error in operation."
+          }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidClusters": {
+      "get": {
+        "operationId": "FluidClusters_ListByResourceGroup",
+        "tags": [
+          "FluidClusters"
+        ],
+        "summary": "List all fluid clusters in a resource group.",
+        "parameters": [
+          {
+            "$ref": "#/parameters/SubscriptionId"
+          },
+          {
+            "$ref": "#/parameters/ResourceGroup"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/FluidClusterList"
+            },
+            "description": "Paged response",
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            }
+          },
+          "default": {
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            },
+            "description": "Error in operation."
+          }
+        },
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "OperationDisplay": {
+      "description": "The object that represents the operation.",
+      "type": "object",
+      "properties": {
+        "provider": {
+          "description": "Service provider: Microsoft.FluidRelay",
+          "type": "string"
+        },
+        "resource": {
+          "description": "Type on which the operation is performed, e.g., 'clusters'.",
+          "type": "string"
+        },
+        "operation": {
+          "description": "Operation type, e.g., read, write, delete, etc.",
+          "type": "string"
+        },
+        "description": {
+          "description": "Description of the operation, e.g., 'Write confluent'.",
+          "type": "string"
+        }
+      }
+    },
+    "OperationResult": {
+      "description": "A FluidRelay REST API operation.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Operation name: {provider}/{resource}/{operation}",
+          "type": "string"
+        },
+        "display": {
+          "description": "The object that represents the operation.",
+          "$ref": "#/definitions/OperationDisplay"
+        },
+        "isDataAction": {
+          "description": "Indicates whether the operation is a data action",
+          "type": "boolean"
+        }
+      }
+    },
+    "OperationListResult": {
+      "description": "Result of GET request to list FluidRelay operations.",
+      "type": "object",
+      "properties": {
+        "value": {
+          "description": "List of FluidRelay operations supported by the Microsoft.FluidRelay provider.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OperationResult"
+          }
+        },
+        "nextLink": {
+          "description": "URL to get the next set of operation list results if there are any.",
+          "type": "string"
+        }
+      }
+    },
+    "FluidUpdate": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-ms-mutability": [
+            "read",
+            "create",
+            "update"
+          ],
+          "description": "Resource tags."
+        },
+        "properties": {
+          "$ref": "#/definitions/FluidClusterProperties",
+          "description": "The resource-specific updatable properties.",
+          "x-ms-client-flatten": true
+        }
+      },
+      "description": "The updatable properties of a Fluid Cluster"
+    },
+    "FluidClusterList": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FluidCluster"
+          },
+          "description": "A sequence of FluidRelay clusters.",
+          "x-adl-name": "FluidCluster[]"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "A link to the next page of results, if any."
+        }
+      },
+      "description": "Paged response",
+      "required": [
+        "value",
+        "nextLink"
+      ],
+      "x-adl-name": "Page<FluidCluster>"
+    },
+    "FluidCluster": {
+      "type": "object",
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/FluidClusterProperties",
+          "description": "The resource-specific properties for thsi resource.",
+          "x-ms-client-flatten": true
+        }
+      },
+      "description": "A FluidRelay Cluster.",
+      "allOf": [
+        {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
+        }
+      ],
+      "x-ms-azure-resource": true
+    },
+    "ClusterKeys": {
+      "type": "object",
+      "properties": {
+        "key1": {
+          "type": "string",
+          "format": "password",
+          "description": "The primary key for this cluster"
+        },
+        "key2": {
+          "type": "string",
+          "format": "password",
+          "description": "The secondary key for this cluster"
+        }
+      },
+      "description": "The set of available keys for this cluster.",
+      "required": [
+        "key1",
+        "key2"
+      ]
+    },
+    "RegenerateKeyRequest": {
+      "type": "object",
+      "properties": {
+        "keyName": {
+          "type": "string",
+          "enum": [
+            "key1",
+            "key2"
+          ],
+          "x-ms-enum": {
+            "modelAsString": false,
+            "name": "KeyName"
+          },
+          "x-adl-name": "key1 | key2",
+          "description": "The key to regenerate."
+        }
+      },
+      "description": "Specifies which key should be generated.",
+      "required": [
+        "keyName"
+      ]
+    },
+    "FluidClusterProperties": {
+      "type": "object",
+      "properties": {
+        "frsTenantId": {
+          "type": "string",
+          "description": "The Fluid tenantId for this cluster"
+        },
+        "frsEndpoints": {
+          "$ref": "#/definitions/FluidEndpoints",
+          "description": "The Fluid Relay Service endpoints for this cluster."
+        }
+      },
+      "description": "The properties of a Fluid Relay Service resource."
+    },
+    "FluidEndpoints": {
+      "type": "object",
+      "properties": {
+        "ordererEndpoint": {
+          "type": "string",
+          "description": "The Fluid Orderer Endpoint."
+        },
+        "storageEndpoint": {
+          "type": "string",
+          "description": "The storage endpoint."
+        }
+      },
+      "description": "The Fluid endpoints for this cluster"
+    }
+  },
+  "parameters": {
+    "SubscriptionId": {
+      "name": "subscriptionId",
+      "in": "path",
+      "type": "string",
+      "required": true,
+      "description": "The subscription id (GUID) for this resource."
+    },
+    "ResourceGroup": {
+      "name": "resourceGroup",
+      "in": "path",
+      "type": "string",
+      "required": true,
+      "description": "The resource group containing the resource.",
+      "x-ms-parameter-location": "method"
+    },
+    "ResourceName": {
+      "name": "name",
+      "in": "path",
+      "type": "string",
+      "required": true,
+      "description": "The resource name.",
+      "x-ms-parameter-location": "method"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+@doc("A string that represents a URI.")
+model Uri = string;
+
+@doc("The representation of a secret value, represented as a string on the wire")
+@secret
+model SecretKey = string;
+
+@TrackedResource("Microsoft.FluidRelay/fluidClusters", FluidCluster) 
+interface FluidClusters{
+    @doc("Retrieve the keys for this cluster.")
+    @post getKeys(@path subscriptionId: string, @path resourceGroup: string, @path name: string) : ArmResponse<ClusterKeys>;
+    @doc("Regenerate the primary or secondary key for this cluster.")
+    @post regenerateKey(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body parameters: RegenerateKeyRequest) : ArmResponse<ClusterKeys>;
+}
+
+@doc("The properties of a Fluid Relay Service resource.")
+model FluidCluster {
+    @doc("The Fluid tenantId for this cluster")
+    frsTenantId: string;
+    @doc("The Fluid service endpoints for this cluster.")
+    frsEndpoints: FluidEndpoints;
+}
+
+@doc("The Fluid endpoints for this cluster")
+model FluidEndpoints {
+    @doc("The Fluid Orderer Endpoint.")
+    ordererEndpoint: Uri;
+    @doc("The storage endpoint.")
+    storageEndpoint: Uri;
+}
+
+model ClusterKeys {
+   @doc("The primary key for this cluster")
+   key1: SecretKey;
+
+   @doc("The secondary key for this cluster")
+   key2: SecretKey;
+}
+
+model RegenerateKeyRequest {
+    @doc("The key to regenerate.")
+    keyName : "key1" | "key2";
+}
