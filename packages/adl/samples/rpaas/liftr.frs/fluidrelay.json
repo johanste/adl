@@ -63,11 +63,11 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidClusters/{name}": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidServers/{name}": {
       "get": {
-        "operationId": "FluidClusters_Get",
+        "operationId": "FluidServers_Get",
         "tags": [
-          "FluidClusters"
+          "FluidServers"
         ],
         "summary": "Get a fluid cluster.",
         "parameters": [
@@ -87,7 +87,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/FluidCluster"
+              "$ref": "#/definitions/FluidServer"
             },
             "description": "Request completed synchronously.",
             "headers": {
@@ -108,9 +108,9 @@
         }
       },
       "put": {
-        "operationId": "FluidClusters_CreateOrUpdate",
+        "operationId": "FluidServers_CreateOrUpdate",
         "tags": [
-          "FluidClusters"
+          "FluidServers"
         ],
         "summary": "Create or Update a fluid Cluster.",
         "parameters": [
@@ -131,7 +131,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/FluidCluster"
+              "$ref": "#/definitions/FluidServer"
             },
             "description": "The details of the fluid cluster resource."
           }
@@ -139,7 +139,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/FluidCluster"
+              "$ref": "#/definitions/FluidServer"
             },
             "description": "Request completed synchronously.",
             "headers": {
@@ -160,9 +160,9 @@
         }
       },
       "patch": {
-        "operationId": "FluidClusters_Update",
+        "operationId": "FluidServers_Update",
         "tags": [
-          "FluidClusters"
+          "FluidServers"
         ],
         "summary": "Update a fluid cluster.",
         "parameters": [
@@ -191,7 +191,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/FluidCluster"
+              "$ref": "#/definitions/FluidServer"
             },
             "description": "Request Completed Synchronously.",
             "headers": {
@@ -212,9 +212,9 @@
         }
       },
       "delete": {
-        "operationId": "FluidClusters_Delete",
+        "operationId": "FluidServers_Delete",
         "tags": [
-          "FluidClusters"
+          "FluidServers"
         ],
         "summary": "Delete a fluid cluster.",
         "parameters": [
@@ -263,12 +263,12 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidClusters/{name}/regenerateKey": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidServers/{name}/regenerateKey": {
       "post": {
-        "operationId": "FluidClusters_RegenerateKey",
+        "operationId": "FluidServers_RegenerateKey",
         "summary": "Regenerate the primary or secondary key for this cluster.",
         "tags": [
-          "FluidClusters"
+          "FluidServers"
         ],
         "parameters": [
           {
@@ -296,7 +296,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/ClusterKeys"
+              "$ref": "#/definitions/ServerKeys"
             },
             "description": "Request Completed Synchronously.",
             "headers": {
@@ -317,12 +317,12 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidClusters/{name}/getKeys": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidServers/{name}/getKeys": {
       "post": {
-        "operationId": "FluidClusters_GetKeys",
+        "operationId": "FluidServers_GetKeys",
         "summary": "Regenerate the primary or secondary key for this cluster.",
         "tags": [
-          "FluidClusters"
+          "FluidServers"
         ],
         "parameters": [
           {
@@ -341,7 +341,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/ClusterKeys"
+              "$ref": "#/definitions/ServerKeys"
             },
             "description": "Request Completed Synchronously.",
             "headers": {
@@ -362,12 +362,12 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.FluidRelay/fluidClusters": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.FluidRelay/fluidServers": {
       "get": {
-        "operationId": "FluidClusters_ListBySubscription",
+        "operationId": "FluidServers_ListBySubscription",
         "summary": "List all fluid clusters in a subscription.",
         "tags": [
-          "FluidClusters"
+          "FluidServers"
         ],
         "parameters": [
           {
@@ -380,7 +380,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/FluidClusterList"
+              "$ref": "#/definitions/FluidServerList"
             },
             "description": "Paged response",
             "headers": {
@@ -404,13 +404,13 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidClusters": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidServers": {
       "get": {
-        "operationId": "FluidClusters_ListByResourceGroup",
+        "operationId": "FluidServers_ListByResourceGroup",
         "tags": [
-          "FluidClusters"
+          "FluidServers"
         ],
-        "summary": "List all fluid clusters in a resource group.",
+        "summary": "List all fluid servers in a resource group.",
         "parameters": [
           {
             "$ref": "#/parameters/SubscriptionId"
@@ -425,7 +425,7 @@
         "responses": {
           "200": {
             "schema": {
-              "$ref": "#/definitions/FluidClusterList"
+              "$ref": "#/definitions/FluidServerList"
             },
             "description": "Paged response",
             "headers": {
@@ -516,31 +516,27 @@
           "additionalProperties": {
             "type": "string"
           },
+          "readOnly": false,
           "x-ms-mutability": [
             "read",
             "create",
             "update"
           ],
           "description": "Resource tags."
-        },
-        "properties": {
-          "$ref": "#/definitions/FluidClusterProperties",
-          "description": "The resource-specific updatable properties.",
-          "x-ms-client-flatten": true
         }
       },
-      "description": "The updatable properties of a Fluid Cluster"
+      "description": "The updatable properties of a Fluid Server"
     },
-    "FluidClusterList": {
+    "FluidServerList": {
       "type": "object",
       "properties": {
         "value": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/FluidCluster"
+            "$ref": "#/definitions/FluidServer"
           },
-          "description": "A sequence of FluidRelay clusters.",
-          "x-adl-name": "FluidCluster[]"
+          "description": "A sequence of FluidRelay servers.",
+          "x-adl-name": "FluidServer[]"
         },
         "nextLink": {
           "type": "string",
@@ -552,18 +548,28 @@
         "value",
         "nextLink"
       ],
-      "x-adl-name": "Page<FluidCluster>"
+      "x-adl-name": "Page<FluidServer>"
     },
-    "FluidCluster": {
+    "FluidServer": {
       "type": "object",
       "properties": {
         "properties": {
-          "$ref": "#/definitions/FluidClusterProperties",
-          "description": "The resource-specific properties for thsi resource.",
-          "x-ms-client-flatten": true
+          "$ref": "#/definitions/FluidServerProperties",
+          "description": "The resource-specific properties for this resource.",
+          "readOnly": false,
+          "x-ms-client-flatten": true,
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ]
+        },
+        "systemData": {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
+          "description": "System meta data for this resource, including creation and modification information.",
+          "readOnly": true
         }
       },
-      "description": "A FluidRelay Cluster.",
+      "description": "A FluidRelay Server.",
       "allOf": [
         {
           "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
@@ -571,25 +577,23 @@
       ],
       "x-ms-azure-resource": true
     },
-    "ClusterKeys": {
+    "ServerKeys": {
       "type": "object",
       "properties": {
         "key1": {
           "type": "string",
           "format": "password",
-          "description": "The primary key for this cluster"
+          "description": "The primary key for this cluster",
+          "readOnly": true
         },
         "key2": {
           "type": "string",
           "format": "password",
-          "description": "The secondary key for this cluster"
+          "description": "The secondary key for this cluster",
+          "readOnly": true
         }
       },
-      "description": "The set of available keys for this cluster.",
-      "required": [
-        "key1",
-        "key2"
-      ]
+      "description": "The set of available keys for this cluster."
     },
     "RegenerateKeyRequest": {
       "type": "object",
@@ -613,33 +617,57 @@
         "keyName"
       ]
     },
-    "FluidClusterProperties": {
+    "FluidServerProperties": {
       "type": "object",
       "properties": {
         "frsTenantId": {
           "type": "string",
-          "description": "The Fluid tenantId for this cluster"
+          "description": "The Fluid tenantId for this server",
+          "readOnly": true
         },
         "frsEndpoints": {
-          "$ref": "#/definitions/FluidEndpoints",
-          "description": "The Fluid Relay Service endpoints for this cluster."
+          "$ref": "#/definitions/FluidRelayEndpoints",
+          "description": "The Fluid Relay Service endpoints for this server.",
+          "readOnly": true
+        },
+        "provisioningState": {
+          "enum": [
+            "Succeeded",
+            "Failed",
+            "Canceled"
+          ],
+          "type": "string",
+          "description": "Provision states for FluidRelay RP",
+          "title": "ProvisioningState",
+          "x-ms-enum": {
+            "name": "ProvisioningState",
+            "modelAsString": true
+          }
         }
       },
       "description": "The properties of a Fluid Relay Service resource."
     },
-    "FluidEndpoints": {
+    "FluidRelayEndpoints": {
       "type": "object",
       "properties": {
-        "ordererEndpoint": {
-          "type": "string",
-          "description": "The Fluid Orderer Endpoint."
+        "ordererEndpoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The Fluid Orderer Endpoints.",
+          "readOnly": true
         },
-        "storageEndpoint": {
-          "type": "string",
-          "description": "The storage endpoint."
+        "storageEndpoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The storage endpoints.",
+          "readOnly": true
         }
       },
-      "description": "The Fluid endpoints for this cluster"
+      "description": "The Fluid endpoints for this server"
     }
   },
   "parameters": {
