@@ -49,6 +49,12 @@
       "projectFolder": "packages/adl",
       "reviewCategory": "production",
       "shouldPublish": true
+    },
+    {
+      "packageName": "adl-vscode",
+      "projectFolder": "packages/adl-vscode",
+      "reviewCategory": "production",
+      "shouldPublish": false
     }
   ]
 }

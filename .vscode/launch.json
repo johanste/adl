@@ -19,7 +19,7 @@
       "type": "node",
       "protocol": "inspector",
       "request": "launch",
-      "name": "run compiler",
+      "name": "Compile Scratch Sample",
       "program": "${workspaceRoot}/packages/adl/dist/compiler/cli.js",
       "args": [
         "compile",
@@ -37,7 +37,7 @@
       "type": "node",
       "protocol": "inspector",
       "request": "launch",
-      "name": "run tests",
+      "name": "Run Compiler Tests",
       "program": "${workspaceRoot}/packages/adl/node_modules/mocha/bin/_mocha",
       "args": [
         "dist/test",
@@ -49,6 +49,23 @@
         "<node_internals>/**/*.js"
       ],
       "cwd": "${workspaceRoot}/adl/plugins/azure"
-    }
+    },
+    {
+      "name": "Run VS Code with Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceRoot}/packages/adl-vscode"
+      ],
+      "preLaunchTask": "tmlanguage-gen",
+    },
+    {
+      "name": "Regenerate TextMate Grammar",
+      "type": "node",
+      "protocol": "inspector",
+      "program": "${workspaceRoot}/packages/adl-vscode/dist/adl.tmLanguage.js",
+      "request": "launch",
+      "cwd": "${workspaceRoot}/packages/adl-vscode"
+    },
   ]
 }
