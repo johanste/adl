@@ -431,7 +431,7 @@
       "properties": {
         "createdTime": {
           "type": "string",
-          "format": "date",
+          "format": "date-time",
           "description": "UTC Time when Organization resource was created."
         },
         "organizationId": {

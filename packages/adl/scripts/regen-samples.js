@@ -9,12 +9,12 @@ import { spawnSync, fork } from "child_process";
 
 // Get this from samples/ directory listing when reliable
 const sampleFolders = [
-  "petstore",
-  "confluent",
   "documentation",
   "grpc-library-example",
   "grpc-kiosk-example",
   "nullable",
+  "petstore",
+  "rpaas/liftr.confluent",
   "tags",
   "testserver/media-types",
   "testserver/body-boolean",
