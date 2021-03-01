@@ -51,5 +51,5 @@ steps:
 - script: |
     cd packages/adl
     npm link
-    npx adl generate samples/confluent/ --client
+    npx adl generate samples/rpaas/liftr.confluent/ --client
   displayName: "Sanity Check Client Generation"
