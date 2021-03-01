@@ -1,4 +1,10 @@
-import { NamespaceStatementNode, ModelStatementNode, ModelType, Type, Statement } from "../compiler/types";
+import {
+  NamespaceStatementNode,
+  ModelStatementNode,
+  ModelType,
+  Type,
+  Statement,
+} from "../compiler/types";
 import { Program } from "../compiler/program";
 import { parse } from "../compiler/parser.js";
 import { resource } from "./rest.js";
@@ -22,8 +28,8 @@ export function TrackedResource(
   program: Program,
   target: Type,
   resourceRoot: string,
-  propertyType: Type) {
-
+  propertyType: Type
+) {
   const checker = program.checker;
   if (checker === undefined) {
     throw new Error("Program does not have a checker assigned");
@@ -61,13 +67,17 @@ export function TrackedResource(
         }`
       );
 
-      // Add all of the properties from the parsed namespace 
+      // Add all of the properties from the parsed namespace
       for (const prop of resourceNamespaceNode.properties) {
         target.properties.set(prop.id.sv, checker.checkNamespaceProperty(prop));
       }
 
       // Add the @resource decorator
-      resource(program, target, `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}/{name}`);
+      resource(
+        program,
+        target,
+        `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}/{name}`
+      );
     } else {
       throw new Error("TrackedResource property type must be a model");
     }

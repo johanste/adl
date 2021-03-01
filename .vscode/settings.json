@@ -1,6 +1,6 @@
 {
-  "typescript.tsdk": "common/temp/node_modules/.registry.npmjs.org/typescript/3.9.5/node_modules/typescript/lib",
   "files.eol": "\n",
+  "files.insertFinalNewline": true,
   "files.exclude": {
     "**/common/temp/**": true,
     "node_modules/**": true,
@@ -29,22 +29,19 @@
     "editor.detectIndentation": false
   },
   "[typescript]": {
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
   },
-  "[csharp]": {
-    "editor.tabSize": 4,
-  },
   "[json]": {
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
   },
   "[jsonc]": {
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
@@ -53,21 +50,11 @@
     "rush.json": "jsonc",
     "command-line.json": "jsonc"
   },
-  "eslint.workingDirectories": [
-    {
-      "changeProcessCWD": true,
-      "directory": "./packages/adl",
-    }
-  ],
   "git.ignoreLimitWarning": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": false,
-    "source.organizeImports": false
-  },
-  "eslint.format.enable": false,
   "mochaExplorer.files": "./packages/adl/dist/test/**/*.js",
   "mochaExplorer.cwd": "./packages/adl",
   "mochaExplorer.mochaPath": "./packages/adl/node_modules/mocha",
   "mochaExplorer.timeout": 500000,
-  "mochaExplorer.require": "source-map-support/register"
+  "mochaExplorer.require": "source-map-support/register",
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

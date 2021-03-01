@@ -8,6 +8,7 @@ dependencies:
   grammarkdown: 3.1.2
   mkdirp: 1.0.4
   mocha: 7.1.2
+  prettier: 2.2.1
   ts-node: 8.10.2_typescript@3.9.7
   typescript: 3.9.7
   yargs: 16.2.0
@@ -1358,6 +1359,13 @@ packages:
       node: '>= 0.8.0'
     resolution:
       integrity: sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
+  /prettier/2.2.1:
+    dev: false
+    engines:
+      node: '>=10.13.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
   /progress/2.0.3:
     dev: false
     engines:
@@ -1841,13 +1849,14 @@ packages:
       grammarkdown: 3.1.2
       mkdirp: 1.0.4
       mocha: 7.1.2
+      prettier: 2.2.1
       ts-node: 8.10.2_typescript@3.9.7
       typescript: 3.9.7
       yargs: 16.2.0
     dev: false
     name: '@rush-temp/adl'
     resolution:
-      integrity: sha512-Sh8ELl//Wv/TFmeBIq7Kmjeg24iEv1i3PZH+2HfquOWLnVgWCBf2Qj7fJ2tWFaGPhXMhXcWmErew2VeXh4hK8Q==
+      integrity: sha512-DBAfQ5bfh/UHdUgvkcNkn+bFIQSH4OhyAZQmb+RXY+NaD0r3PsWQHfuHJi3VxP+8XJ+DuCeXCnyP3jshiV9eLQ==
       tarball: file:projects/adl.tgz
     version: 0.0.0
 registry: ''
@@ -1861,6 +1870,7 @@ specifiers:
   grammarkdown: ^3.1.2
   mkdirp: ~1.0.4
   mocha: 7.1.2
+  prettier: ~2.2.1
   ts-node: ^8.10.2
   typescript: ~3.9.5
   yargs: ~16.2.0
