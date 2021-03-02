@@ -48,11 +48,6 @@ model OrganizationProperties {
   userDetail: UserDetail;
 }
 
-@doc "Details of the Confluent organization (read only properties)"
-@withVisibility("read")
-model OrganizationReadProperties {
-}
-
 @doc "Details of the product offering."
 model OfferDetail {
   @doc "Id of the product publisher."
