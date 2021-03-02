@@ -13,6 +13,7 @@ import {
 } from "../compiler/types.js";
 import {
   getDoc,
+  getAllTags,
   getFormat,
   getIntrinsicType,
   getMaxLength,
@@ -78,6 +79,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       version: "0000-00-00",
     },
     schemes: ["https"],
+    tags: [],
     paths: {},
     definitions: {},
     parameters: {},
@@ -96,6 +98,9 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   // this map.
   const params = new Map<ModelTypeProperty, any>();
 
+  // De-dupe the per-endpoint tags that will be added into the #/tags
+  const tags = new Set<string>();
+
   return { emitOpenAPI };
 
   function emitOpenAPI() {
@@ -107,6 +112,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       emitResource(<Namespace>resource);
     }
     emitReferences();
+    emitTags();
 
     // Write out the OpenAPI document to the output path
     fs.writeFileSync(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
@@ -222,6 +228,15 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     currentEndpoint.produces = [];
     currentEndpoint.parameters = [];
     currentEndpoint.responses = {};
+
+    const currentTags = getAllTags(resource, prop);
+    if (currentTags) {
+      currentEndpoint.tags = currentTags;
+      for (const tag of currentTags) {
+        // Add to root tags if not already there
+        tags.add(tag);
+      }
+    }
 
     if (isList(prop)) {
       const nextLinkName = getPageable(prop) || "nextLink";
@@ -529,6 +544,12 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       }
 
       schema["$ref"] = "#/definitions/" + name;
+    }
+  }
+
+  function emitTags() {
+    for (const tag of tags) {
+      root.tags.push({ name: tag });
     }
   }
 
