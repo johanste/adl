@@ -7,6 +7,11 @@
   "schemes": [
     "https"
   ],
+  "tags": [
+    {
+      "name": "LibraryService"
+    }
+  ],
   "paths": {
     "/v1/shelves": {
       "post": {
@@ -36,7 +41,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "LibraryService"
+        ]
       },
       "get": {
         "operationId": "LibraryService_ListShelves",
@@ -66,7 +74,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "LibraryService"
+        ]
       }
     },
     "/v1/shelves/{name}": {
@@ -95,7 +106,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "LibraryService"
+        ]
       },
       "delete": {
         "operationId": "LibraryService_DeleteShelf",
@@ -119,7 +133,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "LibraryService"
+        ]
       }
     },
     "/v1/shelves/{name}:merge": {
@@ -153,7 +170,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "LibraryService"
+        ]
       }
     },
     "/v1/shelves/{name}/books": {
@@ -187,7 +207,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "LibraryService"
+        ]
       },
       "get": {
         "operationId": "LibraryService_ListBooks",
@@ -220,7 +243,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "LibraryService"
+        ]
       }
     },
     "/v1/shelves/shelf_name/books/{name}": {
@@ -249,7 +275,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "LibraryService"
+        ]
       },
       "delete": {
         "operationId": "LibraryService_DeleteBook",
@@ -273,7 +302,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "LibraryService"
+        ]
       }
     }
   },

@@ -1,4 +1,5 @@
 @resource("/v1")
+@tag("Display")
 namespace Display {
     @doc("Create a kiosk. This enrolls the kiosk for sign display.")
     @post("kiosks")

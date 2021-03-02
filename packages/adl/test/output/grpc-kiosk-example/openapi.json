@@ -7,6 +7,11 @@
   "schemes": [
     "https"
   ],
+  "tags": [
+    {
+      "name": "Display"
+    }
+  ],
   "paths": {
     "/v1/kiosks": {
       "post": {
@@ -41,7 +46,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       },
       "get": {
         "operationId": "Display_ListKiosks",
@@ -64,7 +72,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       }
     },
     "/v1/kiosks/{id}": {
@@ -97,7 +108,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       },
       "delete": {
         "operationId": "Display_DeleteKiosk",
@@ -125,7 +139,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       }
     },
     "/v1/signs": {
@@ -161,7 +178,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       },
       "get": {
         "operationId": "Display_ListSigns",
@@ -178,7 +198,10 @@
               "$ref": "#/definitions/ListSignsResponse"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       }
     },
     "/v1/signs/{id}": {
@@ -211,7 +234,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       },
       "delete": {
         "operationId": "Display_DeleteSign",
@@ -239,7 +265,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       }
     },
     "/v1/signs/{sign_id}": {
@@ -268,7 +297,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       }
     },
     "/v1/kiosks/{kiosk_id}/sign": {
@@ -301,7 +333,10 @@
               "$ref": "#/definitions/RpcStatus"
             }
           }
-        }
+        },
+        "tags": [
+          "Display"
+        ]
       }
     }
   },

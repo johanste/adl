@@ -15,6 +15,7 @@ resource model:
   resources, named `shelves/*/books/*`
 """)
 @resource("/v1")
+@tag("LibraryService")
 namespace LibraryService {
     @doc("Creates a shelf, and returns the new Shelf.")
     @post("shelves")
