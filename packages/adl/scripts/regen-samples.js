@@ -12,6 +12,8 @@ const sampleFolders = [
   "petstore",
   "confluent",
   "documentation",
+  "grpc-library-example",
+  "grpc-kiosk-example",
   "nullable",
   "tags",
   "testserver/media-types",
