@@ -1,86 +1,92 @@
-﻿@ArmTrackedResource("Microsft.Confluent/organizations", OrganizationProperties)
-namespace Organization
-{
-  op @post getKeys() : ArmResponse<OrganizationKeys>;
+﻿@doc "A string that represents a URI."
+model Uri = string;
+
+@doc "Reusable representation of an email address"
+@format "\\w+@\\w+\\.\\w+"
+model email = string;
+
+@doc "Shorthand for setting length limit."
+@minLength(5)
+@maxLength(50)
+model MediumString = string;
+
+@doc "Shorthand for setting length limit."
+@maxLength(25)
+model ShortString = string;
+
+@doc "An Organization key to be handled as a secret."
+@secret
+model OrganizationKey = string;
+
+@TrackedResource("Microsoft.Confluent/organizations", OrganizationProperties)
+namespace Organization {
+  @post op getKeys(
+    @path subscriptionId: string,
+    @path resourceGroup: string,
+    @path name: string
+  ): ArmResponse<OrganizationKeys>;
 }
 
-""" Details of the Confluent organization. """
-model OrganizationProperties 
-{
-  
-  """ UTC Time when Organization resource was created. """
-  @visibility("read") 
-  createdTime: DateTime;
+@doc "Details of the Confluent organization."
+model OrganizationProperties {
+  @doc "UTC Time when Organization resource was created."
+  @visibility "read"
+  createdTime: datetime;
 
-  """ Id of the Confluent organization."""
-  @visibility("read") 
+  @doc "Id of the Confluent organization."
+  @visibility "read"
   organizationId: string;
 
-  """ Single sign-on url for the Confluent organization."""
-  @visibility("read") 
+  @doc "Single sign-on url for the Confluent organization."
+  @visibility "read"
   ssoUrl: Uri;
 
-  """ Details of the product offering."""
+  @doc "Details of the product offering."
   offerDetail: OfferDetail;
 
-  """ Subscriber details."""
+  @doc "Subscriber details."
   userDetail: UserDetail;
 }
 
-""" Details of the product offering."""
-model OfferDetail
-{
-  """ Id of the product publisher. """
-  publisherId: string50;
+@doc "Details of the product offering."
+model OfferDetail {
+  @doc "Id of the product publisher."
+  publisherId: MediumString;
 
-  """ Id of the product offering. """
-  id: string50;
+  @doc "Id of the product offering."
+  id: MediumString;
 
-  """ Id of the product offer plan. """
-  planId: string50;
+  @doc "Id of the product offer plan."
+  planId: MediumString;
 
-  """ Name of the product offer plan. """
-  planName: string50;
+  @doc "Name of the product offer plan."
+  planName: MediumString;
 
-  """ Offer plan term unit. """
-  termUnit: string25;
-  
-  """ SaaS offer status. """
+  @doc "Offer plan term unit."
+  termUnit: ShortString;
+
+  @doc "SaaS offer status."
   status: "Started" | "PendingFulfillmentStart" | "InProgress" |
           "Subscribed" | "Suspended" | "Reinstated" | "Succeeded" |
           "Failed" | "Unsubscribed" | "Updating";
 }
 
-""" Details of the subscriber """
-model UserDetail
-{
-  """ Subscriber first name."""
-  firstName: string50;
+@doc "Details of the subscriber"
+model UserDetail {
+  @doc "Subscriber first name."
+  firstName: MediumString;
 
-  """ Subscriber last name."""
-  lastName: string50;
+  @doc "Subscriber last name."
+  lastName: MediumString;
 
-  """ Subscriber email address."""
-  emailAddress: email
+  @doc "Subscriber email address."
+  emailAddress: email;
 }
 
-model OrganizationKeys
-{
-  """ The primary key. """
-  primary: SecureString;
+model OrganizationKeys {
+  @doc "The primary key."
+  primary: OrganizationKey;
 
-  """ The secondary Key. """
-  secondary: SecureString;
+  @doc "The secondary Key."
+  secondary: OrganizationKey;
 }
-
-@doc("Reusable representation of an email address")
-@format("\w+@\w+\.\w+")
-model email: string;
-
-@doc("Shorthand for setting length limit.")
-@length(50)
-model string50: string;
-
-""" Shorthand for setting length limit. """
-@length(25)
-model string25: string;
