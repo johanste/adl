@@ -11,9 +11,7 @@
       "port": 9229,
       "smartStep": true,
       "sourceMaps": true,
-      "skipFiles": [
-        "<node_internals>/**/*.js"
-      ]
+      "skipFiles": ["<node_internals>/**/*.js"]
     },
     {
       "type": "node",
@@ -21,16 +19,22 @@
       "request": "launch",
       "name": "Compile Scratch Sample",
       "program": "${workspaceRoot}/packages/adl/dist/compiler/cli.js",
-      "args": [
-        "compile",
-        "samples/scratch",
-        "--output-path=dist/scratch-adl-output"
-      ],
+      "args": ["compile", "samples/scratch", "--output-path=dist/scratch-adl-output"],
       "smartStep": true,
       "sourceMaps": true,
-      "skipFiles": [
-        "<node_internals>/**/*.js"
-      ],
+      "skipFiles": ["<node_internals>/**/*.js"],
+      "cwd": "${workspaceRoot}/packages/adl"
+    },
+    {
+      "type": "node",
+      "protocol": "inspector",
+      "request": "launch",
+      "name": "Compile Scratch Sample (nostdlib)",
+      "program": "${workspaceRoot}/packages/adl/dist/compiler/cli.js",
+      "args": ["compile", "samples/scratch", "--output-path=dist/scratch-adl-output", "--nostdlib"],
+      "smartStep": true,
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**/*.js"],
       "cwd": "${workspaceRoot}/packages/adl"
     },
     {
@@ -39,25 +43,18 @@
       "request": "launch",
       "name": "Run Compiler Tests",
       "program": "${workspaceRoot}/packages/adl/node_modules/mocha/bin/_mocha",
-      "args": [
-        "dist/test",
-        "--timeout=2000000"
-      ],
+      "args": ["dist/test", "--timeout=2000000"],
       "smartStep": true,
       "sourceMaps": true,
-      "skipFiles": [
-        "<node_internals>/**/*.js"
-      ],
+      "skipFiles": ["<node_internals>/**/*.js"],
       "cwd": "${workspaceRoot}/adl/plugins/azure"
     },
     {
       "name": "Run VS Code with Extension",
       "type": "extensionHost",
       "request": "launch",
-      "args": [
-        "--extensionDevelopmentPath=${workspaceRoot}/packages/adl-vscode"
-      ],
-      "preLaunchTask": "tmlanguage-gen",
+      "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/adl-vscode"],
+      "preLaunchTask": "tmlanguage-gen"
     },
     {
       "name": "Regenerate TextMate Grammar",
@@ -66,6 +63,6 @@
       "program": "${workspaceRoot}/packages/adl-vscode/dist/adl.tmLanguage.js",
       "request": "launch",
       "cwd": "${workspaceRoot}/packages/adl-vscode"
-    },
+    }
   ]
 }
