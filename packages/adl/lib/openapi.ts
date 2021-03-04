@@ -4,8 +4,8 @@ import { throwDiagnostic } from "../compiler/diagnostics.js";
 import { Program } from "../compiler/program.js";
 import {
   ArrayType,
-  Namespace,
-  NamespaceProperty,
+  NamespaceType,
+  OperationType,
   ModelType,
   ModelTypeProperty,
   Type,
@@ -109,7 +109,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
         throwDiagnostic("Resource goes on namespace", resource);
       }
 
-      emitResource(<Namespace>resource);
+      emitResource(<NamespaceType>resource);
     }
     emitReferences();
     emitTags();
@@ -118,31 +118,30 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     fs.writeFileSync(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
   }
 
-  function emitResource(resource: Namespace) {
+  function emitResource(resource: NamespaceType) {
     currentBasePath = basePathForResource(resource);
 
-    for (const [name, prop] of resource.properties) {
-      emitEndpoint(resource, prop);
+    for (const [name, op] of resource.operations) {
+      emitEndpoint(resource, op);
     }
   }
 
-  function getPathParameters(iface: Namespace, prop: NamespaceProperty) {
-    return [
-      ...(iface.parameters?.properties.values() ?? []),
-      ...(prop.parameters?.properties.values() ?? []),
-    ].filter((param) => getPathParamName(param) !== undefined);
+  function getPathParameters(ns: NamespaceType, op: OperationType) {
+    return [...(op.parameters?.properties.values() ?? [])].filter(
+      (param) => getPathParamName(param) !== undefined
+    );
   }
 
   /**
    * Translates endpoint names like `read` to REST verbs like `get`.
    */
   function pathForEndpoint(
-    prop: NamespaceProperty,
+    op: OperationType,
     pathParams: ModelTypeProperty[]
   ): [string, string[], string] {
     const paramByName = new Map(pathParams.map((p) => [p.name, p]));
-    const route = getOperationRoute(prop);
-    const inferredVerb = verbForEndpoint(prop.name);
+    const route = getOperationRoute(op);
+    const inferredVerb = verbForEndpoint(op.name);
     const verb = route?.verb || inferredVerb || "get";
 
     // Build the full route path including any sub-path
@@ -164,7 +163,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       if (!param) {
         throwDiagnostic(
           `Path contains parameter ${declaredParam} but wasn't found in given parameters`,
-          prop
+          op
         );
       }
 
@@ -199,9 +198,9 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     return undefined;
   }
 
-  function emitEndpoint(resource: Namespace, prop: NamespaceProperty) {
-    const params = getPathParameters(resource, prop);
-    const [verb, newPathParams, resolvedPath] = pathForEndpoint(prop, params);
+  function emitEndpoint(resource: NamespaceType, op: OperationType) {
+    const params = getPathParameters(resource, op);
+    const [verb, newPathParams, resolvedPath] = pathForEndpoint(op, params);
     const fullPath =
       resolvedPath +
       (newPathParams.length > 0 ? "/" + newPathParams.map((p) => "{" + p + "}").join("/") : "");
@@ -217,19 +216,19 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       currentPath[verb] = {};
     }
     currentEndpoint = currentPath[verb];
-    if (operationIds.has(prop)) {
-      currentEndpoint.operationId = operationIds.get(prop);
+    if (operationIds.has(op)) {
+      currentEndpoint.operationId = operationIds.get(op);
     } else {
       // Synthesize an operation ID
-      currentEndpoint.operationId = `${resource.name}_${prop.name}`;
+      currentEndpoint.operationId = `${resource.name}_${op.name}`;
     }
-    currentEndpoint.summary = getDoc(prop);
+    currentEndpoint.summary = getDoc(op);
     currentEndpoint.consumes = [];
     currentEndpoint.produces = [];
     currentEndpoint.parameters = [];
     currentEndpoint.responses = {};
 
-    const currentTags = getAllTags(resource, prop);
+    const currentTags = getAllTags(resource, op);
     if (currentTags) {
       currentEndpoint.tags = currentTags;
       for (const tag of currentTags) {
@@ -238,8 +237,8 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       }
     }
 
-    if (isList(prop)) {
-      const nextLinkName = getPageable(prop) || "nextLink";
+    if (isList(op)) {
+      const nextLinkName = getPageable(op) || "nextLink";
       if (nextLinkName) {
         currentEndpoint["x-ms-pageable"] = {
           nextLinkName,
@@ -247,13 +246,8 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       }
     }
 
-    emitEndpointParameters(
-      prop,
-      prop.parameters,
-      [...(resource.parameters?.properties.values() ?? [])],
-      [...(prop.parameters?.properties.values() ?? [])]
-    );
-    emitResponses(prop.returnType);
+    emitEndpointParameters(op, op.parameters, [...(op.parameters?.properties.values() ?? [])]);
+    emitResponses(op.returnType);
   }
 
   function emitResponses(responseType: Type) {
@@ -402,12 +396,11 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   }
 
   function emitEndpointParameters(
-    property: NamespaceProperty,
+    op: OperationType,
     parent: ModelType | undefined,
-    resourceParams: ModelTypeProperty[],
     methodParams: ModelTypeProperty[]
   ) {
-    const parameters = [...resourceParams, ...methodParams];
+    const parameters = [...methodParams];
 
     let bodyType: Type | undefined;
     let emittedImplicitBodyParam = false;
@@ -436,7 +429,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
         emitParameter(parent, param, "body");
       } else {
         if (emittedImplicitBodyParam) {
-          throwDiagnostic("request has multiple body types", property);
+          throwDiagnostic("request has multiple body types", op);
         }
         emittedImplicitBodyParam = true;
         bodyType = param.type;
