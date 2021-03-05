@@ -4,20 +4,14 @@
     "title": "(title)",
     "version": "0000-00-00"
   },
-  "schemes": [
-    "https"
-  ],
+  "schemes": ["https"],
   "paths": {
     "/v1/kiosks": {
       "post": {
         "operationId": "Display_CreateKiosk",
         "summary": "Create a kiosk. This enrolls the kiosk for sign display.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "body",
@@ -47,9 +41,7 @@
         "operationId": "Display_ListKiosks",
         "summary": "List active kiosks.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [],
         "responses": {
           "200": {
@@ -72,9 +64,7 @@
         "operationId": "Display_GetKiosk",
         "summary": "Get a kiosk.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -103,9 +93,7 @@
         "operationId": "Display_DeleteKiosk",
         "summary": "Delete a kiosk.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -132,12 +120,8 @@
       "post": {
         "operationId": "Display_CreateSign",
         "summary": "Create a sign. This enrolls the sign for sign display.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "sign",
@@ -167,9 +151,7 @@
         "operationId": "Display_ListSigns",
         "summary": "List active signs.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [],
         "responses": {
           "200": {
@@ -186,9 +168,7 @@
         "operationId": "Display_GetSign",
         "summary": "Get a sign.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -217,9 +197,7 @@
         "operationId": "Display_DeleteSign",
         "summary": "Delete a sign.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "id",
@@ -247,9 +225,7 @@
         "operationId": "Display_SetSignIdForKioskIds",
         "summary": "Set a sign for display on one or more kiosks.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/SetSignIdForKioskIdsRequest.kiosk_ids"
@@ -276,9 +252,7 @@
         "operationId": "Display_GetSignIdForKioskId",
         "summary": "Get the sign that should be displayed on a kiosk.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "kiosk_id",
@@ -329,11 +303,7 @@
         }
       },
       "description": "Describes a hardware device that can display signs.",
-      "required": [
-        "name",
-        "size",
-        "location"
-      ]
+      "required": ["name", "size", "location"]
     },
     "RpcStatus": {
       "type": "object",
@@ -395,11 +365,7 @@
         }
       },
       "description": "Describes a digital sign.\nSigns can include text, images, or both.",
-      "required": [
-        "name",
-        "text",
-        "image"
-      ]
+      "required": ["name", "text", "image"]
     },
     "ListSignsResponse": {
       "type": "object",
@@ -437,10 +403,7 @@
         }
       },
       "description": "Represents the size of a screen in pixels.",
-      "required": [
-        "width",
-        "height"
-      ]
+      "required": ["width", "height"]
     },
     "LatLng": {
       "type": "object",
@@ -455,10 +418,7 @@
         }
       },
       "description": "An object that represents a latitude/longitude pair. This is expressed as a\npair of doubles to represent degrees latitude and degrees longitude. Unless\nspecified otherwise, this must conform to the\n<a href=\"http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf\">WGS84\nstandard</a>. Values must be within normalized ranges.",
-      "required": [
-        "latitude",
-        "longitude"
-      ]
+      "required": ["latitude", "longitude"]
     },
     "Timestamp": {
       "type": "object",
@@ -473,10 +433,7 @@
         }
       },
       "description": "A timestamp",
-      "required": [
-        "seconds",
-        "nanos"
-      ]
+      "required": ["seconds", "nanos"]
     },
     "protobufAny": {
       "type": "object",

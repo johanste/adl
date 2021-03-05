@@ -9,12 +9,8 @@
       "name": "LibraryService"
     }
   ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
     "/v1/shelves": {
       "get": {
@@ -51,9 +47,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       },
       "post": {
         "summary": "Creates a shelf, and returns the new Shelf.",
@@ -83,9 +77,7 @@
             }
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       }
     },
     "/v1/{book.name=shelves/*/books/*}": {
@@ -131,9 +123,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       }
     },
     "/v1/{name=shelves/*/books/*}": {
@@ -163,9 +153,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       },
       "delete": {
         "summary": "Deletes a book. Returns NOT_FOUND if the book does not exist.",
@@ -193,9 +181,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       }
     },
     "/v1/{name=shelves/*/books/*}:move": {
@@ -233,9 +219,7 @@
             }
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       }
     },
     "/v1/{name=shelves/*}": {
@@ -265,9 +249,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       },
       "delete": {
         "summary": "Deletes a shelf. Returns NOT_FOUND if the shelf does not exist.",
@@ -295,9 +277,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       }
     },
     "/v1/{name=shelves/*}/books": {
@@ -342,9 +322,7 @@
             "type": "string"
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       },
       "post": {
         "summary": "Creates a book, and returns the new Book.",
@@ -381,9 +359,7 @@
             }
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       }
     },
     "/v1/{name=shelves/*}:merge": {
@@ -422,9 +398,7 @@
             }
           }
         ],
-        "tags": [
-          "LibraryService"
-        ]
+        "tags": ["LibraryService"]
       }
     }
   },
@@ -465,9 +439,7 @@
         "name": {
           "type": "string",
           "description": "The resource name of the book.\nBook names have the form `shelves/{shelf_id}/books/{book_id}`.\nThe name is ignored when creating a book.",
-          "required": [
-            "name"
-          ]
+          "required": ["name"]
         },
         "author": {
           "type": "string",
@@ -483,9 +455,7 @@
         }
       },
       "description": "A single book in the library.",
-      "required": [
-        "name"
-      ]
+      "required": ["name"]
     },
     "v1ListBooksResponse": {
       "type": "object",
@@ -527,23 +497,16 @@
         "name": {
           "type": "string",
           "description": "The name of the shelf we're adding books to.",
-          "required": [
-            "name"
-          ]
+          "required": ["name"]
         },
         "otherShelfName": {
           "type": "string",
           "description": "The name of the shelf we're removing books from and deleting.",
-          "required": [
-            "other_shelf_name"
-          ]
+          "required": ["other_shelf_name"]
         }
       },
       "description": "Describes the shelf being removed (other_shelf_name) and updated\n(name) in this merge.",
-      "required": [
-        "name",
-        "otherShelfName"
-      ]
+      "required": ["name", "otherShelfName"]
     },
     "v1MoveBookRequest": {
       "type": "object",
@@ -551,23 +514,16 @@
         "name": {
           "type": "string",
           "description": "The name of the book to move.",
-          "required": [
-            "name"
-          ]
+          "required": ["name"]
         },
         "otherShelfName": {
           "type": "string",
           "description": "The name of the destination shelf.",
-          "required": [
-            "other_shelf_name"
-          ]
+          "required": ["other_shelf_name"]
         }
       },
       "description": "Describes what book to move (name) and what shelf we're moving it\nto (other_shelf_name).",
-      "required": [
-        "name",
-        "otherShelfName"
-      ]
+      "required": ["name", "otherShelfName"]
     },
     "v1Shelf": {
       "type": "object",
@@ -575,9 +531,7 @@
         "name": {
           "type": "string",
           "description": "The resource name of the shelf.\nShelf names have the form `shelves/{shelf_id}`.\nThe name is ignored when creating a shelf.",
-          "required": [
-            "name"
-          ]
+          "required": ["name"]
         },
         "theme": {
           "type": "string",
@@ -585,9 +539,7 @@
         }
       },
       "description": "A Shelf contains a collection of books with a theme.",
-      "required": [
-        "name"
-      ]
+      "required": ["name"]
     }
   }
 }

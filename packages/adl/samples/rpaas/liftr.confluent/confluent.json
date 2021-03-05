@@ -5,20 +5,12 @@
     "version": "2020-03-01-preview"
   },
   "host": "management.azure.com",
-  "schemes": [
-    "https"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "security": [
     {
-      "azure_auth": [
-        "user_impersonation"
-      ]
+      "azure_auth": ["user_impersonation"]
     }
   ],
   "securityDefinitions": {
@@ -35,14 +27,10 @@
   "paths": {
     "/providers/Microsoft.Confluent/operations": {
       "get": {
-        "tags": [
-          "Organization"
-        ],
+        "tags": ["Organization"],
         "summary": "List all operations provided by Microsoft.Confluent.",
         "operationId": "OrganizationOperations_List",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/ApiVersionParameter"
@@ -69,14 +57,10 @@
     },
     "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/organizations": {
       "get": {
-        "tags": [
-          "Organization"
-        ],
+        "tags": ["Organization"],
         "summary": "List all organizations under the specified subscription.",
         "operationId": "Organization_ListBySubscription",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/ApiVersionParameter"
@@ -106,14 +90,10 @@
     },
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations": {
       "get": {
-        "tags": [
-          "Organization"
-        ],
+        "tags": ["Organization"],
         "summary": "List all Organizations under the specified resource group.",
         "operationId": "Organization_ListByResourceGroup",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/ApiVersionParameter"
@@ -146,14 +126,10 @@
     },
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}": {
       "get": {
-        "tags": [
-          "Organization"
-        ],
+        "tags": ["Organization"],
         "summary": "Get the properties of a specific Organization resource.",
         "operationId": "Organization_Get",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/ApiVersionParameter"
@@ -184,17 +160,11 @@
         }
       },
       "put": {
-        "tags": [
-          "Organization"
-        ],
+        "tags": ["Organization"],
         "summary": "Create Organization resource",
         "operationId": "Organization_Create",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/ApiVersionParameter"
@@ -243,17 +213,11 @@
         }
       },
       "patch": {
-        "tags": [
-          "Organization"
-        ],
+        "tags": ["Organization"],
         "summary": "Update Organization resource",
         "operationId": "Organization_Update",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/ApiVersionParameter"
@@ -292,14 +256,10 @@
         }
       },
       "delete": {
-        "tags": [
-          "Organization"
-        ],
+        "tags": ["Organization"],
         "summary": "Delete Organization resource",
         "operationId": "Organization_Delete",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/ApiVersionParameter"
@@ -740,9 +700,7 @@
       "description": "Client Api Version.",
       "required": true,
       "type": "string",
-      "enum": [
-        "2020-03-01-preview"
-      ]
+      "enum": ["2020-03-01-preview"]
     },
     "SubscriptionIdParameter": {
       "in": "path",

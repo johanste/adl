@@ -9,12 +9,8 @@
       "name": "Display"
     }
   ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
     "/v1/kiosks": {
       "get": {
@@ -34,9 +30,7 @@
             }
           }
         },
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       },
       "post": {
         "summary": "Create a kiosk. This enrolls the kiosk for sign display.",
@@ -55,9 +49,7 @@
             }
           }
         },
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       }
     },
     "/v1/kiosks/{id}": {
@@ -88,9 +80,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       },
       "delete": {
         "summary": "Delete a kiosk.",
@@ -119,9 +109,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       }
     },
     "/v1/kiosks/{kioskId}/sign": {
@@ -152,9 +140,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       }
     },
     "/v1/signs": {
@@ -175,9 +161,7 @@
             }
           }
         },
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       },
       "post": {
         "summary": "Create a sign. This enrolls the sign for sign display.",
@@ -196,9 +180,7 @@
             }
           }
         },
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       }
     },
     "/v1/signs/{id}": {
@@ -229,9 +211,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       },
       "delete": {
         "summary": "Delete a sign.",
@@ -260,9 +240,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       }
     },
     "/v1/signs/{signId}": {
@@ -293,9 +271,7 @@
             "format": "int32"
           }
         ],
-        "tags": [
-          "Display"
-        ]
+        "tags": ["Display"]
       }
     }
   },

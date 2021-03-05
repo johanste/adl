@@ -1,4 +1,5 @@
 **/*.yml
 **/*.yaml
 **/*.d.ts
-dist/
+**/dist/
+**/test/output/

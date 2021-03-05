@@ -4,20 +4,14 @@
     "title": "(title)",
     "version": "0000-00-00"
   },
-  "schemes": [
-    "https"
-  ],
+  "schemes": ["https"],
   "paths": {
     "/v1/shelves": {
       "post": {
         "operationId": "LibraryService_CreateShelf",
         "summary": "Creates a shelf, and returns the new Shelf.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/CreateShelfRequest"
@@ -42,9 +36,7 @@
         "operationId": "LibraryService_ListShelves",
         "summary": "Lists shelves. The order is unspecified but deterministic. Newly created\nshelves will not necessarily be added to the end of this list.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/ListRequestBase.page_size"
@@ -74,9 +66,7 @@
         "operationId": "LibraryService_GetShelf",
         "summary": "Gets a shelf. Returns NOT_FOUND if the shelf does not exist.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/GetShelfRequest"
@@ -101,9 +91,7 @@
         "operationId": "LibraryService_DeleteShelf",
         "summary": "Deletes a shelf. Returns NOT_FOUND if the shelf does not exist.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/DeleteShelfRequest"
@@ -126,12 +114,8 @@
       "post": {
         "operationId": "LibraryService_MergeShelves",
         "summary": "Merges two shelves by adding all books from the shelf named\n`other_shelf_name` to shelf `name`, and deletes\n`other_shelf_name`. Returns the updated shelf.\nThe book ids of the moved books may not be the same as the original books.\nReturns NOT_FOUND if either shelf does not exist.\nThis call is a no-op if the specified shelves are the same.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/MergeShelvesRequest.name"
@@ -160,12 +144,8 @@
       "post": {
         "operationId": "LibraryService_CreateBook",
         "summary": "Creates a book, and returns the new Book.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/CreateBookRequest.name"
@@ -193,9 +173,7 @@
         "operationId": "LibraryService_ListBooks",
         "summary": "Lists books in a shelf. The order is unspecified but deterministic. Newly\ncreated books will not necessarily be added to the end of this list.\nReturns NOT_FOUND if the shelf does not exist.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/ListBooksRequest.name"
@@ -228,9 +206,7 @@
         "operationId": "LibraryService_GetBook",
         "summary": "Gets a book. Returns NOT_FOUND if the book does not exist.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/GetBookRequest"
@@ -255,9 +231,7 @@
         "operationId": "LibraryService_DeleteBook",
         "summary": "Deletes a book. Returns NOT_FOUND if the book does not exist.",
         "consumes": [],
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "$ref": "#/parameters/DeleteBookRequest"
@@ -292,9 +266,7 @@
         }
       },
       "description": "A Shelf contains a collection of books with a theme.",
-      "required": [
-        "name"
-      ]
+      "required": ["name"]
     },
     "RpcStatus": {
       "type": "object",
@@ -333,9 +305,7 @@
         }
       },
       "description": "Response message for LibraryService.ListShelves.",
-      "required": [
-        "shelves"
-      ]
+      "required": ["shelves"]
     },
     "Book": {
       "type": "object",
@@ -359,9 +329,7 @@
         }
       },
       "description": "A single book in the library.",
-      "required": [
-        "name"
-      ]
+      "required": ["name"]
     },
     "ListBooksResponse": {
       "type": "object",
@@ -380,9 +348,7 @@
         }
       },
       "description": "Response message for LibraryService.ListBooks.",
-      "required": [
-        "books"
-      ]
+      "required": ["books"]
     },
     "protobufAny": {
       "type": "object",

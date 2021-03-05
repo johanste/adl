@@ -19,19 +19,23 @@ const sampleFolders = [
   "tags",
   "testserver/media-types",
   "testserver/body-boolean",
-  "visibility"
+  "visibility",
 ];
 
 function resolvePath(...parts) {
-  const resolvedPath = new url.URL(parts.join(''), import.meta.url);
+  const resolvedPath = new url.URL(parts.join(""), import.meta.url);
   return url.fileURLToPath(resolvedPath);
 }
 
 async function runCompilerAsync(inputPath, outputPath) {
   return new Promise((resolve, reject) => {
-    const cliProcess = fork("../dist/compiler/cli.js", ["compile", inputPath, `--output-path=${outputPath}`]);
+    const cliProcess = fork("../dist/compiler/cli.js", [
+      "compile",
+      inputPath,
+      `--output-path=${outputPath}`,
+    ]);
 
-    cliProcess.on('close', (code) => {
+    cliProcess.on("close", (code) => {
       console.log("process exit", code);
       if (code === 0) {
         resolve();
@@ -39,21 +43,20 @@ async function runCompilerAsync(inputPath, outputPath) {
         reject(new Error(`${cliProcess.stderr}`));
       }
     });
-  })
+  });
 }
 
 for (const folderName of sampleFolders) {
-  const inputPath = `samples/${folderName}`
+  const inputPath = `samples/${folderName}`;
   const outputPath = resolvePath("../test/output/", folderName);
   mkdirp(outputPath);
 
-  console.log(`\nExecuting \`adl compile ${inputPath}\``)
-  spawnSync(process.execPath, [
-    "dist/compiler/cli.js",
-    "compile",
-    inputPath,
-    `--output-path=${outputPath}`
-  ], {
-    stdio: ['inherit', 'pipe', 'inherit']
-  });
+  console.log(`\nExecuting \`adl compile ${inputPath}\``);
+  spawnSync(
+    process.execPath,
+    ["dist/compiler/cli.js", "compile", inputPath, `--output-path=${outputPath}`],
+    {
+      stdio: ["inherit", "pipe", "inherit"],
+    }
+  );
 }
