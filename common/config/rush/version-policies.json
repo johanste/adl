@@ -12,6 +12,10 @@
   {
     "definitionName": "individualVersion",
     "policyName": "adl"
+  },
+  {
+    "definitionName": "individualVersion",
+    "policyName": "adl-vscode"
   }
   // {
   //   /**
