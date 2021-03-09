@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl",
+      "comment": "Fix bug preventing empty string literals",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl",
+  "email": "nicholg@microsoft.com"
+}
