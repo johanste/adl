@@ -4,6 +4,7 @@ dependencies:
   '@types/mkdirp': 1.0.1
   '@types/mocha': 7.0.2
   '@types/node': 14.0.27
+  '@types/vscode': 1.54.0
   '@types/yargs': 15.0.13
   autorest: 3.0.6339
   grammarkdown: 3.1.2
@@ -13,6 +14,9 @@ dependencies:
   prettier: 2.2.1
   typescript: 4.1.5
   vsce: 1.85.1
+  vscode-languageclient: 7.0.0
+  vscode-languageserver: 7.0.0
+  vscode-languageserver-textdocument: 1.0.1
   yargs: 16.2.0
 lockfileVersion: 5.2
 packages:
@@ -112,6 +116,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1MxY/ooNO67EQv7Jlv9v/lG1Cll26Uqo4mY00dNPE6TZ62sTJ39WTlEOWbLwn7elRpmqT6hX3fUaBhFeFcQeuA==
+  /@types/vscode/1.54.0:
+    dev: false
+    resolution:
+      integrity: sha512-sHHw9HG4bTrnKhLGgmEiOS88OLO/2RQytUN4COX9Djv81zc0FSZsSiYaVyjNidDzUSpXsySKBkZ31lk2/FbdCg==
   /@types/yargs-parser/20.2.0:
     dev: false
     resolution:
@@ -755,6 +763,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
+  /lru-cache/6.0.0:
+    dependencies:
+      yallist: 4.0.0
+    dev: false
+    engines:
+      node: '>=10'
+    resolution:
+      integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   /markdown-it/10.0.0:
     dependencies:
       argparse: 1.0.10
@@ -1046,6 +1062,15 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
+  /semver/7.3.4:
+    dependencies:
+      lru-cache: 6.0.0
+    dev: false
+    engines:
+      node: '>=10'
+    hasBin: true
+    resolution:
+      integrity: sha512-tCfb2WLjqFAtXn4KEdxIhalnRtoKFN7nAwj0B3ZXCbQloV2tq5eDbcTmT68JJD3nRJq24/XgxtQKFIpQdtvmVw==
   /set-blocking/2.0.0:
     dev: false
     resolution:
@@ -1223,6 +1248,44 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-IdfH8OCK+FgQGmihFoh6/17KBl4Ad3q4Sw3NFNI9T9KX6KdMR5az2/GO512cC9IqCjbgJl12CA7X84vYoc0ifg==
+  /vscode-jsonrpc/6.0.0:
+    dev: false
+    engines:
+      node: '>=8.0.0 || >=10.0.0'
+    resolution:
+      integrity: sha512-wnJA4BnEjOSyFMvjZdpiOwhSq9uDoK8e/kpRJDTaMYzwlkrhG1fwDIZI94CLsLzlCK5cIbMMtFlJlfR57Lavmg==
+  /vscode-languageclient/7.0.0:
+    dependencies:
+      minimatch: 3.0.4
+      semver: 7.3.4
+      vscode-languageserver-protocol: 3.16.0
+    dev: false
+    engines:
+      vscode: ^1.52.0
+    resolution:
+      integrity: sha512-P9AXdAPlsCgslpP9pRxYPqkNYV7Xq8300/aZDpO35j1fJm/ncize8iGswzYlcvFw5DQUx4eVk+KvfXdL0rehNg==
+  /vscode-languageserver-protocol/3.16.0:
+    dependencies:
+      vscode-jsonrpc: 6.0.0
+      vscode-languageserver-types: 3.16.0
+    dev: false
+    resolution:
+      integrity: sha512-sdeUoAawceQdgIfTI+sdcwkiK2KU+2cbEYA0agzM2uqaUy2UpnnGHtWTHVEtS0ES4zHU0eMFRGN+oQgDxlD66A==
+  /vscode-languageserver-textdocument/1.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-UIcJDjX7IFkck7cSkNNyzIz5FyvpQfY7sdzVy+wkKN/BLaD4DQ0ppXQrKePomCxTS7RrolK1I0pey0bG9eh8dA==
+  /vscode-languageserver-types/3.16.0:
+    dev: false
+    resolution:
+      integrity: sha512-k8luDIWJWyenLc5ToFQQMaSrqCHiLwyKPHKPQZ5zz21vM+vIVUSvsRpcbiECH4WR88K2XZqc4ScRcZ7nk/jbeA==
+  /vscode-languageserver/7.0.0:
+    dependencies:
+      vscode-languageserver-protocol: 3.16.0
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-60HTx5ID+fLRcgdHfmz0LDZAXYEV68fzwG0JWwEPBode9NuMYTIxuYXPg4ngO8i8+Ou0lM7y6GzaYWbiDL0drw==
   /vscode-oniguruma/1.5.0:
     dev: false
     resolution:
@@ -1282,6 +1345,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
+  /yallist/4.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
   /yargs-parser/13.1.2:
     dependencies:
       camelcase: 5.3.1
@@ -1351,15 +1418,17 @@ packages:
     dependencies:
       '@types/node': 14.0.27
       '@types/oniguruma': 7.0.1
+      '@types/vscode': 1.54.0
       onigasm: 2.2.5
       oniguruma: 7.2.1
       typescript: 4.1.5
       vsce: 1.85.1
+      vscode-languageclient: 7.0.0
       vscode-oniguruma: 1.5.0
     dev: false
     name: '@rush-temp/adl-vscode'
     resolution:
-      integrity: sha512-QtHd2rhAO6fPzYhM/Km2LwiLX+e1iy83FYHeQ28oqKyTp+w8S6gGjo/5wz1LBCyj3NdoI3HpRhPWW57ApufQDQ==
+      integrity: sha512-nji2CY+xIypv3DvfHrGRMKz49ys9ejaNRZw5I6JY8ux8Woo0UQhIbAZSuRNapvSZMjbDDP5Fwz9cXcSR8XU2YA==
       tarball: file:projects/adl-vscode.tgz
     version: 0.0.0
   file:projects/adl.tgz:
@@ -1374,11 +1443,13 @@ packages:
       mocha: 7.1.2
       prettier: 2.2.1
       typescript: 4.1.5
+      vscode-languageserver: 7.0.0
+      vscode-languageserver-textdocument: 1.0.1
       yargs: 16.2.0
     dev: false
     name: '@rush-temp/adl'
     resolution:
-      integrity: sha512-AasOSV/rVpQjRgEH2T+/uX58ICbcKAnFYol5lltv/6RMpyBTT+3YgYFDuXm1JvS0ZqzFLzk2SBnfkqN9NHmPig==
+      integrity: sha512-heyU36s1bp3RpPzjePRvl1h92aXy6MMl7T6jtyLWMXvgMVYNtCRJhU1I4AxQaMxMiurDWLR9KuHbprR4h2D1xw==
       tarball: file:projects/adl.tgz
     version: 0.0.0
 registry: ''
@@ -1388,6 +1459,7 @@ specifiers:
   '@types/mkdirp': ~1.0.1
   '@types/mocha': ^7.0.2
   '@types/node': 14.0.27
+  '@types/vscode': ^1.53.0
   '@types/yargs': ~15.0.12
   autorest: ~3.0.6335
   grammarkdown: ^3.1.2
@@ -1397,4 +1469,7 @@ specifiers:
   prettier: ~2.2.1
   typescript: ~4.1.5
   vsce: ^1.85.1
+  vscode-languageclient: ^7.0.0
+  vscode-languageserver: ^7.0.0
+  vscode-languageserver-textdocument: ^1.0.1
   yargs: ~16.2.0

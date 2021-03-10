@@ -7,17 +7,27 @@
     {
       "type": "node",
       "request": "attach",
-      "name": "Attach",
+      "name": "Attach to Default Port",
       "port": 9229,
       "smartStep": true,
       "sourceMaps": true,
       "skipFiles": ["<node_internals>/**/*.js"]
     },
     {
+      "name": "Attach to Language Server",
+      "type": "node",
+      "request": "attach",
+      "port": 4242,
+      "smartStep": true,
+      "sourceMaps": true,
+      "skipFiles": ["<node_internals>/**/*.js"],
+      "timeout": 60000
+    },
+    {
       "type": "node",
       "protocol": "inspector",
       "request": "launch",
-      "name": "Compile Scratch Sample",
+      "name": "Compile Scratch",
       "program": "${workspaceRoot}/packages/adl/dist/compiler/cli.js",
       "args": ["compile", "samples/scratch", "--output-path=dist/scratch-adl-output"],
       "smartStep": true,
@@ -29,13 +39,21 @@
       "type": "node",
       "protocol": "inspector",
       "request": "launch",
-      "name": "Compile Scratch Sample (nostdlib)",
+      "name": "Compile Scratch (nostdlib)",
       "program": "${workspaceRoot}/packages/adl/dist/compiler/cli.js",
       "args": ["compile", "samples/scratch", "--output-path=dist/scratch-adl-output", "--nostdlib"],
       "smartStep": true,
       "sourceMaps": true,
       "skipFiles": ["<node_internals>/**/*.js"],
       "cwd": "${workspaceRoot}/packages/adl"
+    },
+    {
+      "name": "Regenerate TextMate Grammar",
+      "type": "node",
+      "protocol": "inspector",
+      "program": "${workspaceRoot}/packages/adl-vscode/dist/adl.tmLanguage.js",
+      "request": "launch",
+      "cwd": "${workspaceRoot}/packages/adl-vscode"
     },
     {
       "type": "node",
@@ -50,19 +68,20 @@
       "cwd": "${workspaceRoot}/adl/plugins/azure"
     },
     {
-      "name": "Run VS Code with Extension",
+      "name": "VS Code Extension",
       "type": "extensionHost",
       "request": "launch",
       "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/adl-vscode"],
-      "preLaunchTask": "tmlanguage-gen"
-    },
+      "preLaunchTask": "tmlanguage-gen",
+      "env": {
+        "DEBUG_ADL_LANGUAGE_SERVER": "--nolazy --inspect-brk=4242"
+      }
+    }
+  ],
+  "compounds": [
     {
-      "name": "Regenerate TextMate Grammar",
-      "type": "node",
-      "protocol": "inspector",
-      "program": "${workspaceRoot}/packages/adl-vscode/dist/adl.tmLanguage.js",
-      "request": "launch",
-      "cwd": "${workspaceRoot}/packages/adl-vscode"
+      "name": "VS Code Extension (Client/Server)",
+      "configurations": ["VS Code Extension", "Attach to Language Server"]
     }
   ]
 }
