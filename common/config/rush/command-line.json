@@ -39,6 +39,12 @@
       "name": "check-format",
       "summary": "run all npm check-format",
       "shellCommand": "node eng/scripts/npm-run.js check-format"
+    },
+    {
+      "commandKind": "global",
+      "name": "regen-samples",
+      "summary": "run all npm regen-samples",
+      "shellCommand": "node eng/scripts/npm-run.js regen-samples"
     }
   ],
   /**
