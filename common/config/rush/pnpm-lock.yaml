@@ -4,13 +4,12 @@ dependencies:
   '@types/mkdirp': 1.0.1
   '@types/mocha': 7.0.2
   '@types/node': 14.0.27
-  '@types/oniguruma': 7.0.1
   '@types/yargs': 15.0.13
   autorest: 3.0.6339
   grammarkdown: 3.1.2
   mkdirp: 1.0.4
   mocha: 7.1.2
-  oniguruma: 7.2.1
+  onigasm: 2.2.5
   prettier: 2.2.1
   typescript: 4.1.5
   vsce: 1.85.1
@@ -750,6 +749,12 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-dSkNGuI7iG3mfvDzUuYZyvk5dD9ocYCYzNU6CYDE6+Xqd+gwme6Z00NS3dUh8mq/73HaEtT7m6W+yUPtU6BZnQ==
+  /lru-cache/5.1.1:
+    dependencies:
+      yallist: 3.1.1
+    dev: false
+    resolution:
+      integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
   /markdown-it/10.0.0:
     dependencies:
       argparse: 1.0.10
@@ -907,6 +912,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
+  /onigasm/2.2.5:
+    dependencies:
+      lru-cache: 5.1.1
+    dev: false
+    resolution:
+      integrity: sha512-F+th54mPc0l1lp1ZcFMyL/jTs2Tlq4SqIHKIXGZOR/VkHkF9A7Fr5rRr5+ZG/lWeRsyrClLYRq7s/yFQ/XhWCA==
   /oniguruma/7.2.1:
     dependencies:
       nan: 2.14.2
@@ -1212,6 +1223,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-IdfH8OCK+FgQGmihFoh6/17KBl4Ad3q4Sw3NFNI9T9KX6KdMR5az2/GO512cC9IqCjbgJl12CA7X84vYoc0ifg==
+  /vscode-oniguruma/1.5.0:
+    dev: false
+    resolution:
+      integrity: sha512-5MgXSXvwy2GBy8BRi1Pegk+60LAHiY184cW93Fe1SmA9oPu8fRV3G9Yurbhkh/0hrb0E0/VK4JPieBX66gkftQ==
   /which-module/2.0.0:
     dev: false
     resolution:
@@ -1263,6 +1278,10 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-hsRUr4FFrvhhRH12wOdfs38Gy7k2FFzB9qgN9v3aLykRq0dRcdcpz5C9FxdS2NuhOrI/628b/KSTJ3rwHysYSg==
+  /yallist/3.1.1:
+    dev: false
+    resolution:
+      integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==
   /yargs-parser/13.1.2:
     dependencies:
       camelcase: 5.3.1
@@ -1332,13 +1351,15 @@ packages:
     dependencies:
       '@types/node': 14.0.27
       '@types/oniguruma': 7.0.1
+      onigasm: 2.2.5
       oniguruma: 7.2.1
       typescript: 4.1.5
       vsce: 1.85.1
+      vscode-oniguruma: 1.5.0
     dev: false
     name: '@rush-temp/adl-vscode'
     resolution:
-      integrity: sha512-7gUjLamxdfDis2ljioezwiCld/oD1z7grcAey74s8doJ3xnH4CyXKDRzdkRPQ0lfKmBjaZiJh2U3MamDXwepMg==
+      integrity: sha512-QtHd2rhAO6fPzYhM/Km2LwiLX+e1iy83FYHeQ28oqKyTp+w8S6gGjo/5wz1LBCyj3NdoI3HpRhPWW57ApufQDQ==
       tarball: file:projects/adl-vscode.tgz
     version: 0.0.0
   file:projects/adl.tgz:
@@ -1367,13 +1388,12 @@ specifiers:
   '@types/mkdirp': ~1.0.1
   '@types/mocha': ^7.0.2
   '@types/node': 14.0.27
-  '@types/oniguruma': ~7.0.1
   '@types/yargs': ~15.0.12
   autorest: ~3.0.6335
   grammarkdown: ^3.1.2
   mkdirp: ~1.0.4
   mocha: 7.1.2
-  oniguruma: ~7.2.1
+  onigasm: ~2.2.5
   prettier: ~2.2.1
   typescript: ~4.1.5
   vsce: ^1.85.1
