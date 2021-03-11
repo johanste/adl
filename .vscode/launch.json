@@ -74,7 +74,7 @@
       "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/adl-vscode"],
       "preLaunchTask": "tmlanguage-gen",
       "env": {
-        "DEBUG_ADL_LANGUAGE_SERVER": "--nolazy --inspect-brk=4242"
+        "DEBUG_ADL_LANGUAGE_SERVER": "--nolazy --inspect=4242"
       }
     }
   ],
