@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "adl-vscode",
+      "comment": "Introduce language server and add live parse errors to VS Code",
+      "type": "minor"
+    }
+  ],
+  "packageName": "adl-vscode",
+  "email": "nicholg@microsoft.com"
+}

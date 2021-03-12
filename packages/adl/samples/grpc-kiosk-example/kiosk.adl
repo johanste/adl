@@ -112,7 +112,7 @@ model GetSignIdForKioskIdRequest {
     kiosk_id: int32;
 }
 
-@doc(""A successful response.")
+@doc("A successful response.")
 model GetSignIdResponse {
     sign_id?: int32;
 }

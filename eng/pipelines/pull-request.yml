@@ -30,6 +30,11 @@ steps:
     displayName: Check Formatting
 
   - script: |
+     cd packages/adl-vscode
+     npm run package
+    displayName: "Package VSIX"
+
+  - script: |
       cd packages/adl
       npm run regen-samples
 
