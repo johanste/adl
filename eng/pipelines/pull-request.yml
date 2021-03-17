@@ -20,7 +20,7 @@ steps:
   - script: node common/scripts/install-run-rush.js install
     displayName: "Install Dependencies"
 
-  - script: node common/scripts/install-run-rush.js rebuild
+  - script: node common/scripts/install-run-rush.js rebuild --verbose
     displayName: Build
 
   - script: node common/scripts/install-run-rush.js test
@@ -28,11 +28,6 @@ steps:
 
   - script: node common/scripts/install-run-rush.js check-format
     displayName: Check Formatting
-
-  - script: |
-     cd packages/adl-vscode
-     npm run package
-    displayName: "Package VSIX"
 
   - script: |
       cd packages/adl
