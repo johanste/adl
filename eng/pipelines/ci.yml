@@ -23,5 +23,5 @@ steps:
   displayName: Test
 
 - script: |
-    NPM_AUTH_TOKEN="$(azure-sdk-npm-token)" node common/scripts/install-run-rush.js publish --publish --include-all --version-policy adl --set-access-level public
+    NPM_AUTH_TOKEN="$(azure-sdk-npm-token)" node common/scripts/install-run-rush.js publish --publish --include-all --set-access-level public
   displayName: Release
