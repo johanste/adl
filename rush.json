@@ -48,13 +48,13 @@
       "packageName": "@azure-tools/adl",
       "projectFolder": "packages/adl",
       "reviewCategory": "production",
-      "versionPolicyName": "adl"
+      "shouldPublish": true
     },
     {
       "packageName": "adl-vscode",
       "projectFolder": "packages/adl-vscode",
       "reviewCategory": "production",
-      "versionPolicyName": "adl-vscode"
+      "shouldPublish": true
     }
   ]
 }

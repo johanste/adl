@@ -45,6 +45,18 @@
       "name": "regen-samples",
       "summary": "run all npm regen-samples",
       "shellCommand": "node eng/scripts/npm-run.js regen-samples"
+    },
+    {
+      "commandKind": "global",
+      "name": "compile",
+      "summary": "run all npm compile",
+      "shellCommand": "node eng/scripts/npm-run.js compile"
+    },
+    {
+      "commandKind": "global",
+      "name": "pack",
+      "summary": "run all npm pack",
+      "shellCommand": "node eng/scripts/npm-run.js pack"
     }
   ],
   /**
