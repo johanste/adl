@@ -29,7 +29,7 @@ namespace KeyValuesResource(
     ... KeyFilters,
     
     @doc("Instructs the server to return elements that appear after the element referred to by the specified token.")
-    @query After: date,
+    @query After: plainDate,
 
     @doc("Used to select what fields are present in the returned resource(s).")
     @query $Select?: KeyField[],
@@ -43,7 +43,7 @@ namespace KeyValuesResource(
     ... KeyFilters,
 
     @doc("Instructs the server to return elements that appear after the element referred to by the specified token.")
-    @query After: date,
+    @query After: plainDate,
 
     @doc("Used to select what fields are present in the returned resource(s).")
     @query $Select?: KeyField[]

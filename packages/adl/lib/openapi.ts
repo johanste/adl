@@ -860,10 +860,12 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
             return applyStringDecorators(adlType, { type: "string" });
           case "boolean":
             return { type: "boolean" };
-          case "date":
+          case "plainDate":
             return { type: "string", format: "date" };
-          case "datetime":
+          case "zonedDateTime":
             return { type: "string", format: "date-time" };
+          case "plainTime":
+            return { type: "string", format: "time" };
           case "Map":
             // We assert on valType because Map types always have a type
             const valType = adlType.properties.get("v");

@@ -8,11 +8,11 @@ model ETagHeaders {
 }
 
 model LastModifiedHeader {
-  @header lastModified: date;
+  @header lastModified: plainDate;
 }
 
 model AcceptDatetimeHeader {
-  @header acceptDatetime: date;
+  @header acceptDatetime: plainDate;
 }
 
 model SyncTokenHeader {

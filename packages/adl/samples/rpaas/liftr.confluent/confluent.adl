@@ -31,7 +31,7 @@ namespace Organization {
 model OrganizationProperties {
   @doc "UTC Time when Organization resource was created."
   @visibility "read"
-  createdTime: datetime;
+  createdTime: zonedDateTime;
 
   @doc "Id of the Confluent organization."
   @visibility "read"

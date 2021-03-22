@@ -1,5 +1,6 @@
 model HasNullables {
   str: string;
+  when: plainTime;
   strOrNull: string | null;
   modelOrNull: AnotherModel | null;
   literalsOrNull: "one" | "two" | null;
