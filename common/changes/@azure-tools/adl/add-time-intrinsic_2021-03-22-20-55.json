@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl",
+      "comment": "Rename all date and time intrinsics: zonedDateTime, plainDate, and plainTime",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@azure-tools/adl",
+  "email": "daviwil@microsoft.com"
+}
