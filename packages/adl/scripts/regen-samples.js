@@ -14,6 +14,7 @@ const sampleFolders = [
   "grpc-kiosk-example",
   "nested",
   "nullable",
+  "operations",
   "petstore",
   "recursive",
   "rpaas/liftr.confluent",
