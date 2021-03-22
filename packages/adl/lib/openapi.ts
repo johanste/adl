@@ -10,6 +10,7 @@ import {
   ModelTypeProperty,
   Type,
   UnionType,
+  SyntaxKind,
 } from "../compiler/types.js";
 import {
   getDoc,
@@ -640,6 +641,15 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     }
     if (nullable) {
       schema["x-nullable"] = true;
+    }
+
+    // For now, automatically treat any nominal union type as an `x-ms-enum`
+    // that is expandable, i.e. sets `modelAsString: true`
+    if (union.node.parent && union.node.parent.kind === SyntaxKind.ModelStatement) {
+      schema["x-ms-enum"] = {
+        name: union.node.parent.id.sv,
+        modelAsString: true,
+      };
     }
 
     return schema;

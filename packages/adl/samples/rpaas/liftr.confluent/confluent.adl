@@ -48,6 +48,12 @@ model OrganizationProperties {
   userDetail: UserDetail;
 }
 
+@doc "SaaS offer status."
+model OfferStatus =
+    "Started" | "PendingFulfillmentStart" | "InProgress" |
+    "Subscribed" | "Suspended" | "Reinstated" | "Succeeded" |
+    "Failed" | "Unsubscribed" | "Updating";
+
 @doc "Details of the product offering."
 model OfferDetail {
   @doc "Id of the product publisher."
@@ -66,9 +72,7 @@ model OfferDetail {
   termUnit: ShortString;
 
   @doc "SaaS offer status."
-  status: "Started" | "PendingFulfillmentStart" | "InProgress" |
-          "Subscribed" | "Suspended" | "Reinstated" | "Succeeded" |
-          "Failed" | "Unsubscribed" | "Updating";
+  status: OfferStatus;
 }
 
 @doc "Details of the subscriber"

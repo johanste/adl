@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl",
+      "comment": "Automatically mark named enum types with `x-ms-enum` and `modelAsString: true`",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl",
+  "email": "daviwil@microsoft.com"
+}

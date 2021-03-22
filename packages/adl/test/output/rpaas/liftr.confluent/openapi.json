@@ -506,6 +506,10 @@
             "Unsubscribed",
             "Updating"
           ],
+          "x-ms-enum": {
+            "name": "OfferStatus",
+            "modelAsString": true
+          },
           "x-adl-name": "Started | PendingFulfillmentStart | InProgress | Subscribed | Suspended | Reinstated | Succeeded | Failed | Unsubscribed | Updating",
           "description": "SaaS offer status."
         }
