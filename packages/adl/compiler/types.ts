@@ -1,4 +1,5 @@
-import { SymbolTable } from './binder';
+import { SymbolTable } from "./binder";
+import { MultiKeyMap } from "./checker";
 
 /**
  * Type System types
@@ -13,8 +14,8 @@ export type Type =
   | ModelType
   | ModelTypeProperty
   | TemplateParameterType
-  | Namespace
-  | NamespaceProperty
+  | NamespaceType
+  | OperationType
   | StringLiteralType
   | NumericLiteralType
   | BooleanLiteralType
@@ -23,10 +24,10 @@ export type Type =
   | UnionType;
 
 export interface ModelType extends BaseType {
-  kind: 'Model';
+  kind: "Model";
   name: string;
+  namespace?: NamespaceType;
   properties: Map<string, ModelTypeProperty>;
-  ownProperties: Map<string, ModelTypeProperty>;
   baseModels: Array<ModelType>;
   templateArguments?: Array<Type>;
   templateNode?: Node;
@@ -34,70 +35,101 @@ export interface ModelType extends BaseType {
 }
 
 export interface ModelTypeProperty {
-  kind: 'ModelProperty';
+  kind: "ModelProperty";
   node: ModelPropertyNode | ModelSpreadPropertyNode;
   name: string;
   type: Type;
+  // when spread or intersection operators make new property types,
+  // this tracks the property we copied from.
+  sourceProperty?: ModelTypeProperty;
   optional: boolean;
 }
 
-export interface NamespaceProperty {
-  kind: 'NamespaceProperty';
-  node: NamespacePropertyNode;
+export interface OperationType {
+  kind: "Operation";
+  node: OperationStatementNode;
   name: string;
+  namespace?: NamespaceType;
   parameters?: ModelType;
   returnType: Type;
 }
 
-export interface Namespace extends BaseType {
-  kind: 'Namespace';
+export interface NamespaceType extends BaseType {
+  kind: "Namespace";
   name: string;
+  namespace?: NamespaceType;
   node: NamespaceStatementNode;
-  properties: Map<string, NamespaceProperty>;
-  parameters?: ModelType;
+  models: Map<string, ModelType>;
+  operations: Map<string, OperationType>;
+  namespaces: Map<string, NamespaceType>;
 }
 
 export type LiteralType = StringLiteralType | NumericLiteralType | BooleanLiteralType;
 
 export interface StringLiteralType extends BaseType {
-  kind: 'String';
+  kind: "String";
   node: StringLiteralNode;
   value: string;
 }
 
 export interface NumericLiteralType extends BaseType {
-  kind: 'Number';
+  kind: "Number";
   node: NumericLiteralNode;
   value: number;
 }
 
 export interface BooleanLiteralType extends BaseType {
-  kind: 'Boolean';
+  kind: "Boolean";
   node: BooleanLiteralNode;
   value: boolean;
 }
 
 export interface ArrayType extends BaseType {
-  kind: 'Array';
+  kind: "Array";
   node: ArrayExpressionNode;
   elementType: Type;
 }
 
 export interface TupleType extends BaseType {
-  kind: 'Tuple';
+  kind: "Tuple";
   node: TupleExpressionNode;
   values: Array<Type>;
 }
 
 export interface UnionType extends BaseType {
-  kind: 'Union';
+  kind: "Union";
   options: Array<Type>;
 }
 
 export interface TemplateParameterType extends BaseType {
-  kind: 'TemplateParameter';
+  kind: "TemplateParameter";
 }
 
+// trying to avoid masking built-in Symbol
+export type Sym = DecoratorSymbol | TypeSymbol;
+
+export interface DecoratorSymbol {
+  kind: "decorator";
+  path: string;
+  name: string;
+  value: (...args: Array<any>) => any;
+}
+
+export interface TypeSymbol {
+  kind: "type";
+  node: Node;
+  name: string;
+  id?: number;
+}
+
+export interface SymbolLinks {
+  type?: Type;
+
+  // for types which can be instantiated, we split `type` into declaredType and
+  // a map of instantiations.
+  declaredType?: Type;
+  instantiations?: MultiKeyMap<Type>;
+}
 
 /**
  * AST types
@@ -110,7 +142,7 @@ export enum SyntaxKind {
   DecoratorExpression,
   MemberExpression,
   NamespaceStatement,
-  NamespaceProperty,
+  OperationStatement,
   ModelStatement,
   ModelExpression,
   ModelProperty,
@@ -122,38 +154,51 @@ export enum SyntaxKind {
   StringLiteral,
   NumericLiteral,
   BooleanLiteral,
-  TemplateApplication,
-  TemplateParameterDeclaration
+  TypeReference,
+  TemplateParameterDeclaration,
 }
 
-export interface BaseNode {
+export interface BaseNode extends TextRange {
   kind: SyntaxKind;
-  pos: number;
-  end: number;
   parent?: Node;
 }
 
-export type Node = 
-  | ADLScriptNode 
+export type Node =
+  | ADLScriptNode
   | TemplateParameterDeclarationNode
   | ModelPropertyNode
-  | NamespacePropertyNode
+  | OperationStatementNode
   | NamedImportNode
   | ModelPropertyNode
   | ModelSpreadPropertyNode
   | DecoratorExpressionNode
-  | Statement 
+  | Statement
   | Expression;
 
 export interface ADLScriptNode extends BaseNode {
   kind: SyntaxKind.ADLScript;
   statements: Array<Statement>;
+  file: SourceFile;
 }
 
 export type Statement =
   | ImportStatementNode
   | ModelStatementNode
-  | NamespaceStatementNode;
+  | NamespaceStatementNode
+  | OperationStatementNode;
+
+export interface DeclarationNode {
+  symbol?: TypeSymbol; // tracks the symbol assigned to this declaration
+  namespaceSymbol?: TypeSymbol; // tracks the namespace this declaration is in
+}
+
+export type Declaration =
+  | ModelStatementNode
+  | NamespaceStatementNode
+  | OperationStatementNode
+  | TemplateParameterDeclarationNode;
+
+export type ScopeNode = NamespaceStatementNode | ModelStatementNode;
 
 export interface ImportStatementNode extends BaseNode {
   kind: SyntaxKind.ImportStatement;
@@ -184,11 +229,13 @@ export type Expression =
   | TupleExpressionNode
   | UnionExpressionNode
   | IntersectionExpressionNode
-  | TemplateApplicationNode
+  | TypeReferenceNode
   | IdentifierNode
   | StringLiteralNode
   | NumericLiteralNode
   | BooleanLiteralNode;
+
+export type ReferenceExpression = TypeReferenceNode | MemberExpressionNode | IdentifierNode;
 
 export interface MemberExpressionNode extends BaseNode {
   kind: SyntaxKind.MemberExpression;
@@ -196,27 +243,27 @@ export interface MemberExpressionNode extends BaseNode {
   base: MemberExpressionNode | IdentifierNode;
 }
 
-export interface NamespaceStatementNode extends BaseNode {
+export interface NamespaceStatementNode extends BaseNode, DeclarationNode {
   kind: SyntaxKind.NamespaceStatement;
   id: IdentifierNode;
-  parameters?: ModelExpressionNode;
-  properties: Array<NamespacePropertyNode>;
+  statements: Array<Statement>;
+  locals?: SymbolTable;
   decorators: Array<DecoratorExpressionNode>;
 }
 
-export interface NamespacePropertyNode extends BaseNode {
-  kind: SyntaxKind.NamespaceProperty;
+export interface OperationStatementNode extends BaseNode, DeclarationNode {
+  kind: SyntaxKind.OperationStatement;
   id: IdentifierNode;
   parameters: ModelExpressionNode;
   returnType: Expression;
   decorators: Array<DecoratorExpressionNode>;
 }
 
-
-export interface ModelStatementNode extends BaseNode {
+export interface ModelStatementNode extends BaseNode, DeclarationNode {
   kind: SyntaxKind.ModelStatement;
   id: IdentifierNode;
   properties?: Array<ModelPropertyNode | ModelSpreadPropertyNode>;
+  heritage: Array<ReferenceExpression>;
   assignment?: Expression;
   templateParameters: Array<TemplateParameterDeclarationNode>;
   locals?: SymbolTable;
@@ -248,7 +295,7 @@ export interface ModelPropertyNode extends BaseNode {
 
 export interface ModelSpreadPropertyNode extends BaseNode {
   kind: SyntaxKind.ModelSpreadProperty;
-  target: IdentifierNode;
+  target: ReferenceExpression;
 }
 
 export type LiteralNode = StringLiteralNode | NumericLiteralNode | BooleanLiteralNode;
@@ -278,15 +325,16 @@ export interface IntersectionExpressionNode extends BaseNode {
   options: Array<Expression>;
 }
 
-export interface TemplateApplicationNode extends BaseNode {
-  kind: SyntaxKind.TemplateApplication;
-  target: Expression;
+export interface TypeReferenceNode extends BaseNode {
+  kind: SyntaxKind.TypeReference;
+  target: ReferenceExpression;
   arguments: Array<Expression>;
 }
 
 export interface TemplateParameterDeclarationNode extends BaseNode {
   kind: SyntaxKind.TemplateParameterDeclaration;
-  sv: string;
+  id: IdentifierNode;
+  symbol?: TypeSymbol;
 }
 
 /**
@@ -337,3 +385,26 @@ export interface SourceFile {
   getLineAndCharacterOfPosition(position: number): LineAndCharacter;
 }
 
+export interface TextRange {
+  /**
+   * The starting position of the ranger measured in UTF-16 code units from the
+   * start of the full string. Inclusive.
+   */
+  pos: number;
+
+  /**
+   * The ending position measured in UTF-16 code units from the start of the
+   * full string. Exclusive.
+   */
+  end: number;
+}
+
+export interface SourceLocation extends TextRange {
+  file: SourceFile;
+}
+
+export interface Message {
+  code?: number;
+  text: string;
+  severity: "error" | "warning";
+}

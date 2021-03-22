@@ -1,6 +1,16 @@
-import { CharacterCodes, isBinaryDigit, isDigit, isHexDigit, isIdentifierPart, isIdentifierStart, isLineBreak, isWhiteSpaceSingleLine } from './character-codes.js';
-import { format, Message, messages } from './messages.js';
-import { SourceFile } from './types.js';
+import {
+  CharacterCodes,
+  isBinaryDigit,
+  isDigit,
+  isHexDigit,
+  isIdentifierPart,
+  isIdentifierStart,
+  isLineBreak,
+  isWhiteSpaceSingleLine,
+} from "./character-codes.js";
+import { createSourceFile, throwOnError } from "./diagnostics.js";
+import { messages } from "./messages.js";
+import { Message, SourceFile } from "./types.js";
 
 // All conflict markers consist of the same character repeated seven times.  If it is
 // a <<<<<<< or >>>>>>> marker then it is also followed by a space.
@@ -51,22 +61,24 @@ export enum Token {
   ModelKeyword,
   NamespaceKeyword,
   OpKeyword,
+  ExtendsKeyword,
   TrueKeyword,
-  FalseKeyword
+  FalseKeyword,
 }
 
 const keywords = new Map([
-  ['import', Token.ImportKeyword],
-  ['model', Token.ModelKeyword],
-  ['namespace', Token.NamespaceKeyword],
-  ['op', Token.OpKeyword],
-  ['true', Token.TrueKeyword],
-  ['false', Token.FalseKeyword]
+  ["import", Token.ImportKeyword],
+  ["model", Token.ModelKeyword],
+  ["namespace", Token.NamespaceKeyword],
+  ["op", Token.OpKeyword],
+  ["extends", Token.ExtendsKeyword],
+  ["true", Token.TrueKeyword],
+  ["false", Token.FalseKeyword],
 ]);
 
 export interface Scanner {
   /** The source code being scanned. */
-  readonly source: SourceFile;
+  readonly file: SourceFile;
 
   /** The offset in UTF-16 code units to the current position at the start of the next token. */
   readonly position: number;
@@ -95,10 +107,6 @@ export interface Scanner {
   getTokenValue(): string;
 }
 
-export function throwOnError(msg: Message, params: Array<string | number>) {
-  throw new Error(format(msg.text, ...params));
-}
-
 const enum TokenFlags {
   HasCrlf = 1 << 0,
   Escaped = 1 << 1,
@@ -106,11 +114,8 @@ const enum TokenFlags {
 }
 
 export function createScanner(source: string | SourceFile, onError = throwOnError): Scanner {
-  if (typeof source === 'string') {
-    source = createSourceFile(source, '<anonymous file>');
-  }
-
-  const input = source.text;
+  const file = typeof source === "string" ? createSourceFile(source, "<anonymous file>") : source;
+  const input = file.text;
   let position = 0;
   let token = Token.Unknown;
   let tokenPosition = -1;
@@ -118,10 +123,16 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
   let tokenFlags = 0;
 
   return {
-    get position() { return position; },
-    get token() { return token; },
-    get tokenPosition() { return tokenPosition; },
-    source,
+    get position() {
+      return position;
+    },
+    get token() {
+      return token;
+    },
+    get tokenPosition() {
+      return tokenPosition;
+    },
+    file,
     scan,
     eof,
     getTokenText,
@@ -134,7 +145,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
 
   function next(t: Token, count = 1) {
     position += count;
-    return token = t;
+    return (token = t);
   }
 
   function getTokenText() {
@@ -157,7 +168,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
           if (lookAhead(1) === CharacterCodes.lineFeed) {
             position++;
           }
-          // fallthrough
+        // fallthrough
         case CharacterCodes.lineFeed:
         case CharacterCodes.lineSeparator:
         case CharacterCodes.paragraphSeparator:
@@ -224,10 +235,9 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
           return next(Token.Ampersand);
 
         case CharacterCodes.dot:
-          return lookAhead(1) === CharacterCodes.dot &&
-                 lookAhead(2) === CharacterCodes.dot ?
-            next(Token.Elipsis, 3) :
-            next(Token.Dot);
+          return lookAhead(1) === CharacterCodes.dot && lookAhead(2) === CharacterCodes.dot
+            ? next(Token.Elipsis, 3)
+            : next(Token.Dot);
 
         case CharacterCodes.slash:
           switch (lookAhead(1)) {
@@ -245,7 +255,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
             case CharacterCodes.b:
               return scanBinaryNumber();
           }
-          // fallthrough
+        // fallthrough
         case CharacterCodes._1:
         case CharacterCodes._2:
         case CharacterCodes._3:
@@ -258,35 +268,34 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
           return scanNumber();
 
         case CharacterCodes.lessThan:
-          return isConflictMarker() ?
-            next(Token.ConflictMarker, mergeConflictMarkerLength) :
-            next(Token.LessThan);
+          return isConflictMarker()
+            ? next(Token.ConflictMarker, mergeConflictMarkerLength)
+            : next(Token.LessThan);
 
         case CharacterCodes.greaterThan:
-          return isConflictMarker() ?
-            next(Token.ConflictMarker, mergeConflictMarkerLength) :
-            next(Token.GreaterThan);
+          return isConflictMarker()
+            ? next(Token.ConflictMarker, mergeConflictMarkerLength)
+            : next(Token.GreaterThan);
 
         case CharacterCodes.equals:
-          return isConflictMarker() ?
-            next(Token.ConflictMarker, mergeConflictMarkerLength) :
-            next(Token.Equals);
+          return isConflictMarker()
+            ? next(Token.ConflictMarker, mergeConflictMarkerLength)
+            : next(Token.Equals);
 
         case CharacterCodes.bar:
-          return isConflictMarker() ?
-            next(Token.ConflictMarker, mergeConflictMarkerLength) :
-            next(Token.Bar);
+          return isConflictMarker()
+            ? next(Token.ConflictMarker, mergeConflictMarkerLength)
+            : next(Token.Bar);
 
         case CharacterCodes.doubleQuote:
           return scanString();
 
         default:
           return isIdentifierStart(ch) ? scanIdentifier() : unknownToken();
-
       }
     }
 
-    return token = Token.EndOfFile;
+    return (token = Token.EndOfFile);
   }
 
   function unknownToken() {
@@ -299,21 +308,24 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
     // Conflict markers must be at the start of a line.
     const ch = input.charCodeAt(position);
     if (position === 0 || isLineBreak(input.charCodeAt(position - 1))) {
-      if ((position + mergeConflictMarkerLength) < input.length) {
+      if (position + mergeConflictMarkerLength < input.length) {
         for (let i = 0; i < mergeConflictMarkerLength; i++) {
           if (lookAhead(i) !== ch) {
             return false;
           }
         }
-        return ch === CharacterCodes.equals || lookAhead(mergeConflictMarkerLength) === CharacterCodes.space;
+        return (
+          ch === CharacterCodes.equals ||
+          lookAhead(mergeConflictMarkerLength) === CharacterCodes.space
+        );
       }
     }
 
     return false;
   }
 
-  function error(msg: Message, ...params: Array<string | number>) {
-    onError(msg, params);
+  function error(msg: Message, ...args: Array<string | number>) {
+    onError(msg, { file, pos: tokenPosition, end: position }, ...args);
   }
 
   function scanWhitespace(): Token {
@@ -321,7 +333,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
       position++;
     } while (isWhiteSpaceSingleLine(input.charCodeAt(position)));
 
-    return token = Token.Whitespace;
+    return (token = Token.Whitespace);
   }
 
   function scanDigits() {
@@ -357,7 +369,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
       }
     }
 
-    return token = Token.NumericLiteral;
+    return (token = Token.NumericLiteral);
   }
 
   function scanHexNumber() {
@@ -367,8 +379,8 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
     }
 
     position += 2;
-    scanUntil(ch => !isHexDigit(ch), 'Hex Digit');
-    return token = Token.NumericLiteral;
+    scanUntil((ch) => !isHexDigit(ch), "Hex Digit");
+    return (token = Token.NumericLiteral);
   }
 
   function scanBinaryNumber() {
@@ -378,12 +390,15 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
     }
 
     position += 2;
-    scanUntil(ch => !isBinaryDigit(ch), 'Binary Digit');
-    return token = Token.NumericLiteral;
-
+    scanUntil((ch) => !isBinaryDigit(ch), "Binary Digit");
+    return (token = Token.NumericLiteral);
   }
 
-  function scanUntil(predicate: (char: number) => boolean, expectedClose?: string, consumeClose?: number) {
+  function scanUntil(
+    predicate: (char: number) => boolean,
+    expectedClose?: string,
+    consumeClose?: number
+  ) {
     let ch: number;
 
     do {
@@ -406,12 +421,16 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
 
   function scanSingleLineComment() {
     scanUntil(isLineBreak);
-    return token = Token.SingleLineComment;
+    return (token = Token.SingleLineComment);
   }
 
   function scanMultiLineComment() {
-    scanUntil(ch => ch === CharacterCodes.asterisk && lookAhead(1) === CharacterCodes.slash, '*/', 2);
-    return token = Token.MultiLineComment;
+    scanUntil(
+      (ch) => ch === CharacterCodes.asterisk && lookAhead(1) === CharacterCodes.slash,
+      "*/",
+      2
+    );
+    return (token = Token.MultiLineComment);
   }
 
   function scanString() {
@@ -419,47 +438,53 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
     let closing = '"';
     let isEscaping = false;
 
-    const tripleQuoted = lookAhead(1) === CharacterCodes.doubleQuote &&
-                         lookAhead(2) === CharacterCodes.doubleQuote;
+    const tripleQuoted =
+      lookAhead(1) === CharacterCodes.doubleQuote && lookAhead(2) === CharacterCodes.doubleQuote;
 
     if (tripleQuoted) {
       tokenFlags |= TokenFlags.TripleQuoted;
       quoteLength = 3;
+      position += 2;
       closing = '"""';
     }
 
-    position += quoteLength;
-
-    scanUntil(ch => {
-      if (isEscaping) {
-        isEscaping = false;
-        return false;
-      }
-
-      switch (ch) {
-        case CharacterCodes.carriageReturn:
-          if (lookAhead(1) === CharacterCodes.lineFeed) {
-            tokenFlags |= TokenFlags.HasCrlf;
-          }
+    scanUntil(
+      (ch) => {
+        if (isEscaping) {
+          isEscaping = false;
           return false;
+        }
 
-        case CharacterCodes.backslash:
-          isEscaping = true;
-          tokenFlags |= TokenFlags.Escaped;
-          return false;
+        switch (ch) {
+          case CharacterCodes.carriageReturn:
+            if (lookAhead(1) === CharacterCodes.lineFeed) {
+              tokenFlags |= TokenFlags.HasCrlf;
+            }
+            return false;
 
-        case CharacterCodes.doubleQuote:
-          if (tripleQuoted) {
-            return lookAhead(1) === CharacterCodes.doubleQuote && lookAhead(2) === CharacterCodes.doubleQuote;
-          }
-          return true;
+          case CharacterCodes.backslash:
+            isEscaping = true;
+            tokenFlags |= TokenFlags.Escaped;
+            return false;
 
-        default:
-          return false;
-      }
-    }, closing, quoteLength);
+          case CharacterCodes.doubleQuote:
+            if (tripleQuoted) {
+              return (
+                lookAhead(1) === CharacterCodes.doubleQuote &&
+                lookAhead(2) === CharacterCodes.doubleQuote
+              );
+            }
+            return true;
 
-    return token = Token.StringLiteral;
+          default:
+            return false;
+        }
+      },
+      closing,
+      quoteLength
+    );
+
+    return (token = Token.StringLiteral);
   }
 
   function getTokenValue() {
@@ -468,18 +493,18 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
     }
 
     if (token !== Token.StringLiteral) {
-      return tokenValue = getTokenText();
+      return (tokenValue = getTokenText());
     }
 
     // strip quotes
-    const quoteLength = (tokenFlags & TokenFlags.TripleQuoted) ? 3 : 1;
+    const quoteLength = tokenFlags & TokenFlags.TripleQuoted ? 3 : 1;
     let value = input.substring(tokenPosition + quoteLength, position - quoteLength);
 
     // Normalize CRLF to LF when interpreting value of multi-line string
     // literals. Matches JavaScript behavior and ensures program behavior does
     // not change due to line-ending conversion.
     if (tokenFlags & TokenFlags.HasCrlf) {
-      value = value.replace(/\r\n/g, '\n');
+      value = value.replace(/\r\n/g, "\n");
     }
 
     if (tokenFlags & TokenFlags.TripleQuoted) {
@@ -490,7 +515,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
       value = unescapeString(value);
     }
 
-    return tokenValue = value;
+    return (tokenValue = value);
   }
 
   function unindentTripleQuoteString(text: string) {
@@ -527,8 +552,13 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
     return removeMatchingIndentation(text, start, end, indentation);
   }
 
-  function removeMatchingIndentation(text: string, start: number, end: number, indentation: string) {
-    let result = '';
+  function removeMatchingIndentation(
+    text: string,
+    start: number,
+    end: number,
+    indentation: string
+  ) {
+    let result = "";
     let pos = start;
 
     while (pos < end) {
@@ -567,7 +597,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
   }
 
   function unescapeString(text: string) {
-    let result = '';
+    let result = "";
     let start = 0;
     let pos = 0;
     const end = text.length;
@@ -585,19 +615,19 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
 
       switch (ch) {
         case CharacterCodes.r:
-          result += '\r';
+          result += "\r";
           break;
         case CharacterCodes.n:
-          result += '\n';
+          result += "\n";
           break;
         case CharacterCodes.t:
-          result += '\t';
+          result += "\t";
           break;
         case CharacterCodes.doubleQuote:
           result += '"';
           break;
         case CharacterCodes.backslash:
-          result += '\\';
+          result += "\\";
           break;
         default:
           error(messages.InvalidEscapeSequence);
@@ -614,95 +644,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
   }
 
   function scanIdentifier() {
-    scanUntil(ch => !isIdentifierPart(ch));
-    return token = keywords.get(getTokenValue()) ?? Token.Identifier;
+    scanUntil((ch) => !isIdentifierPart(ch));
+    return (token = keywords.get(getTokenValue()) ?? Token.Identifier);
   }
 }
-
-export function createSourceFile(text: string, path: string): SourceFile {
-  let lineStarts: Array<number> | undefined = undefined;
-
-  return {
-    text,
-    path,
-    getLineStarts,
-    getLineAndCharacterOfPosition,
-  };
-
-  function getLineStarts() {
-    return lineStarts = (lineStarts ?? scanLineStarts());
-  }
-
-  function getLineAndCharacterOfPosition(position: number) {
-    const starts = getLineStarts();
-
-    let line = binarySearch(starts, position);
-
-    // When binarySearch returns < 0 indicating that the value was not found, it
-    // returns the bitwise complement of the index where the value would need to
-    // be inserted to keep the array sorted. So flipping the bits back to this
-    // positive index tells us what the line number would be if we were to
-    // create a new line starting at the given position, and subtracting 1 from
-    // that therefore gives us the line number we're after.
-    if (line < 0) {
-      line = ~line - 1;
-    }
-
-    return {
-      line,
-      character: position - starts[line],
-    };
-  }
-
-  function scanLineStarts() {
-    const starts = [];
-    let start = 0;
-    let pos = 0;
-
-    while (pos < text.length) {
-      const ch = text.charCodeAt(pos);
-      pos++;
-      switch (ch) {
-        case CharacterCodes.carriageReturn:
-          if (text.charCodeAt(pos) === CharacterCodes.lineFeed) {
-            pos++;
-          }
-          // fallthrough
-        case CharacterCodes.lineFeed:
-        case CharacterCodes.lineSeparator:
-        case CharacterCodes.paragraphSeparator:
-          starts.push(start);
-          start = pos;
-          break;
-      }
-    }
-
-    starts.push(start);
-    return starts;
-  }
-
-  /**
-   * Search sorted array of numbers for the given value. If found, return index
-   * in array where value was found. If not found, return a negative number that
-   * is the bitwise complement of the index where value would need to be inserted
-   * to keep the array sorted.
-   */
-  function binarySearch(array: ReadonlyArray<number>, value: number) {
-    let low = 0;
-    let high = array.length - 1;
-    while (low <= high) {
-      const middle = low + ((high - low) >> 1);
-      const v = array[middle];
-      if (v < value) {
-        low = middle + 1;
-      } else if (v > value) {
-        high = middle - 1;
-      } else {
-        return middle;
-      }
-    }
-
-    return ~low;
-  }
-}
-

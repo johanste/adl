@@ -26,6 +26,7 @@ Keyword :
     `model`
     `namespace`
     `op`
+    `extends`
 
 Identifier :
     IdentifierName but not Keyword
@@ -173,6 +174,7 @@ Statement :
     ImportStatement
     ModelStatement
     NamespaceStatement
+    OperationStatement
     `;`
 
 ImportStatement :
@@ -186,6 +188,13 @@ NamedImports :
 ModelStatement :
     DecoratorList? `model` Identifier TemplateParameters? `{` ModelBody? `}`
     DecoratorList? `model` Identifier TemplateParameters? `=` Expression `;`
+
+ModelHeritage :
+    `extends` ReferenceExpressionList
+
+ReferenceExpressionList :
+    ReferenceExpression
+    ReferenceExpressionList `,` ReferenceExpression
 
 TemplateParameters :
     `<` IdentifierList `>`
@@ -209,22 +218,13 @@ ModelProperty:
     DecoratorList? StringLiteral `?`? `:` Expression
 
 ModelSpreadProperty :
-    `...` Identifier
+    `...` ReferenceExpression
 
 NamespaceStatement: 
-    DecoratorList? `namespace` Identifier `{` NamespaceBody? `}`
+    DecoratorList? `namespace` IdentifierOrMemberExpression `{` StatementList? `}`
 
-NamespaceBody :
-    NamespacePropertyList `,`?
-    NamespacePropertyList `;`?
-
-NamespacePropertyList :
-    NamespaceProperty
-    NamespacePropertyList `,` NamespaceProperty
-    NamespacePropertyList `;` NamespaceProperty
-
-NamespaceProperty :
-    DecoratorList? `op` Identifier `(` ModelPropertyList? `)` `:` Expression
+OperationStatement :
+    DecoratorList? `op` Identifier `(` ModelPropertyList? `)` `:` Expression `;`
 
 Expression :
     UnionExpressionOrHigher

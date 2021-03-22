@@ -11,8 +11,7 @@ model ArmResource {
 }
 
 @doc("Common properties for all resources tracked by ARM.")
-model ArmTrackedResource<TProperties> {
-  ... ArmResource;
+model ArmTrackedResource<TProperties> extends ArmResource {
   location: string;
   tags?: Map<string, string>;
   properties: TProperties;
@@ -32,12 +31,14 @@ model ArmResponseBase {
 @doc("Typed response envelope for ARM operations.")
 model ArmResponse<T> {
   ... ArmResponseBase;
-  ... T;
+  @body body: T;
 }
 
 @doc("Paged response")
 model Page<T> {
   ... ArmResponseBase;
-  value: T[];
-  nextLink: string;
+  @body body: {
+    value: T[];
+    nextLink: string;
+  }
 }

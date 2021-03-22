@@ -11,6 +11,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+dist-dev/
 downloads/
 eggs/
 .eggs/
@@ -174,5 +175,6 @@ package-deps.json
 adl-output/
 
 *.vsix
+*.zip
 
 .npmrc

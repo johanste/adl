@@ -1,5 +1,5 @@
 import { Program } from "../compiler/program";
-import { Type } from "../compiler/types";
+import { ModelTypeProperty, NamespaceType, Type } from "../compiler/types";
 
 const docs = new Map<Type, string>();
 
@@ -38,9 +38,7 @@ export function getIntrinsicType(target: Type | undefined): string | undefined {
         return target.name;
       }
 
-      target =
-        (target.assignmentType?.kind === "Model" && target.assignmentType)
-        || undefined;
+      target = (target.assignmentType?.kind === "Model" && target.assignmentType) || undefined;
     } else if (target.kind === "ModelProperty") {
       return getIntrinsicType(target.type);
     } else {
@@ -151,12 +149,36 @@ export function getVisibility(target: Type): string | undefined {
   return visibilitySettings.get(target);
 }
 
+export function withVisibility(program: Program, target: Type, ...visibilities: string[]) {
+  if (target.kind !== "Model") {
+    throw new Error("The @withVisibility decorator can only be applied to models.");
+  }
+
+  const filter = (_: any, prop: ModelTypeProperty) => {
+    const vis = getVisibility(prop);
+    return vis ? !visibilities.includes(vis) : false;
+  };
+
+  mapFilterOut(target.properties, filter);
+}
+
+function mapFilterOut(
+  map: Map<string, ModelTypeProperty>,
+  pred: (key: string, prop: ModelTypeProperty) => boolean
+) {
+  for (const [key, prop] of map) {
+    if (pred(key, prop)) {
+      map.delete(key);
+    }
+  }
+}
+
 // -- @list decorator ---------------------
 
 const listProperties = new Set<Type>();
 
 export function list(program: Program, target: Type) {
-  if (target.kind === "NamespaceProperty" || target.kind === "ModelProperty") {
+  if (target.kind === "Operation" || target.kind === "ModelProperty") {
     listProperties.add(target);
   } else {
     throw new Error("The @list decorator can only be applied to interface or model properties.");
@@ -165,4 +187,42 @@ export function list(program: Program, target: Type) {
 
 export function isList(target: Type): boolean {
   return listProperties.has(target);
+}
+
+// -- @tag decorator ---------------------
+const tagProperties = new Map<Type, string[]>();
+
+// Set a tag on an operation or namespace.  There can be multiple tags on either an
+// operation or namespace.
+export function tag(program: Program, target: Type, tag: string) {
+  if (target.kind === "Operation" || target.kind === "Namespace") {
+    const tags = tagProperties.get(target);
+    if (tags) {
+      tags.push(tag);
+    } else {
+      tagProperties.set(target, [tag]);
+    }
+  } else {
+    throw new Error("The @tag decorator can only be applied to namespace or operation.");
+  }
+}
+
+// Return the tags set on an operation or namespace
+export function getTags(target: Type): string[] {
+  return tagProperties.get(target) || [];
+}
+
+// Merge the tags for a operation with the tags that are on the namespace it resides within.
+//
+// TODO: (JC) We'll need to update this for nested namespaces
+export function getAllTags(namespace: NamespaceType, target: Type): string[] | undefined {
+  const tags = new Set<string>();
+
+  for (const t of getTags(namespace)) {
+    tags.add(t);
+  }
+  for (const t of getTags(target)) {
+    tags.add(t);
+  }
+  return tags.size > 0 ? Array.from(tags) : undefined;
 }

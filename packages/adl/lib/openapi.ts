@@ -1,8 +1,28 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import { Program } from '../compiler/program.js';
-import { ArrayType, Namespace, NamespaceProperty, ModelType, ModelTypeProperty, Type, UnionType } from '../compiler/types.js';
-import { getDoc, getFormat, getIntrinsicType, getMaxLength, getMinLength, isSecret, isList, isIntrinsic } from './decorators.js';
+import * as fs from "fs";
+import * as path from "path";
+import { throwDiagnostic } from "../compiler/diagnostics.js";
+import { Program } from "../compiler/program.js";
+import {
+  ArrayType,
+  NamespaceType,
+  OperationType,
+  ModelType,
+  ModelTypeProperty,
+  Type,
+  UnionType,
+  SyntaxKind,
+} from "../compiler/types.js";
+import {
+  getDoc,
+  getAllTags,
+  getFormat,
+  getIntrinsicType,
+  getMaxLength,
+  getMinLength,
+  isSecret,
+  isList,
+  isIntrinsic,
+} from "./decorators.js";
 import {
   basePathForResource,
   getHeaderFieldName,
@@ -11,12 +31,12 @@ import {
   getResources,
   isBody,
   getOperationRoute,
-  HttpVerb
-} from './rest.js';
+  HttpVerb,
+} from "./rest.js";
 
 export function onBuild(p: Program) {
   const options: OpenAPIEmitterOptions = {
-    outputFile: p.compilerOptions.swaggerOutputFile || path.resolve("./openapi.json")
+    outputFile: p.compilerOptions.swaggerOutputFile || path.resolve("./openapi.json"),
   };
 
   const emitter = createOAPIEmitter(p, options);
@@ -50,22 +70,23 @@ function getExtensions(entity: Type): Map<string, any> {
 
 export interface OpenAPIEmitterOptions {
   outputFile: string;
-};
+}
 
 function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   const root: any = {
-    swagger: '2.0',
+    swagger: "2.0",
     info: {
-      title: '(title)',
-      version: '0000-00-00'
+      title: "(title)",
+      version: "0000-00-00",
     },
-    schemes: ['https'],
+    schemes: ["https"],
+    tags: [],
     paths: {},
     definitions: {},
     parameters: {},
   };
 
-  let currentBasePath: string | undefined = '';
+  let currentBasePath: string | undefined = "";
   let currentPath: any = root.paths;
   let currentEndpoint: any;
 
@@ -78,66 +99,72 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   // this map.
   const params = new Map<ModelTypeProperty, any>();
 
+  // De-dupe the per-endpoint tags that will be added into the #/tags
+  const tags = new Set<string>();
+
   return { emitOpenAPI };
 
   function emitOpenAPI() {
     for (let resource of getResources()) {
-      if (resource.kind !== 'Namespace') {
-        throw new Error("Resource goes on namespace");
+      if (resource.kind !== "Namespace") {
+        throwDiagnostic("Resource goes on namespace", resource);
       }
 
-      emitResource(<Namespace>resource);
+      emitResource(<NamespaceType>resource);
     }
     emitReferences();
+    emitTags();
 
     // Write out the OpenAPI document to the output path
-    fs.writeFileSync(
-      path.resolve(options.outputFile),
-      JSON.stringify(root, null, 2));
+    fs.writeFileSync(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
   }
 
-  function emitResource(resource: Namespace) {
+  function emitResource(resource: NamespaceType) {
     currentBasePath = basePathForResource(resource);
 
-    for (const [name, prop] of resource.properties) {
-      emitEndpoint(resource, prop);
+    for (const [name, op] of resource.operations) {
+      emitEndpoint(resource, op);
     }
   }
 
-  function getPathParameters(iface: Namespace, prop: NamespaceProperty) {
-    return [
-      ...(iface.parameters?.properties.values() ?? []),
-      ...(prop.parameters?.properties.values() ?? []),
-    ].filter((param) => getPathParamName(param) !== undefined);
+  function getPathParameters(ns: NamespaceType, op: OperationType) {
+    return [...(op.parameters?.properties.values() ?? [])].filter(
+      (param) => getPathParamName(param) !== undefined
+    );
   }
 
   /**
    * Translates endpoint names like `read` to REST verbs like `get`.
    */
-  function pathForEndpoint(prop: NamespaceProperty, pathParams: ModelTypeProperty[]): [string, string[], string] {
+  function pathForEndpoint(
+    op: OperationType,
+    pathParams: ModelTypeProperty[]
+  ): [string, string[], string] {
     const paramByName = new Map(pathParams.map((p) => [p.name, p]));
-    const route = getOperationRoute(prop);
-    const inferredVerb = verbForEndpoint(prop.name);
-    const verb = route?.verb || inferredVerb || 'get';
+    const route = getOperationRoute(op);
+    const inferredVerb = verbForEndpoint(op.name);
+    const verb = route?.verb || inferredVerb || "get";
 
     // Build the full route path including any sub-path
     const routePath =
       (currentBasePath || "") +
       (route?.subPath
-       ? `/${route?.subPath?.replace(/^\//g, '')}`
-       : (!inferredVerb && !route ? "/get" : ""));
+        ? `/${route?.subPath?.replace(/^\//g, "")}`
+        : !inferredVerb && !route
+        ? "/get"
+        : "");
 
     // Find path parameter names
-    const declaredPathParamNames =
-      routePath.match(/\{\w+\}/g)?.map((s) => s.slice(1, -1)) ?? [];
+    const declaredPathParamNames = routePath.match(/\{\w+\}/g)?.map((s) => s.slice(1, -1)) ?? [];
 
     // For each param in the declared path parameters (e.g. /foo/{id} has one, id),
     // delete it because it doesn't need to be added to the path.
     for (const declaredParam of declaredPathParamNames) {
       const param = paramByName.get(declaredParam);
       if (!param) {
-        throw new Error(
-          `Path contains parameter ${declaredParam} but wasn't found in given parameters`
+        throwDiagnostic(
+          `Path contains parameter ${declaredParam} but wasn't found in given parameters`,
+          op
         );
       }
 
@@ -155,36 +182,31 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
 
   function verbForEndpoint(name: string): HttpVerb | undefined {
     switch (name) {
-      case 'list':
-        return 'get';
-      case 'create':
-        return 'post';
-      case 'read':
-        return 'get';
-      case 'update':
-        return 'get';
-      case 'delete':
-        return 'delete';
-      case 'deleteAll':
-        return 'delete';
+      case "list":
+        return "get";
+      case "create":
+        return "post";
+      case "read":
+        return "get";
+      case "update":
+        return "get";
+      case "delete":
+        return "delete";
+      case "deleteAll":
+        return "delete";
     }
 
     return undefined;
   }
 
-  function emitEndpoint(resource: Namespace, prop: NamespaceProperty) {
-    const params = getPathParameters(resource, prop);
-    const [verb, newPathParams, resolvedPath] = pathForEndpoint(
-      prop,
-      params
-    );
+  function emitEndpoint(resource: NamespaceType, op: OperationType) {
+    const params = getPathParameters(resource, op);
+    const [verb, newPathParams, resolvedPath] = pathForEndpoint(op, params);
     const fullPath =
       resolvedPath +
-      (newPathParams.length > 0
-        ? '/' + newPathParams.map((p) => '{' + p + '}').join('/')
-        : '');
+      (newPathParams.length > 0 ? "/" + newPathParams.map((p) => "{" + p + "}").join("/") : "");
 
-    if (fullPath === undefined) throw new Error('uhoh');
+    if (fullPath === undefined) throw new Error("uhoh");
 
     if (!root.paths[fullPath]) {
       root.paths[fullPath] = {};
@@ -195,81 +217,87 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       currentPath[verb] = {};
     }
     currentEndpoint = currentPath[verb];
-    if (operationIds.has(prop)) {
-      currentEndpoint.operationId = operationIds.get(prop);
+    if (operationIds.has(op)) {
+      currentEndpoint.operationId = operationIds.get(op);
     } else {
       // Synthesize an operation ID
-      currentEndpoint.operationId = `${resource.name}_${prop.name}`;
+      currentEndpoint.operationId = `${resource.name}_${op.name}`;
     }
-    currentEndpoint.summary = getDoc(prop);
+    currentEndpoint.summary = getDoc(op);
     currentEndpoint.consumes = [];
     currentEndpoint.produces = [];
     currentEndpoint.parameters = [];
     currentEndpoint.responses = {};
 
-    if (isList(prop)) {
-      const nextLinkName = getPageable(prop) || "nextLink";
-      if (nextLinkName) {
-        currentEndpoint["x-ms-pageable"] = {
-          nextLinkName
-        }
+    const currentTags = getAllTags(resource, op);
+    if (currentTags) {
+      currentEndpoint.tags = currentTags;
+      for (const tag of currentTags) {
+        // Add to root tags if not already there
+        tags.add(tag);
       }
     }
 
-    emitEndpointParameters(
-      prop.parameters,
-      [...resource.parameters?.properties.values() ?? []],
-      [...prop.parameters?.properties.values() ?? []],
-    );
-    emitResponses(prop.returnType);
+    if (isList(op)) {
+      const nextLinkName = getPageable(op) || "nextLink";
+      if (nextLinkName) {
+        currentEndpoint["x-ms-pageable"] = {
+          nextLinkName,
+        };
+      }
+    }
+
+    emitEndpointParameters(op, op.parameters, [...(op.parameters?.properties.values() ?? [])]);
+    emitResponses(op.returnType);
   }
 
   function emitResponses(responseType: Type) {
-    if (responseType.kind === 'Union') {
+    if (responseType.kind === "Union") {
       for (const [i, option] of responseType.options.entries()) {
-        emitResponseObject(option, i === 0 ? '200' : 'default');
+        emitResponseObject(option, i === 0 ? "200" : "default");
       }
     } else {
       emitResponseObject(responseType);
     }
   }
 
-  function emitResponseObject(responseModel: Type, statusCode: string = '200') {
+  function emitResponseObject(responseModel: Type, statusCode: string = "200") {
     if (
-      responseModel.kind === 'Model' &&
+      responseModel.kind === "Model" &&
       responseModel.assignmentType === undefined &&
       responseModel.properties.size === 0
     ) {
       currentEndpoint.responses[200] = {
-        description: 'Null response',
+        description: "Null response",
       };
 
       return;
     }
 
-    let contentType = 'application/json';
-    const response: any = {
-      schema: getSchemaOrPlaceholder(responseModel),
-    };
+    let contentType = "application/json";
+    const response: any = {};
 
-    const desc = getDoc(responseModel);
-    if (desc) {
-      response.description = desc;
-    }
-
-    if (responseModel.kind === 'Model') {
+    let bodyModel = responseModel;
+    if (responseModel.kind === "Model") {
       for (const prop of responseModel.properties.values()) {
+        if (isBody(prop)) {
+          if (bodyModel !== responseModel) {
+            throwDiagnostic("Duplicate @body declarations on response type", responseModel);
+          }
+
+          bodyModel = prop.type;
+        }
         const type = prop.type;
         const headerName = getHeaderFieldName(prop);
         switch (headerName) {
           case undefined:
             break;
-          case 'status-code':
+          case "status-code":
             if (type.kind == "Number") {
               statusCode = String(type.value);
             }
             break;
-          case 'content-type':
+          case "content-type":
             if (type.kind === "String") {
               contentType = type.value;
             }
@@ -283,11 +311,26 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       }
     }
 
+    response.description = getResponseDescription(responseModel, statusCode);
+    response.schema = getSchemaOrPlaceholder(bodyModel);
+
     if (!currentEndpoint.produces.includes(contentType)) {
       currentEndpoint.produces.push(contentType);
     }
 
     currentEndpoint.responses[statusCode] = response;
+  }
+
+  function getResponseDescription(responseModel: Type, statusCode: string) {
+    const desc = getDoc(responseModel);
+    if (desc) {
+      return desc;
+    }
+
+    if (statusCode === "default") {
+      return "An unexpected error response";
+    }
+    return "A successful response";
   }
 
   function getResponseHeader(prop: ModelTypeProperty) {
@@ -298,7 +341,6 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     delete header.required;
     return header;
   }
-
 
   function getSchemaOrPlaceholder(type: Type): any {
     if (schemas.has(type)) {
@@ -317,7 +359,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       // Users will have to rename / alias type to have it get ref'ed.
       const schema = getSchemaForType(type);
       // helps to read output and correlate to ADL
-      schema['x-adl-name'] = name; 
+      schema["x-adl-name"] = name;
       return schema;
     } else {
       const placeholder = {};
@@ -327,25 +369,41 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   }
 
   function getParamPlaceholder(parent: ModelType | undefined, property: ModelTypeProperty) {
+    let spreadParam = false;
+
+    if (property.sourceProperty) {
+      // chase our sources all the way back to the first place this property
+      // was defined.
+      spreadParam = true;
+      property = property.sourceProperty;
+      while (property.sourceProperty) {
+        property = property.sourceProperty;
+      }
+    }
+
     if (params.has(property)) {
       return params.get(property);
     }
 
     const placeholder = {};
-    if (!parent?.ownProperties.has(property.name)) {
-      // only parameters inherited by spreading or from interface are shared in #/parameters
+    // only parameters inherited by spreading or from interface are shared in #/parameters
+    // bt: not sure about the interface part of this comment?
+
+    if (spreadParam) {
       params.set(property, placeholder);
     }
+
     return placeholder;
   }
 
   function emitEndpointParameters(
+    op: OperationType,
     parent: ModelType | undefined,
-    resourceParams: ModelTypeProperty[],
     methodParams: ModelTypeProperty[]
   ) {
-    const parameters = [...resourceParams, ...methodParams];
+    const parameters = [...methodParams];
 
+    let bodyType: Type | undefined;
     let emittedImplicitBodyParam = false;
     for (const param of parameters) {
       if (params.has(param)) {
@@ -358,19 +416,38 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       const bodyInfo = isBody(param);
 
       if (pathInfo) {
-        emitParameter(parent, param, 'path');
+        emitParameter(parent, param, "path");
       } else if (queryInfo) {
-        emitParameter(parent, param, 'query');
+        emitParameter(parent, param, "query");
       } else if (headerInfo) {
-        emitParameter(parent, param, 'header');
+        if (headerInfo === "content-type") {
+          currentEndpoint.consumes = getContentTypes(param);
+        } else {
+          emitParameter(parent, param, "header");
+        }
       } else if (bodyInfo) {
-        emitParameter(parent,param, 'body');
+        bodyType = param.type;
+        emitParameter(parent, param, "body");
       } else {
         if (emittedImplicitBodyParam) {
-          throw new Error('request has multiple body types');
+          throwDiagnostic("request has multiple body types", op);
         }
         emittedImplicitBodyParam = true;
-        emitParameter(parent, param, 'body');
+        bodyType = param.type;
+        emitParameter(parent, param, "body");
+      }
+    }
+
+    if (currentEndpoint.consumes.length === 0 && bodyType) {
+      // we didn't find an explicit content type anywhere, so infer from body.
+      const modelType = getModelTypeIfNullable(bodyType);
+      if (modelType) {
+        let contentTypeParam = modelType.properties.get("contentType");
+        if (contentTypeParam) {
+          currentEndpoint.consumes = getContentTypes(contentTypeParam);
+        } else {
+          currentEndpoint.consumes = ["application/json"];
+        }
       }
     }
   }
@@ -384,14 +461,14 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
         if (option.kind === "String") {
           contentTypes.push(option.value);
         } else {
-          throw new Error("The contentType property union must contain only string values");
+          throwDiagnostic("The contentType property union must contain only string values", param);
         }
       }
 
       return contentTypes;
     }
 
-    throw new Error("contentType parameter must be a string or union of strings");
+    throwDiagnostic("contentType parameter must be a string or union of strings", param);
   }
 
   function getModelTypeIfNullable(type: Type): ModelType | undefined {
@@ -399,9 +476,9 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       return type;
     } else if (type.kind === "Union") {
       // Remove all `null` types and make sure there's a single model type
-      const nonNulls = type.options.filter(o => !isNullType(o));
-      if (nonNulls.every(t => t.kind === "Model")) {
-        return nonNulls.length === 1 ? nonNulls[0] as ModelType : undefined;
+      const nonNulls = type.options.filter((o) => !isNullType(o));
+      if (nonNulls.every((t) => t.kind === "Model")) {
+        return nonNulls.length === 1 ? (nonNulls[0] as ModelType) : undefined;
       }
     }
 
@@ -409,37 +486,9 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   }
 
   function emitParameter(parent: ModelType | undefined, param: ModelTypeProperty, kind: string) {
-    let skipParam = false;
     const ph = getParamPlaceholder(parent, param);
     populateParameter(ph, param, kind);
-
-    let contentTypes: string[] = [];
-    if (kind === 'body') {
-      const modelType = getModelTypeIfNullable(param.type);
-      if (modelType) {
-        let contentTypeParam = modelType.properties.get('contentType');
-        if (contentTypeParam) {
-          contentTypes = getContentTypes(contentTypeParam);
-        } else {
-          contentTypes = ['application/json'];
-        }
-      }
-    } else if (kind === 'header' && param.name === 'contentType') {
-      contentTypes = getContentTypes(param);
-      skipParam = true;
-    }
-
-    if (contentTypes.length > 0) {
-      contentTypes.forEach(contentType => {
-        if (!currentEndpoint.consumes.includes(contentType)) {
-          currentEndpoint.consumes.push(contentType);
-        }
-      })
-    }
-
-    if (!skipParam) {
-      currentEndpoint.parameters.push(ph);
-    }
+    currentEndpoint.parameters.push(ph);
   }
 
   function populateParameter(ph: any, param: ModelTypeProperty, kind: string | undefined) {
@@ -449,11 +498,11 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     ph.description = getDoc(param);
 
     let schema = getSchemaOrPlaceholder(param.type);
-    if (kind == 'body') {
+    if (kind == "body") {
       ph.schema = schema;
     } else {
       schema = getSchemaForType(param.type);
-      if (param.type.kind == 'Array') {
+      if (param.type.kind == "Array") {
         schema.items = getSchemaForType(param.type.elementType);
       }
       for (const property in schema) {
@@ -476,7 +525,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
         delete param[key];
       }
 
-      param['$ref'] = '#/parameters/' + key;
+      param["$ref"] = "#/parameters/" + key;
     }
 
     for (const [type, schema] of schemas) {
@@ -488,14 +537,20 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
         delete schema[key];
       }
 
-      schema['$ref'] = '#/definitions/' + name;
+      schema["$ref"] = "#/definitions/" + name;
+    }
+  }
+
+  function emitTags() {
+    for (const tag of tags) {
+      root.tags.push({ name: tag });
     }
   }
 
   function getParameterKey(property: ModelTypeProperty, param: any) {
     const parent = program.checker!.getTypeForNode(property.node.parent!) as ModelType;
     let key = program.checker!.getTypeName(parent);
-    if (parent.ownProperties.size > 1) {
+    if (parent.properties.size > 1) {
       key += `.${property.name}`;
     }
 
@@ -518,45 +573,45 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     const builtinType = mapADLTypeToOpenAPI(type);
     if (builtinType !== undefined) return builtinType;
 
-    if (type.kind === 'Array') {
+    if (type.kind === "Array") {
       return getSchemaForArray(type);
-    } else if (type.kind === 'Model') {
+    } else if (type.kind === "Model") {
       return getSchemaForModel(type);
-    } else if (type.kind === 'Union') {
+    } else if (type.kind === "Union") {
       return getSchemaForUnion(type);
     }
 
-    throw new Error("Couldn't get schema for type " + type.kind);
+    throwDiagnostic("Couldn't get schema for type " + type.kind, type);
   }
 
   function getSchemaForUnion(union: UnionType) {
     let type: string;
-    const nonNullOptions = union.options.filter(t => !isNullType(t));
+    const nonNullOptions = union.options.filter((t) => !isNullType(t));
     const nullable = union.options.length != nonNullOptions.length;
     if (nonNullOptions.length === 0) {
-      throw new Error("Cannot have a union containing only null types.");
+      throwDiagnostic("Cannot have a union containing only null types.", union);
     }
 
     const kind = nonNullOptions[0].kind;
     switch (kind) {
-      case 'String':
-        type = 'string';
+      case "String":
+        type = "string";
         break;
-      case 'Number':
-        type = 'number';
+      case "Number":
+        type = "number";
         break;
-      case 'Boolean':
-        type = 'boolean';
+      case "Boolean":
+        type = "boolean";
         break;
-      case 'Model':
-        type = 'model';
+      case "Model":
+        type = "model";
         break;
       default:
-        throw invalidUnionForOpenAPIV2();
+        throwInvalidUnionForOpenAPIV2();
     }
 
     const values = [];
-    if (type === 'model') {
+    if (type === "model") {
       // Model unions can only ever be a model type with 'null'
       if (nonNullOptions.length == 1) {
         // Get the schema for the model type
@@ -564,14 +619,17 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
         schema["x-nullable"] = nullable;
         return schema;
       } else {
-        throw new Error("Unions containing multiple model types cannot be emitted to OpenAPI v2 unless the union is between one model type and 'null'.");
+        throwDiagnostic(
+          "Unions containing multiple model types cannot be emitted to OpenAPI v2 unless the union is between one model type and 'null'.",
+          union
+        );
       }
     }
 
     for (const option of nonNullOptions) {
       if (option.kind != kind) {
-        throw invalidUnionForOpenAPIV2();
-      } 
+        throwInvalidUnionForOpenAPIV2();
+      }
 
       // We already know it's not a model type
       values.push((<any>option).value);
@@ -585,10 +643,22 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       schema["x-nullable"] = true;
     }
 
+    // For now, automatically treat any nominal union type as an `x-ms-enum`
+    // that is expandable, i.e. sets `modelAsString: true`
+    if (union.node.parent && union.node.parent.kind === SyntaxKind.ModelStatement) {
+      schema["x-ms-enum"] = {
+        name: union.node.parent.id.sv,
+        modelAsString: true,
+      };
+    }
+
     return schema;
 
-    function invalidUnionForOpenAPIV2() {
-      return new Error("Unions cannot be emitted to OpenAPI v2 unless all options are literals of the same type.");
+    function throwInvalidUnionForOpenAPIV2(): never {
+      throwDiagnostic(
+        "Unions cannot be emitted to OpenAPI v2 unless all options are literals of the same type.",
+        union
+      );
     }
   }
 
@@ -596,7 +666,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     const target = array.elementType;
 
     return {
-      type: 'array',
+      type: "array",
       items: getSchemaOrPlaceholder(target),
     };
   }
@@ -609,12 +679,12 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     model = getTypeForSchemaProperties(model);
 
     const modelSchema: any = {
-      type: 'object',
+      type: "object",
       properties: {},
       description: getDoc(model),
     };
 
-    for (const [name, prop] of model.ownProperties) {
+    for (const [name, prop] of model.properties) {
       if (!isSchemaProperty(prop)) {
         continue;
       }
@@ -664,7 +734,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
    * Headers, parameters, status codes are not schema properties even they are
    * represented as properties in ADL.
    */
-   function isSchemaProperty(property: ModelTypeProperty) {
+  function isSchemaProperty(property: ModelTypeProperty) {
     const headerInfo = getHeaderFieldName(property);
     const queryInfo = getQueryParamName(property);
     const pathInfo = getPathParamName(property);
@@ -675,7 +745,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
    * If a model type has an unspeakable name in OpenAPI, no schema properties of
    * its own, and exactly one base model that has schema properties, then when
    * emitting the type as a schema, we can use the single base model with schema
-   * properties directly. The other properties will go elsewhere in OpenAPI. 
+   * properties directly. The other properties will go elsewhere in OpenAPI.
    *
    * This ensures we use the best name in OpenAPI when the ADL pattern of adding
    * headers and status codes is done by instantiating a template. For example,
@@ -683,7 +753,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
    * type.
    */
   function getTypeForSchemaProperties(type: ModelType): ModelType {
-    if (type.baseModels.length === 0 || hasSchemaProperties(type.ownProperties)) {
+    if (type.baseModels.length === 0 || hasSchemaProperties(type.properties)) {
       return type;
     }
 
@@ -697,7 +767,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       if (hasSchemaProperties(base.properties)) {
         if (schemaBase) {
           // more than one base with schema properties, can't reduce.
-          return type; 
+          return type;
         }
         schemaBase = base;
       }
@@ -707,7 +777,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   }
 
   function getTypeNameForSchemaProperties(type: Type) {
-    if (type.kind === 'Model') {
+    if (type.kind === "Model") {
       type = getTypeForSchemaProperties(type);
       if (!hasSchemaProperties(type.properties)) {
         return getIntrinsicType(type) || "{}";
@@ -730,7 +800,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     if (schemaType.type === "string" && !schemaType.format && pattern) {
       schemaType = {
         ...schemaType,
-        pattern
+        pattern,
       };
     }
 
@@ -738,7 +808,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     if (schemaType.type === "string" && !schemaType.minLength && minLength !== undefined) {
       schemaType = {
         ...schemaType,
-        minLength
+        minLength,
       };
     }
 
@@ -746,15 +816,15 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     if (schemaType.type === "string" && !schemaType.maxLength && maxLength !== undefined) {
       schemaType = {
         ...schemaType,
-        maxLength
+        maxLength,
       };
     }
 
     if (isSecret(adlType)) {
       schemaType = {
         ...schemaType,
-        format: "password"
-      }
+        format: "password",
+      };
     }
 
     return schemaType;
@@ -762,52 +832,52 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
 
   function mapADLTypeToOpenAPI(adlType: Type): any {
     switch (adlType.kind) {
-      case 'Number':
-        return { type: 'number', enum: [adlType.value] };
-      case 'String':
-        return { type: 'string', enum: [adlType.value] };
-      case 'Boolean':
-        return { type: 'boolean', enum: [adlType.value] };
-      case 'Model':
+      case "Number":
+        return { type: "number", enum: [adlType.value] };
+      case "String":
+        return { type: "string", enum: [adlType.value] };
+      case "Boolean":
+        return { type: "boolean", enum: [adlType.value] };
+      case "Model":
         // Is the type templated with only one type?
-        if (adlType.baseModels.length === 1 && !hasSchemaProperties(adlType.ownProperties)) {
+        if (adlType.baseModels.length === 1 && !hasSchemaProperties(adlType.properties)) {
           return mapADLTypeToOpenAPI(adlType.baseModels[0]);
         }
 
         switch (adlType.name) {
-          case 'byte':
-            return { type: 'string', format: 'byte' };
-          case 'int32':
-            return { type: 'integer', format: 'int32' };
-          case 'int64':
-            return { type: 'integer', format: 'int64' };
-          case 'float64':
-            return { type: 'number', format: 'double' };
-          case 'float32':
-            return { type: 'number', format: 'float' };
-          case 'string':
+          case "byte":
+            return { type: "string", format: "byte" };
+          case "int32":
+            return { type: "integer", format: "int32" };
+          case "int64":
+            return { type: "integer", format: "int64" };
+          case "float64":
+            return { type: "number", format: "double" };
+          case "float32":
+            return { type: "number", format: "float" };
+          case "string":
             // Return a string schema augmented by decorators
-            return applyStringDecorators(adlType, { type: 'string' });
-          case 'boolean':
-            return { type: 'boolean' };
-          case 'date':
-            return { type: 'string', format: 'date' };
-          case 'datetime':
-            return { type: 'string', format: 'date-time' };
-          case 'Map':
+            return applyStringDecorators(adlType, { type: "string" });
+          case "boolean":
+            return { type: "boolean" };
+          case "plainDate":
+            return { type: "string", format: "date" };
+          case "zonedDateTime":
+            return { type: "string", format: "date-time" };
+          case "plainTime":
+            return { type: "string", format: "time" };
+          case "Map":
             // We assert on valType because Map types always have a type
-            const valType = adlType.ownProperties.get("v");
+            const valType = adlType.properties.get("v");
             return {
-              type: 'object',
-              additionalProperties: mapADLTypeToOpenAPI(valType!.type)
+              type: "object",
+              additionalProperties: mapADLTypeToOpenAPI(valType!.type),
             };
           default:
             // Recursively call this function to find the underlying OpenAPI type
             if (adlType.assignmentType) {
-              const assignedType = mapADLTypeToOpenAPI(adlType.assignmentType)
-              return assignedType
-                ? applyStringDecorators(adlType, assignedType)
-                : undefined;
+              const assignedType = mapADLTypeToOpenAPI(adlType.assignmentType);
+              return assignedType ? applyStringDecorators(adlType, assignedType) : undefined;
             }
             break;
         }
@@ -822,8 +892,6 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   }
 
   function getRefSafeName(name: string) {
-    return name.replace(/^[A-Za-z0-9-_.]/g, '_');
+    return name.replace(/^[A-Za-z0-9-_.]/g, "_");
   }
 }
-
-

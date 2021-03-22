@@ -7,6 +7,7 @@
   "schemes": [
     "https"
   ],
+  "tags": [],
   "paths": {
     "/mediatypes/analyze": {
       "post": {
@@ -29,6 +30,7 @@
         ],
         "responses": {
           "200": {
+            "description": "A successful response",
             "schema": {
               "type": "string"
             }
@@ -53,6 +55,7 @@
         ],
         "responses": {
           "200": {
+            "description": "A successful response",
             "schema": {
               "type": "string"
             }

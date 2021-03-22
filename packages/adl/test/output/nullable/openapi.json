@@ -7,6 +7,7 @@
   "schemes": [
     "https"
   ],
+  "tags": [],
   "paths": {
     "/test": {
       "get": {
@@ -47,6 +48,7 @@
         ],
         "responses": {
           "200": {
+            "description": "A successful response",
             "schema": {
               "$ref": "#/definitions/HasNullables"
             }
@@ -61,6 +63,10 @@
       "properties": {
         "str": {
           "type": "string"
+        },
+        "when": {
+          "type": "string",
+          "format": "time"
         },
         "strOrNull": {
           "type": "string",
@@ -107,6 +113,7 @@
       },
       "required": [
         "str",
+        "when",
         "strOrNull",
         "modelOrNull",
         "literalsOrNull",

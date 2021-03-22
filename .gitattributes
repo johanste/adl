@@ -5,6 +5,10 @@ shrinkwrap.yaml              merge=binary
 npm-shrinkwrap.json          merge=binary
 yarn.lock                    merge=binary
 
+# Grammarkdown output is also not worth attempting to resolve line by line, pick
+# either side and rebuild to regenerate it. The actual conflicts (if any) would
+# be in the human editable language.grammar file.
+language.md                  merge=binary
 
 # Use unix line endings always, even on Windows
 *                            text eol=lf

@@ -9,46 +9,44 @@ import { spawnSync, fork } from "child_process";
 
 // Get this from samples/ directory listing when reliable
 const sampleFolders = [
-  "petstore",
-  "confluent",
+  "documentation",
+  "grpc-library-example",
+  "grpc-kiosk-example",
+  "nested",
   "nullable",
+  "petstore",
+  "rpaas/liftr.confluent",
+  "tags",
   "testserver/media-types",
   "testserver/body-boolean",
   "testserver/body-time",
+  "visibility",
 ];
 
 function resolvePath(...parts) {
-  const resolvedPath = new url.URL(parts.join(''), import.meta.url);
+  const resolvedPath = new url.URL(parts.join(""), import.meta.url);
   return url.fileURLToPath(resolvedPath);
 }
 
-async function runCompilerAsync(inputPath, outputPath) {
-  return new Promise((resolve, reject) => {
-    const cliProcess = fork("../dist/compiler/cli.js", ["compile", inputPath, `--output-path=${outputPath}`]);
-
-    cliProcess.on('close', (code) => {
-      console.log("process exit", code);
-      if (code === 0) {
-        resolve();
-      } else {
-        reject(new Error(`${cliProcess.stderr}`));
-      }
-    });
-  })
-}
-
 for (const folderName of sampleFolders) {
-  const inputPath = `samples/${folderName}`
+  const inputPath = `samples/${folderName}`;
   const outputPath = resolvePath("../test/output/", folderName);
   mkdirp(outputPath);
 
-  console.log(`\nExecuting \`adl compile ${inputPath}\``)
-  spawnSync(process.execPath, [
-    "dist/compiler/cli.js",
-    "compile",
-    inputPath,
-    `--output-path=${outputPath}`
-  ], {
-    stdio: ['inherit', 'pipe', 'inherit']
-  });
+  console.log(`\nExecuting \`adl compile ${inputPath}\``);
+  const ret = spawnSync(
+    process.execPath,
+    ["dist/compiler/cli.js", "compile", inputPath, `--output-path=${outputPath}`],
+    {
+      stdio: ["inherit", "pipe", "inherit"],
+    }
+  );
+
+  if (ret.error) {
+    throw ret.error;
+  }
+
+  if (ret.status != 0) {
+    throw new Error("Compilation failed");
+  }
 }

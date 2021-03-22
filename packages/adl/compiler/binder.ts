@@ -1,22 +1,46 @@
-import { visitChildren } from './parser.js';
-import { ADLSourceFile, Program } from './program.js';
-import { NamespaceStatementNode, ModelStatementNode, Node, SyntaxKind, TemplateParameterDeclarationNode } from './types.js';
+import { createDiagnostic, Diagnostic, DiagnosticError, formatDiagnostic } from "./diagnostics.js";
+import { visitChildren } from "./parser.js";
+import { ADLSourceFile, Program } from "./program.js";
+import {
+  NamespaceStatementNode,
+  ModelStatementNode,
+  Node,
+  SyntaxKind,
+  TemplateParameterDeclarationNode,
+  SourceLocation,
+  Sym,
+  Declaration,
+  OperationStatementNode,
+  ScopeNode,
+} from "./types.js";
 
-// trying to avoid masking built-in Symbol
-export type Sym = DecoratorSymbol | TypeSymbol;
+export class SymbolTable extends Map<string, Sym> {
+  duplicates = new Set<Sym>();
 
-export type SymbolTable = Map<string, Sym>;
+  // First set for a given key wins, but record all duplicates for diagnostics.
+  set(key: string, value: Sym) {
+    const existing = this.get(key);
+    if (existing === undefined) {
+      super.set(key, value);
+    } else {
+      this.duplicates.add(existing);
+      this.duplicates.add(value);
+    }
+    return this;
+  }
+}
 
 export interface DecoratorSymbol {
-  kind: 'decorator';
+  kind: "decorator";
   path: string;
   name: string;
   value: (...args: Array<any>) => any;
 }
 
 export interface TypeSymbol {
-  kind: 'type';
+  kind: "type";
   node: Node;
+  name: string;
 }
 
 export interface Binder {
@@ -27,47 +51,50 @@ export function createBinder(): Binder {
   let currentFile: ADLSourceFile;
   let parentNode: Node;
 
-  // Node where locals go.
-  let scope: Node;
+  let currentNamespace: NamespaceStatementNode | undefined;
 
+  // Node where locals go.
+  let scope: ScopeNode;
   return {
     bindSourceFile,
   };
 
-  function bindSourceFile(program: Program, sourceFile: ADLSourceFile, globalScope: boolean = false) {
+  function bindSourceFile(
+    program: Program,
+    sourceFile: ADLSourceFile,
+    globalScope: boolean = false
+  ) {
     currentFile = sourceFile;
     bindNode(sourceFile.ast);
+    reportDuplicateSymbols(currentFile.symbols);
 
     // everything is global
     if (globalScope) {
-      for (const name of sourceFile.symbols.keys()) {
-        if (program.globalSymbols.has(name)) {
-          // todo: collect all the redeclarations of
-          // this binding and mark each as errors
-          throw new Error('Duplicate binding ' + name);
-        }
-
-        program.globalSymbols.set(name, sourceFile.symbols.get(name)!);
+      for (const [name, sym] of sourceFile.symbols) {
+        program.globalSymbols.set(name, sym);
       }
+      reportDuplicateSymbols(program.globalSymbols);
     }
   }
 
   function bindNode(node: Node) {
     if (!node) return;
     // set the node's parent since we're going for a walk anyway
-    (<any>node).parent = parentNode;
+    node.parent = parentNode;
 
     switch (node.kind) {
       case SyntaxKind.ModelStatement:
-        bindModelStatement(<any>node);
+        bindModelStatement(node);
         break;
       case SyntaxKind.NamespaceStatement:
-        bindInterfaceStatement(<any>node);
+        bindNamespaceStatement(node);
+        break;
+      case SyntaxKind.OperationStatement:
+        bindOperationStatement(node);
         break;
       case SyntaxKind.TemplateParameterDeclaration:
-        bindTemplateParameterDeclaration(<any>node);
+        bindTemplateParameterDeclaration(node);
     }
-
 
     const prevParent = parentNode;
     // set parent node when we walk into children
@@ -75,9 +102,16 @@ export function createBinder(): Binder {
 
     if (hasScope(node)) {
       const prevScope = scope;
+      const prevNamespace = currentNamespace;
       scope = node;
+      if (node.kind === SyntaxKind.NamespaceStatement) {
+        currentNamespace = node;
+      }
+
       visitChildren(node, bindNode);
+
       scope = prevScope;
+      currentNamespace = prevNamespace;
     } else {
       visitChildren(node, bindNode);
     }
@@ -86,38 +120,97 @@ export function createBinder(): Binder {
     parentNode = prevParent;
   }
 
+  function getContainingSymbolTable() {
+    return scope ? scope.locals! : currentFile.symbols;
+  }
+
   function bindTemplateParameterDeclaration(node: TemplateParameterDeclarationNode) {
-    (<ModelStatementNode>scope).locals!.set(node.sv, {
-      kind: 'type',
-      node: node,
-    });
+    declareSymbol(getContainingSymbolTable(), node);
   }
 
   function bindModelStatement(node: ModelStatementNode) {
-    currentFile.symbols.set(node.id.sv, {
-      kind: 'type',
-      node: node,
-    });
+    declareSymbol(getContainingSymbolTable(), node);
 
-    // initialize locals for type parameters.
-    node.locals = new Map();
+    // Initialize locals for type parameters
+    node.locals = new SymbolTable();
   }
 
-  function bindInterfaceStatement(
-    statement: NamespaceStatementNode
-  ) {
-    currentFile.symbols.set(statement.id.sv, {
-      kind: 'type',
-      node: statement,
-    });
+  function bindNamespaceStatement(statement: NamespaceStatementNode) {
+    declareSymbol(getContainingSymbolTable(), statement);
+
+    // Initialize locals for namespace members
+    statement.locals = new SymbolTable();
+  }
+
+  function bindOperationStatement(statement: OperationStatementNode) {
+    declareSymbol(getContainingSymbolTable(), statement);
+  }
+
+  function declareSymbol(table: SymbolTable, node: Declaration) {
+    const symbol = createTypeSymbol(node, node.id.sv);
+    node.symbol = symbol;
+    if (currentNamespace && node.kind !== SyntaxKind.TemplateParameterDeclaration) {
+      node.namespaceSymbol = currentNamespace.symbol;
+    }
+    table.set(node.id.sv, symbol);
+  }
+
+  function reportDuplicateSymbols(symbols: SymbolTable) {
+    let reported = new Set<Sym>();
+    let diagnostics = new Array<Diagnostic>();
+
+    for (const symbol of currentFile.symbols.duplicates) {
+      report(symbol);
+    }
+
+    for (const symbol of symbols.duplicates) {
+      report(symbol);
+    }
+
+    // Check symbols that have their own scopes
+    for (const [_, symbol] of symbols) {
+      if (symbol.kind === "type" && hasScope(symbol.node) && symbol.node.locals) {
+        reportDuplicateSymbols(symbol.node.locals);
+      }
+    }
+
+    if (diagnostics.length > 0) {
+      // TODO: We're now reporting all duplicates up to the binding of the first file
+      // that introduced one, but still bailing the compilation rather than
+      // recovering and reporting other issues including the possibility of more
+      // duplicates.
+      //
+      // That said, decorators are entered into the global symbol table before
+      // any source file is bound and therefore this will include all duplicate
+      // decorator implementations.
+      throw new DiagnosticError(diagnostics);
+    }
+
+    function report(symbol: Sym) {
+      if (!reported.has(symbol)) {
+        reported.add(symbol);
+        const diagnostic = createDiagnostic("Duplicate name: " + symbol.name, symbol);
+        diagnostics.push(diagnostic);
+      }
+    }
   }
 }
 
-function hasScope(node: Node) {
+function hasScope(node: Node): node is ScopeNode {
   switch (node.kind) {
     case SyntaxKind.ModelStatement:
+      return true;
+    case SyntaxKind.NamespaceStatement:
       return true;
     default:
       return false;
   }
+}
+
+function createTypeSymbol(node: Node, name: string): TypeSymbol {
+  return {
+    kind: "type",
+    node,
+    name,
+  };
 }
