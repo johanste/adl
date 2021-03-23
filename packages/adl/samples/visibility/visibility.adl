@@ -3,7 +3,12 @@ model Person {
   @visibility("read") id: string;
   @visibility("write") secret: string;
   name: string;
+
+  @visibility("read", "write")
   test: string;
+
+  @visibility("create", "read")
+  create: string;
 }
 
 @withVisibility("read")

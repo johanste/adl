@@ -705,8 +705,26 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       }
 
       // Should the property be marked as readOnly?
-      if (getVisibility(prop) === "read") {
-        modelSchema.properties[name].readOnly = true;
+      const vis = getVisibility(prop);
+      if (vis && vis.includes("read")) {
+        const mutability = [];
+        if (vis.includes("read")) {
+          if (vis.length > 1) {
+            mutability.push("read");
+          } else {
+            modelSchema.properties[name].readOnly = true;
+          }
+        }
+        if (vis.includes("write")) {
+          mutability.push("update");
+        }
+        if (vis.includes("create")) {
+          mutability.push("create");
+        }
+
+        if (mutability.length > 0) {
+          modelSchema.properties[name]["x-ms-mutability"] = mutability;
+        }
       }
     }
 
