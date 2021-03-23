@@ -57,6 +57,12 @@
       "name": "pack",
       "summary": "run all npm pack",
       "shellCommand": "node eng/scripts/npm-run.js pack"
+    },
+    {
+      "commandKind": "global",
+      "name": "dogfood",
+      "summary": "run all npm dogfood",
+      "shellCommand": "node eng/scripts/npm-run.js dogfood"
     }
   ],
   /**
