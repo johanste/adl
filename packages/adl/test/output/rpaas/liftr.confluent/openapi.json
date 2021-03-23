@@ -414,15 +414,18 @@
         "createdTime": {
           "type": "string",
           "format": "date-time",
-          "description": "UTC Time when Organization resource was created."
+          "description": "UTC Time when Organization resource was created.",
+          "readOnly": true
         },
         "organizationId": {
           "type": "string",
-          "description": "Id of the Confluent organization."
+          "description": "Id of the Confluent organization.",
+          "readOnly": true
         },
         "ssoUrl": {
           "type": "string",
-          "description": "Single sign-on url for the Confluent organization."
+          "description": "Single sign-on url for the Confluent organization.",
+          "readOnly": true
         },
         "offerDetail": {
           "$ref": "#/definitions/OfferDetail"
