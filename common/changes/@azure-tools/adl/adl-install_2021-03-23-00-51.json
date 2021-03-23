@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl",
+      "comment": "Add commands to install/uninstall VS Code extension",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@azure-tools/adl",
+  "email": "nicholg@microsoft.com"
+}
