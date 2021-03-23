@@ -22,6 +22,7 @@ import {
   isSecret,
   isList,
   isIntrinsic,
+  getVisibility,
 } from "./decorators.js";
 import {
   basePathForResource,
@@ -701,6 +702,11 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       modelSchema.properties[name] = applyStringDecorators(prop, getSchemaOrPlaceholder(prop.type));
       if (description) {
         modelSchema.properties[name].description = description;
+      }
+
+      // Should the property be marked as readOnly?
+      if (getVisibility(prop) === "read") {
+        modelSchema.properties[name].readOnly = true;
       }
     }
 
