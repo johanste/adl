@@ -42,3 +42,13 @@ automatically be published to `npm`.
 
 **NOTE:** The `publish/` prefix is necessary to prevent `rush change -v` from
 being run in the release preparation PR!
+
+
+## Install your build
+
+```
+rush dogfood
+```
+
+This will globally install the @azure-tools/adl package, putting your build of `adl`
+on PATH, and install the VS Code extension if VS Code is installed.
