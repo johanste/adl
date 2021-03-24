@@ -354,10 +354,12 @@
           "description": "name of device hardware"
         },
         "size": {
-          "$ref": "#/definitions/ScreenSize"
+          "$ref": "#/definitions/ScreenSize",
+          "description": "screen size"
         },
         "location": {
-          "$ref": "#/definitions/LatLng"
+          "$ref": "#/definitions/LatLng",
+          "description": "kiosk location"
         },
         "create_time": {
           "$ref": "#/definitions/Timestamp"

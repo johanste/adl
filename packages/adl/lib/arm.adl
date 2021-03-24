@@ -12,8 +12,17 @@ model ArmResource {
 
 @doc("Common properties for all resources tracked by ARM.")
 model ArmTrackedResource<TProperties> extends ArmResource {
+  @doc "The geo-location where the resource lives"
+  @visibility("read", "create")
   location: string;
+
+  @doc "Resource tags."
+  @visibility("read", "write", "create")
   tags?: Map<string, string>;
+
+  @doc "The resource-specific properties for this resource."
+  @visibility("read", "create")
+  @extension("x-ms-client-flatten", true)
   properties: TProperties;
 }
 
@@ -38,7 +47,10 @@ model ArmResponse<T> {
 model Page<T> {
   ... ArmResponseBase;
   @body body: {
+    @doc "The items on this page"
     value: T[];
+
+    @doc "The link to the next page of items"
     nextLink: string;
   }
 }

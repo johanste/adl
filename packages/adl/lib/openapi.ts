@@ -91,9 +91,8 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   let currentPath: any = root.paths;
   let currentEndpoint: any;
 
-  // Map types to their schema definition that will go in #/definitions. Inlined
-  // schemas do not go in this map.
-  const schemas = new Map<Type, any>();
+  // Keep a list of all Types encountered that need schema definitions
+  const schemas: Type[] = [];
 
   // Map model properties that represent shared parameters to their parameter
   // definition that will go in #/parameters. Inlined parameters do not go in
@@ -313,7 +312,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     }
 
     response.description = getResponseDescription(responseModel, statusCode);
-    response.schema = getSchemaOrPlaceholder(bodyModel);
+    response.schema = getSchemaOrRef(bodyModel);
 
     if (!currentEndpoint.produces.includes(contentType)) {
       currentEndpoint.produces.push(contentType);
@@ -343,10 +342,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     return header;
   }
 
-  function getSchemaOrPlaceholder(type: Type): any {
-    if (schemas.has(type)) {
-      return schemas.get(type);
-    }
+  function getSchemaOrRef(type: Type): any {
     const builtIn = mapADLTypeToOpenAPI(type);
     if (builtIn !== undefined) {
       return builtIn;
@@ -363,8 +359,10 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       schema["x-adl-name"] = name;
       return schema;
     } else {
-      const placeholder = {};
-      schemas.set(type, placeholder);
+      const placeholder = {
+        $ref: "#/definitions/" + name,
+      };
+      schemas.push(type);
       return placeholder;
     }
   }
@@ -498,7 +496,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     ph.required = !param.optional;
     ph.description = getDoc(param);
 
-    let schema = getSchemaOrPlaceholder(param.type);
+    let schema = getSchemaOrRef(param.type);
     if (kind == "body") {
       ph.schema = schema;
     } else {
@@ -529,16 +527,10 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       param["$ref"] = "#/parameters/" + key;
     }
 
-    for (const [type, schema] of schemas) {
+    for (const type of schemas) {
       const name = getTypeNameForSchemaProperties(type);
       const schemaForType = getSchemaForType(type);
       root.definitions[name] = schemaForType;
-
-      for (const key of Object.keys(schema)) {
-        delete schema[key];
-      }
-
-      schema["$ref"] = "#/definitions/" + name;
     }
   }
 
@@ -668,7 +660,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
 
     return {
       type: "array",
-      items: getSchemaOrPlaceholder(target),
+      items: getSchemaOrRef(target),
     };
   }
 
@@ -699,7 +691,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       }
 
       // Apply decorators on the property to the type's schema
-      modelSchema.properties[name] = applyStringDecorators(prop, getSchemaOrPlaceholder(prop.type));
+      modelSchema.properties[name] = applyStringDecorators(prop, getSchemaOrRef(prop.type));
       if (description) {
         modelSchema.properties[name].description = description;
       }
@@ -726,6 +718,9 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
           modelSchema.properties[name]["x-ms-mutability"] = mutability;
         }
       }
+
+      // Attach any additional OpenAPI extensions
+      attachExtensions(prop, modelSchema.properties[name]);
     }
 
     if (model.baseModels.length > 0) {
@@ -735,21 +730,25 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
           if (!modelSchema.allOf) {
             modelSchema.allOf = [];
           }
-          modelSchema.allOf.push(getSchemaOrPlaceholder(base));
+          modelSchema.allOf.push(getSchemaOrRef(base));
         }
       }
     }
 
     // Attach any OpenAPI extensions
-    const extensions = getExtensions(model);
-    if (extensions) {
-      for (const key of extensions.keys()) {
-        // console.log("Adding extension", key, extensions.get(key));
-        modelSchema[key] = extensions.get(key);
-      }
-    }
+    attachExtensions(model, modelSchema);
 
     return modelSchema;
+  }
+
+  function attachExtensions(type: Type, emitObject: any) {
+    // Attach any OpenAPI extensions
+    const extensions = getExtensions(type);
+    if (extensions) {
+      for (const key of extensions.keys()) {
+        emitObject[key] = extensions.get(key);
+      }
+    }
   }
 
   /**

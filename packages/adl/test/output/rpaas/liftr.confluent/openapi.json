@@ -282,10 +282,12 @@
                   "items": {
                     "$ref": "#/definitions/OrganizationResource"
                   },
-                  "x-adl-name": "OrganizationResource[]"
+                  "x-adl-name": "OrganizationResource[]",
+                  "description": "The items on this page"
                 },
                 "nextLink": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "The link to the next page of items"
                 }
               },
               "required": [
@@ -341,10 +343,12 @@
                   "items": {
                     "$ref": "#/definitions/OrganizationResource"
                   },
-                  "x-adl-name": "OrganizationResource[]"
+                  "x-adl-name": "OrganizationResource[]",
+                  "description": "The items on this page"
                 },
                 "nextLink": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "The link to the next page of items"
                 }
               },
               "required": [
@@ -366,16 +370,33 @@
       "type": "object",
       "properties": {
         "location": {
-          "type": "string"
+          "type": "string",
+          "description": "The geo-location where the resource lives",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ]
         },
         "tags": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
-          }
+          },
+          "description": "Resource tags.",
+          "x-ms-mutability": [
+            "read",
+            "update",
+            "create"
+          ]
         },
         "properties": {
-          "$ref": "#/definitions/OrganizationProperties"
+          "$ref": "#/definitions/OrganizationProperties",
+          "description": "The resource-specific properties for this resource.",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
         }
       },
       "required": [
@@ -428,10 +449,12 @@
           "readOnly": true
         },
         "offerDetail": {
-          "$ref": "#/definitions/OfferDetail"
+          "$ref": "#/definitions/OfferDetail",
+          "description": "Details of the product offering."
         },
         "userDetail": {
-          "$ref": "#/definitions/UserDetail"
+          "$ref": "#/definitions/UserDetail",
+          "description": "Subscriber details."
         }
       },
       "description": "Details of the Confluent organization.",
