@@ -19,6 +19,7 @@ const sampleFolders = [
   "tags",
   "testserver/media-types",
   "testserver/body-boolean",
+  "testserver/body-time",
   "visibility",
 ];
 
