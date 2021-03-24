@@ -428,10 +428,12 @@
           "readOnly": true
         },
         "offerDetail": {
-          "$ref": "#/definitions/OfferDetail"
+          "$ref": "#/definitions/OfferDetail",
+          "description": "Details of the product offering."
         },
         "userDetail": {
-          "$ref": "#/definitions/UserDetail"
+          "$ref": "#/definitions/UserDetail",
+          "description": "Subscriber details."
         }
       },
       "description": "Details of the Confluent organization.",
