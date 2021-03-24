@@ -282,10 +282,12 @@
                   "items": {
                     "$ref": "#/definitions/OrganizationResource"
                   },
-                  "x-adl-name": "OrganizationResource[]"
+                  "x-adl-name": "OrganizationResource[]",
+                  "description": "The items on this page"
                 },
                 "nextLink": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "The link to the next page of items"
                 }
               },
               "required": [
@@ -341,10 +343,12 @@
                   "items": {
                     "$ref": "#/definitions/OrganizationResource"
                   },
-                  "x-adl-name": "OrganizationResource[]"
+                  "x-adl-name": "OrganizationResource[]",
+                  "description": "The items on this page"
                 },
                 "nextLink": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "The link to the next page of items"
                 }
               },
               "required": [
