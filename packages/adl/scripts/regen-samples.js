@@ -15,6 +15,7 @@ const sampleFolders = [
   "nested",
   "nullable",
   "petstore",
+  "recursive",
   "rpaas/liftr.confluent",
   "tags",
   "testserver/media-types",
