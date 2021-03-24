@@ -51,7 +51,7 @@
       "name": "Regenerate TextMate Grammar",
       "type": "node",
       "protocol": "inspector",
-      "program": "${workspaceRoot}/packages/adl-vscode/dist/adl.tmLanguage.js",
+      "program": "${workspaceRoot}/packages/adl-vscode/dist-dev/adl.tmLanguage.js",
       "request": "launch",
       "cwd": "${workspaceRoot}/packages/adl-vscode"
     },

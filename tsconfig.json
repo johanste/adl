@@ -6,6 +6,9 @@
     },
     {
       "path": "packages/adl-vscode/tsconfig.json"
+    },
+    {
+      "path": "packages/textmate/tsconfig.json"
     }
   ]
 }

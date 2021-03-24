@@ -3,6 +3,7 @@ dependencies:
   '@rollup/plugin-node-resolve': 11.2.0_rollup@2.41.4
   '@rush-temp/adl': file:projects/adl.tgz
   '@rush-temp/adl-vscode': file:projects/adl-vscode.tgz
+  '@rush-temp/tmlanguage-generator': file:projects/tmlanguage-generator.tgz
   '@types/mkdirp': 1.0.1
   '@types/mocha': 7.0.2
   '@types/node': 14.0.27
@@ -1584,7 +1585,7 @@ packages:
     dev: false
     name: '@rush-temp/adl-vscode'
     resolution:
-      integrity: sha512-tkd3thEfJDGdXfrMaB/tA+hYkaco2x9h1R0t6fby7/zVdSUFuyVAXwJm+2AAkITHlGVmx3q04J19Cj2gupqTTw==
+      integrity: sha512-e+9BuevcTkqxI3AKhyMfUGNc8BWA+85Dz+uHjveIWLvMGE1RkTb/AaK0SYfHLGwrD7UF2FmMaKqx8U/yzC8wCw==
       tarball: file:projects/adl-vscode.tgz
     version: 0.0.0
   file:projects/adl.tgz:
@@ -1608,12 +1609,23 @@ packages:
       integrity: sha512-heyU36s1bp3RpPzjePRvl1h92aXy6MMl7T6jtyLWMXvgMVYNtCRJhU1I4AxQaMxMiurDWLR9KuHbprR4h2D1xw==
       tarball: file:projects/adl.tgz
     version: 0.0.0
+  file:projects/tmlanguage-generator.tgz:
+    dependencies:
+      '@types/node': 14.0.27
+      onigasm: 2.2.5
+    dev: false
+    name: '@rush-temp/tmlanguage-generator'
+    resolution:
+      integrity: sha512-c/5PC8yxoIofPGSLyHoIg8I8NwZeaDbrABdSHMN4BQxVoyXEVr6nnrz7Rabtb+YhPjdKK/vnk7NFFkZjurq75Q==
+      tarball: file:projects/tmlanguage-generator.tgz
+    version: 0.0.0
 registry: ''
 specifiers:
   '@rollup/plugin-commonjs': ^17.1.0
   '@rollup/plugin-node-resolve': ^11.2.0
   '@rush-temp/adl': file:./projects/adl.tgz
   '@rush-temp/adl-vscode': file:./projects/adl-vscode.tgz
+  '@rush-temp/tmlanguage-generator': file:./projects/tmlanguage-generator.tgz
   '@types/mkdirp': ~1.0.1
   '@types/mocha': ^7.0.2
   '@types/node': 14.0.27

@@ -51,6 +51,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@azure-tools/tmlanguage-generator",
+      "projectFolder": "packages/tmlanguage-generator",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
       "packageName": "adl-vscode",
       "projectFolder": "packages/adl-vscode",
       "reviewCategory": "production",
