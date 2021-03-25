@@ -76,13 +76,16 @@ export function TrackedResource(
         }`
       );
 
-      const ops = resourceNamespaceNode.statements.filter(
+      const ops = (resourceNamespaceNode.statements as Statement[]).filter(
         (s) => s.kind === SyntaxKind.OperationStatement
       );
 
       // Add all of the properties from the parsed namespace
       for (const op of ops) {
-        target.operations.set(op.id.sv, checker.checkOperation(op as OperationStatementNode));
+        target.operations.set(
+          (op as OperationStatementNode).id.sv,
+          checker.checkOperation(op as OperationStatementNode)
+        );
       }
 
       // Add the @resource decorator

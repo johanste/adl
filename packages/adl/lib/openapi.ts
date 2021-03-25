@@ -115,8 +115,10 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     emitReferences();
     emitTags();
 
-    // Write out the OpenAPI document to the output path
-    fs.writeFileSync(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
+    if (!program.compilerOptions.noEmit) {
+      // Write out the OpenAPI document to the output path
+      fs.writeFileSync(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
+    }
   }
 
   function emitResource(resource: NamespaceType) {
