@@ -1,96 +1,102 @@
-﻿@doc "A string that represents a URI."
-model Uri = string;
+﻿@armNamespace("Microsoft.Confluent")
+@serviceTitle("Microsoft.Confluent")
+@serviceVersion("2020-03-01-preview")
+namespace Microsoft.Confluent {
 
-@doc "Reusable representation of an email address"
-@format "\\w+@\\w+\\.\\w+"
-model email = string;
+  @doc "A string that represents a URI."
+  model Uri = string;
 
-@doc "Shorthand for setting length limit."
-@minLength(5)
-@maxLength(50)
-model MediumString = string;
+  @doc "Reusable representation of an email address"
+  @format "\\w+@\\w+\\.\\w+"
+  model email = string;
 
-@doc "Shorthand for setting length limit."
-@maxLength(25)
-model ShortString = string;
+  @doc "Shorthand for setting length limit."
+  @minLength(5)
+  @maxLength(50)
+  model MediumString = string;
 
-@doc "An Organization key to be handled as a secret."
-@secret
-model OrganizationKey = string;
+  @doc "Shorthand for setting length limit."
+  @maxLength(25)
+  model ShortString = string;
 
-@TrackedResource("Microsoft.Confluent/organizations", OrganizationProperties)
-namespace Organization {
-  @post op getKeys(
-    @path subscriptionId: string,
-    @path resourceGroup: string,
-    @path name: string
-  ): ArmResponse<OrganizationKeys>;
-}
+  @doc "An Organization key to be handled as a secret."
+  @secret
+  model OrganizationKey = string;
 
-@doc "Details of the Confluent organization."
-model OrganizationProperties {
-  @doc "UTC Time when Organization resource was created."
-  @visibility "read"
-  createdTime: zonedDateTime;
+  @TrackedResource("Microsoft.Confluent/organizations", OrganizationProperties)
+  namespace Organization {
+    @post op getKeys(
+      @path subscriptionId: string,
+      @path resourceGroup: string,
+      @path name: string
+    ): ArmResponse<OrganizationKeys>;
+  }
 
-  @doc "Id of the Confluent organization."
-  @visibility "read"
-  organizationId: string;
+  @doc "Details of the Confluent organization."
+  model OrganizationProperties {
+    @doc "UTC Time when Organization resource was created."
+    @visibility "read"
+    createdTime: zonedDateTime;
 
-  @doc "Single sign-on url for the Confluent organization."
-  @visibility "read"
-  ssoUrl: Uri;
+    @doc "Id of the Confluent organization."
+    @visibility "read"
+    organizationId: string;
 
-  @doc "Details of the product offering."
-  offerDetail: OfferDetail;
+    @doc "Single sign-on url for the Confluent organization."
+    @visibility "read"
+    ssoUrl: Uri;
 
-  @doc "Subscriber details."
-  userDetail: UserDetail;
-}
+    @doc "Details of the product offering."
+    offerDetail: OfferDetail;
 
-@doc "SaaS offer status."
-model OfferStatus =
-    "Started" | "PendingFulfillmentStart" | "InProgress" |
-    "Subscribed" | "Suspended" | "Reinstated" | "Succeeded" |
-    "Failed" | "Unsubscribed" | "Updating";
-
-@doc "Details of the product offering."
-model OfferDetail {
-  @doc "Id of the product publisher."
-  publisherId: MediumString;
-
-  @doc "Id of the product offering."
-  id: MediumString;
-
-  @doc "Id of the product offer plan."
-  planId: MediumString;
-
-  @doc "Name of the product offer plan."
-  planName: MediumString;
-
-  @doc "Offer plan term unit."
-  termUnit: ShortString;
+    @doc "Subscriber details."
+    userDetail: UserDetail;
+  }
 
   @doc "SaaS offer status."
-  status: OfferStatus;
-}
+  model OfferStatus =
+      "Started" | "PendingFulfillmentStart" | "InProgress" |
+      "Subscribed" | "Suspended" | "Reinstated" | "Succeeded" |
+      "Failed" | "Unsubscribed" | "Updating";
 
-@doc "Details of the subscriber"
-model UserDetail {
-  @doc "Subscriber first name."
-  firstName: MediumString;
+  @doc "Details of the product offering."
+  model OfferDetail {
+    @doc "Id of the product publisher."
+    publisherId: MediumString;
 
-  @doc "Subscriber last name."
-  lastName: MediumString;
+    @doc "Id of the product offering."
+    id: MediumString;
 
-  @doc "Subscriber email address."
-  emailAddress: email;
-}
+    @doc "Id of the product offer plan."
+    planId: MediumString;
 
-model OrganizationKeys {
-  @doc "The primary key."
-  primary: OrganizationKey;
+    @doc "Name of the product offer plan."
+    planName: MediumString;
 
-  @doc "The secondary Key."
-  secondary: OrganizationKey;
+    @doc "Offer plan term unit."
+    termUnit: ShortString;
+
+    @doc "SaaS offer status."
+    status: OfferStatus;
+  }
+
+  @doc "Details of the subscriber"
+  model UserDetail {
+    @doc "Subscriber first name."
+    firstName: MediumString;
+
+    @doc "Subscriber last name."
+    lastName: MediumString;
+
+    @doc "Subscriber email address."
+    emailAddress: email;
+  }
+
+  model OrganizationKeys {
+    @doc "The primary key."
+    primary: OrganizationKey;
+
+    @doc "The secondary Key."
+    secondary: OrganizationKey;
+  }
 }

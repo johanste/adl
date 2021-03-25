@@ -1,11 +1,17 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "(title)",
-    "version": "0000-00-00"
+    "title": "Microsoft.Confluent",
+    "version": "2020-03-01-preview"
   },
   "schemes": [
     "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
   ],
   "tags": [],
   "paths": {
@@ -242,7 +248,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationKeys"
+              "$ref": "#/definitions/Microsoft.Confluent.OrganizationKeys"
             }
           }
         }
@@ -390,7 +396,7 @@
           ]
         },
         "properties": {
-          "$ref": "#/definitions/OrganizationProperties",
+          "$ref": "#/definitions/Microsoft.Confluent.OrganizationProperties",
           "description": "The resource-specific properties for this resource.",
           "x-ms-mutability": [
             "read",
@@ -410,7 +416,7 @@
       ],
       "x-ms-azure-resource": true
     },
-    "OrganizationKeys": {
+    "Microsoft.Confluent.OrganizationKeys": {
       "type": "object",
       "properties": {
         "primary": {
@@ -429,7 +435,7 @@
         "secondary"
       ]
     },
-    "OrganizationProperties": {
+    "Microsoft.Confluent.OrganizationProperties": {
       "type": "object",
       "properties": {
         "createdTime": {
@@ -449,11 +455,11 @@
           "readOnly": true
         },
         "offerDetail": {
-          "$ref": "#/definitions/OfferDetail",
+          "$ref": "#/definitions/Microsoft.Confluent.OfferDetail",
           "description": "Details of the product offering."
         },
         "userDetail": {
-          "$ref": "#/definitions/UserDetail",
+          "$ref": "#/definitions/Microsoft.Confluent.UserDetail",
           "description": "Subscriber details."
         }
       },
@@ -489,7 +495,7 @@
         "type"
       ]
     },
-    "OfferDetail": {
+    "Microsoft.Confluent.OfferDetail": {
       "type": "object",
       "properties": {
         "publisherId": {
@@ -553,7 +559,7 @@
         "status"
       ]
     },
-    "UserDetail": {
+    "Microsoft.Confluent.UserDetail": {
       "type": "object",
       "properties": {
         "firstName": {

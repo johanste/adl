@@ -1,7 +1,5 @@
 import {
   NamespaceStatementNode,
-  ModelStatementNode,
-  ModelType,
   Type,
   Statement,
   SyntaxKind,
@@ -9,7 +7,7 @@ import {
 } from "../compiler/types.js";
 import { Program } from "../compiler/program";
 import { parse } from "../compiler/parser.js";
-import { resource } from "./rest.js";
+import { consumes, produces, resource } from "./rest.js";
 
 function parseStatement<TNode extends Statement>(adlStatement: string): TNode {
   // We're assuming that the parser will throw on bad input,
@@ -100,4 +98,23 @@ export function TrackedResource(
   } else {
     throw new Error("TrackedResource decorator can only be applied to namespaces");
   }
+}
+
+// -- ARM-specific decorators -----
+
+// NOTE: This can be considered the entrypoint for marking a service definition as
+// an ARM service so that we might enable ARM-specific Swagger emit behavior.
+
+const armNamespaces = new Map<Type, string>();
+
+export function armNamespace(program: Program, entity: Type, namespace: string) {
+  if (entity.kind !== "Namespace") {
+    throw new Error("The @armNamespace decorator can only be applied to namespaces.");
+  }
+
+  armNamespaces.set(entity, namespace);
+
+  // ARM services need to have "application/json" set on produces/consumes
+  produces(program, entity, "application/json");
+  consumes(program, entity, "application/json");
 }
