@@ -470,13 +470,16 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "name": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "type": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         }
       },
       "description": "Common properties for all ARM resources.",

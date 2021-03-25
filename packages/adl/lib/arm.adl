@@ -1,12 +1,12 @@
 @doc "Common properties for all ARM resources."
 model ArmResource {
-  // @visibility('read')
+  @visibility("read")
   id: string;
 
-  // @visibility('read')
+  @visibility("read")
   name: string; 
 
-  // @visibility('read')
+  @visibility("read")
   type: string;   
 }
 
