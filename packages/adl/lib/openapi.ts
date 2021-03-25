@@ -36,6 +36,8 @@ import {
   isBody,
   getOperationRoute,
   HttpVerb,
+  getServiceTitle,
+  getServiceVersion,
 } from "./rest.js";
 
 export function onBuild(p: Program) {
@@ -80,8 +82,8 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   const root: any = {
     swagger: "2.0",
     info: {
-      title: "(title)",
-      version: "0000-00-00",
+      title: getServiceTitle(),
+      version: getServiceVersion(),
     },
     schemes: ["https"],
     tags: [],
