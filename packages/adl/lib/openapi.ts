@@ -92,7 +92,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   let currentEndpoint: any;
 
   // Keep a list of all Types encountered that need schema definitions
-  const schemas: Type[] = [];
+  const schemas = new Set<Type>();
 
   // Map model properties that represent shared parameters to their parameter
   // definition that will go in #/parameters. Inlined parameters do not go in
@@ -364,7 +364,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       const placeholder = {
         $ref: "#/definitions/" + name,
       };
-      schemas.push(type);
+      schemas.add(type);
       return placeholder;
     }
   }
