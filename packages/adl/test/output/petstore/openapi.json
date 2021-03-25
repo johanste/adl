@@ -7,6 +7,7 @@
   "schemes": [
     "https"
   ],
+  "tags": [],
   "paths": {
     "/pets/{petId}": {
       "delete": {
@@ -18,7 +19,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/PetId"
+            "$ref": "#/parameters/PetStore.PetId"
           }
         ],
         "responses": {
@@ -33,7 +34,7 @@
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/Error"
+              "$ref": "#/definitions/PetStore.Error"
             }
           }
         }
@@ -47,26 +48,26 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/PetId"
+            "$ref": "#/parameters/PetStore.PetId"
           }
         ],
         "responses": {
           "200": {
             "description": "A successful response",
             "schema": {
-              "$ref": "#/definitions/Pet"
+              "$ref": "#/definitions/PetStore.Pet"
             }
           },
           "304": {
             "description": "Not modified",
             "schema": {
-              "$ref": "#/definitions/Pet"
+              "$ref": "#/definitions/PetStore.Pet"
             }
           },
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/Error"
+              "$ref": "#/definitions/PetStore.Error"
             }
           }
         }
@@ -97,9 +98,9 @@
                 "items": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Pet"
+                    "$ref": "#/definitions/PetStore.Pet"
                   },
-                  "x-adl-name": "Pet[]"
+                  "x-adl-name": "PetStore.Pet[]"
                 },
                 "nextLink": {
                   "type": "string"
@@ -109,13 +110,13 @@
                 "items",
                 "nextLink"
               ],
-              "x-adl-name": "ResponsePage<Pet>"
+              "x-adl-name": "PetStore.ResponsePage<PetStore.Pet>"
             }
           },
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/Error"
+              "$ref": "#/definitions/PetStore.Error"
             }
           }
         },
@@ -137,7 +138,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Pet"
+              "$ref": "#/definitions/PetStore.Pet"
             }
           }
         ],
@@ -145,13 +146,13 @@
           "200": {
             "description": "A successful response",
             "schema": {
-              "$ref": "#/definitions/Pet"
+              "$ref": "#/definitions/PetStore.Pet"
             }
           },
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/Error"
+              "$ref": "#/definitions/PetStore.Error"
             }
           }
         }
@@ -187,9 +188,9 @@
                 "items": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Toy"
+                    "$ref": "#/definitions/PetStore.Toy"
                   },
-                  "x-adl-name": "Toy[]"
+                  "x-adl-name": "PetStore.Toy[]"
                 },
                 "nextLink": {
                   "type": "string"
@@ -199,13 +200,13 @@
                 "items",
                 "nextLink"
               ],
-              "x-adl-name": "ResponsePage<Toy>"
+              "x-adl-name": "PetStore.ResponsePage<PetStore.Toy>"
             }
           },
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/Error"
+              "$ref": "#/definitions/PetStore.Error"
             }
           }
         },
@@ -216,7 +217,7 @@
     }
   },
   "definitions": {
-    "Error": {
+    "PetStore.Error": {
       "type": "object",
       "properties": {
         "code": {
@@ -233,7 +234,7 @@
         "message"
       ]
     },
-    "Pet": {
+    "PetStore.Pet": {
       "type": "object",
       "properties": {
         "name": {
@@ -247,7 +248,7 @@
         "name"
       ]
     },
-    "Toy": {
+    "PetStore.Toy": {
       "type": "object",
       "properties": {
         "id": {
@@ -270,7 +271,7 @@
     }
   },
   "parameters": {
-    "PetId": {
+    "PetStore.PetId": {
       "x-ms-parameter-location": "method",
       "name": "petId",
       "in": "path",

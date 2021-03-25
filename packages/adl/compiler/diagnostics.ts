@@ -1,44 +1,59 @@
-import { createSourceFile } from "./scanner.js";
-import { Message, Node, SourceLocation, SyntaxKind, Type, Sym } from "./types.js";
+import { CharacterCodes } from "./character-codes.js";
+import { Message, Node, SourceLocation, SyntaxKind, Type, Sym, SourceFile } from "./types.js";
+
+export interface Diagnostic extends SourceLocation {
+  readonly message: string;
+  readonly code?: number;
+  readonly severity: "warning" | "error";
+}
 
 /**
  * Represents an error in the code input that is fatal and bails the compilation.
- * 
+ *
  * This isn't meant to be kept long term, but we currently do this on all errors.
- */ 
+ */
 export class DiagnosticError extends Error {
-  constructor(message: string) {
-    super(message);
+  constructor(public readonly diagnostics: readonly Diagnostic[]) {
+    super("Code diagnostics. See diagnostics array.");
   }
 }
 
 /**
  * Represents a failure with multiple errors.
  */
-export class ChainedError extends Error {
-  readonly innerErrors: readonly Error[];
+export class AggregateError extends Error {
+  readonly errors: readonly Error[];
 
-  constructor(message: string, ...innerErrors: (Error | undefined)[]) {
-    super(message);
-    this.innerErrors = innerErrors.filter(isNotUndefined);
+  constructor(...errors: (Error | undefined)[]) {
+    super("Multiple errors. See errors array.");
+    this.errors = errors.filter(isNotUndefined);
   }
 }
 
 export type DiagnosticTarget = Node | Type | Sym | SourceLocation;
+export type WriteLine = (text?: string) => void;
 
-export type ErrorHandler = (message: Message | string, target: DiagnosticTarget, ...args: Array<string | number>) => void;
+export type ErrorHandler = (
+  message: Message | string,
+  target: DiagnosticTarget,
+  ...args: Array<string | number>
+) => void;
 
 export const throwOnError: ErrorHandler = throwDiagnostic;
 
-export function throwDiagnostic(message: Message | string,  target: DiagnosticTarget, ...args: Array<string | number>): never {
-  throw new DiagnosticError(formatDiagnostic(message, target, ...args));
+export function throwDiagnostic(
+  message: Message | string,
+  target: DiagnosticTarget,
+  ...args: Array<string | number>
+): never {
+  throw new DiagnosticError([createDiagnostic(message, target, ...args)]);
 }
 
-/** 
- * Format a diagnostic into <file>:<line> - ADL<code> <category>: <text>.
- * Take extra care to preserve all info in thrown Error if this fails.
- */
-export function formatDiagnostic(message: Message | string, target: DiagnosticTarget, ...args: Array<string | number>) { 
+export function createDiagnostic(
+  message: Message | string,
+  target: DiagnosticTarget,
+  ...args: Array<string | number>
+): Diagnostic {
   let location: SourceLocation;
   let locationError: Error | undefined;
 
@@ -46,28 +61,134 @@ export function formatDiagnostic(message: Message | string, target: DiagnosticTa
     location = getSourceLocation(target);
   } catch (err) {
     locationError = err;
-    location = { 
+    location = {
       file: createSourceFile("", "<unknown location>"),
       pos: 0,
-      end: 0
-    }
+      end: 0,
+    };
   }
 
-  if (typeof message === 'string') {
+  if (typeof message === "string") {
     // Temporarily allow ad-hoc strings as error messages.
-    message = { code: -1, text: message, category: 'error' }
+    message = { text: message, severity: "error" };
   }
 
-  const [msg, formatError] = format(message.text, ...args);
-  const code = message.code < 0 ? "" : ` ADL${message.code}`;
-  const pos = location.file.getLineAndCharacterOfPosition(location.pos);
-  const diagnostic = `${location.file.path}:${pos.line + 1}:${pos.character + 1} - ${message.category}${code}: ${msg}`;
+  const [formattedMessage, formatError] = format(message.text, ...args);
+  const diagnostic = {
+    code: message.code,
+    severity: message.severity,
+    ...location,
+    message: formattedMessage,
+  };
 
   if (locationError || formatError) {
-    throw new ChainedError(diagnostic, locationError, formatError);
+    throw new AggregateError(new DiagnosticError([diagnostic]), locationError, formatError);
   }
 
   return diagnostic;
+}
+
+export function logDiagnostics(diagnostics: readonly Diagnostic[], writeLine: WriteLine) {
+  for (const diagnostic of diagnostics) {
+    writeLine(formatDiagnostic(diagnostic));
+  }
+}
+
+export function formatDiagnostic(diagnostic: Diagnostic) {
+  const code = diagnostic.code ? ` ADL${diagnostic.code}` : "";
+  const pos = diagnostic.file.getLineAndCharacterOfPosition(diagnostic.pos);
+  const line = pos.line + 1;
+  const col = pos.character + 1;
+  const severity = diagnostic.severity;
+  const path = diagnostic.file.path;
+  return `${path}:${line}:${col} - ${severity}${code}: ${diagnostic.message}`;
+}
+
+export function createSourceFile(text: string, path: string): SourceFile {
+  let lineStarts: Array<number> | undefined = undefined;
+
+  return {
+    text,
+    path,
+    getLineStarts,
+    getLineAndCharacterOfPosition,
+  };
+
+  function getLineStarts() {
+    return (lineStarts = lineStarts ?? scanLineStarts());
+  }
+
+  function getLineAndCharacterOfPosition(position: number) {
+    const starts = getLineStarts();
+
+    let line = binarySearch(starts, position);
+
+    // When binarySearch returns < 0 indicating that the value was not found, it
+    // returns the bitwise complement of the index where the value would need to
+    // be inserted to keep the array sorted. So flipping the bits back to this
+    // positive index tells us what the line number would be if we were to
+    // create a new line starting at the given position, and subtracting 1 from
+    // that therefore gives us the line number we're after.
+    if (line < 0) {
+      line = ~line - 1;
+    }
+
+    return {
+      line,
+      character: position - starts[line],
+    };
+  }
+
+  function scanLineStarts() {
+    const starts = [];
+    let start = 0;
+    let pos = 0;
+
+    while (pos < text.length) {
+      const ch = text.charCodeAt(pos);
+      pos++;
+      switch (ch) {
+        case CharacterCodes.carriageReturn:
+          if (text.charCodeAt(pos) === CharacterCodes.lineFeed) {
+            pos++;
+          }
+        // fallthrough
+        case CharacterCodes.lineFeed:
+        case CharacterCodes.lineSeparator:
+        case CharacterCodes.paragraphSeparator:
+          starts.push(start);
+          start = pos;
+          break;
+      }
+    }
+
+    starts.push(start);
+    return starts;
+  }
+
+  /**
+   * Search sorted array of numbers for the given value. If found, return index
+   * in array where value was found. If not found, return a negative number that
+   * is the bitwise complement of the index where value would need to be inserted
+   * to keep the array sorted.
+   */
+  function binarySearch(array: ReadonlyArray<number>, value: number) {
+    let low = 0;
+    let high = array.length - 1;
+    while (low <= high) {
+      const middle = low + ((high - low) >> 1);
+      const v = array[middle];
+      if (v < value) {
+        low = middle + 1;
+      } else if (v > value) {
+        high = middle - 1;
+      } else {
+        return middle;
+      }
+    }
+
+    return ~low;
+  }
 }
 
 export function getSourceLocation(target: DiagnosticTarget): SourceLocation {
@@ -101,18 +222,21 @@ function getSourceLocationOfNode(node: Node): SourceLocation {
   return {
     file: root.file,
     pos: node.pos,
-    end: node.end
-  }
+    end: node.end,
+  };
 }
 
-export function dumpError(error: Error, writeLine: (s?: string) => void) {
-  writeLine("");
-  writeLine(error.stack);
-
-  if (error instanceof ChainedError) {
-    for (const inner of error.innerErrors) {
+export function dumpError(error: Error, writeLine: WriteLine) {
+  if (error instanceof DiagnosticError) {
+    logDiagnostics(error.diagnostics, writeLine);
+    writeLine(error.stack);
+  } else if (error instanceof AggregateError) {
+    for (const inner of error.errors) {
       dumpError(inner, writeLine);
     }
+  } else {
+    writeLine("");
+    writeLine(error.stack);
   }
 }
 

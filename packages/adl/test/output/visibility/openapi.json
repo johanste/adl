@@ -7,6 +7,7 @@
   "schemes": [
     "https"
   ],
+  "tags": [],
   "paths": {
     "/hello/{id}": {
       "get": {
@@ -77,19 +78,32 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "string"
+          "type": "string",
+          "readOnly": true
         },
         "name": {
           "type": "string"
         },
         "test": {
-          "type": "string"
+          "type": "string",
+          "x-ms-mutability": [
+            "read",
+            "update"
+          ]
+        },
+        "create": {
+          "type": "string",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ]
         }
       },
       "required": [
         "id",
         "name",
-        "test"
+        "test",
+        "create"
       ]
     },
     "WritablePerson": {
@@ -102,7 +116,11 @@
           "type": "string"
         },
         "test": {
-          "type": "string"
+          "type": "string",
+          "x-ms-mutability": [
+            "read",
+            "update"
+          ]
         }
       },
       "required": [

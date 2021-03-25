@@ -1,0 +1,7 @@
+**/*.yml
+**/*.yaml
+**/*.d.ts
+**/dist/
+**/dist-dev/
+**/test/output/
+

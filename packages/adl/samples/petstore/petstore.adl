@@ -1,55 +1,57 @@
-// Model types
+namespace PetStore {
 
-model Pet {
-  name: string;
-  tag?: string;
-}
+  // Model types
+  model Pet {
+    name: string;
+    tag?: string;
+  }
 
-model Toy {
-  id: int64;
-  petId: int64;
-  name: string;
-}
+  model Toy {
+    id: int64;
+    petId: int64;
+    name: string;
+  }
 
-@doc "Error"
-model Error {
-  code: int32;
-  message: string;
-}
+  @doc "Error"
+  model Error {
+    code: int32;
+    message: string;
+  }
 
-@doc "Not modified"
-model NotModified<T> {
-  @header statusCode: 304;
-  @body body: T;
-}
+  @doc "Not modified"
+  model NotModified<T> {
+    @header statusCode: 304;
+    @body body: T;
+  }
 
-model ResponsePage<T> {
-  items: T[];
-  nextLink: string;
-}
+  model ResponsePage<T> {
+    items: T[];
+    nextLink: string;
+  }
 
-model PetId {
-  @path petId: int32;
-}
+  model PetId {
+    @path petId: int32;
+  }
 
-@doc "Manage your pets."
-@resource "/pets"
-namespace Pets {
-  @doc "Delete a pet."
-  op delete(... PetId): OkResponse<{}> | Error;
+  @doc "Manage your pets."
+  @resource "/pets"
+  namespace Pets {
+    @doc "Delete a pet."
+    op delete(... PetId): OkResponse<{}> | Error;
 
-  @fancyDoc "List pets."
-  @list
-  op list(@query nextLink?: string): OkResponse<ResponsePage<Pet>> | Error;
+    @fancyDoc "List pets."
+    @list
+    op list(@query nextLink?: string): OkResponse<ResponsePage<Pet>> | Error;
 
-  @doc "Returns a pet. Supports eTags."
-  op read(... PetId): OkResponse<Pet> | NotModified<Pet> | Error;
+    @doc "Returns a pet. Supports eTags."
+    op read(... PetId): OkResponse<Pet> | NotModified<Pet> | Error;
 
-  op create(@body pet: Pet): OkResponse<Pet> | Error;
-}
+    op create(@body pet: Pet): OkResponse<Pet> | Error;
+  }
 
-@resource "/pets/{petId}/toys"
-namespace ListPetToysResponse {
-  @list
-  op list(@path petId: string, @query nameFilter: string): OkResponse<ResponsePage<Toy>> | Error;
+  @resource "/pets/{petId}/toys"
+  namespace ListPetToysResponse {
+    @list
+    op list(@path petId: string, @query nameFilter: string): OkResponse<ResponsePage<Toy>> | Error;
+  }
 }

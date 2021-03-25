@@ -4,5 +4,11 @@
     {
       "path": "packages/adl/tsconfig.json"
     },
+    {
+      "path": "packages/adl-vscode/tsconfig.json"
+    },
+    {
+      "path": "packages/tmlanguage-generator/tsconfig.json"
+    }
   ]
 }

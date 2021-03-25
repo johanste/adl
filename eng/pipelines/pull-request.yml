@@ -5,48 +5,52 @@ pr:
   - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '14.x'
-  displayName: 'Install Node.js'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "14.x"
+    displayName: "Install Node.js"
 
-- script: node common/scripts/install-run-rush.js change -v
-  displayName: "Verify change files"
+  - script: node common/scripts/install-run-rush.js change -v
+    condition: and(succeeded(), eq(startsWith(variables['System.PullRequest.SourceBranch'], 'publish/'), false))
+    displayName: "Verify change files"
 
-- script: node common/scripts/install-run-rush.js install
-  displayName: "Install Dependencies"
+  - script: node common/scripts/install-run-rush.js install
+    displayName: "Install Dependencies"
 
-- script: node common/scripts/install-run-rush.js rebuild
-  displayName: Build
+  - script: node common/scripts/install-run-rush.js rebuild --verbose
+    displayName: Build
 
-- script: node common/scripts/install-run-rush.js test
-  displayName: Test
+  - script: node common/scripts/install-run-rush.js test
+    displayName: Test
 
-- script: |
-    cd packages/adl
-    npm run regen-samples
+  - script: node common/scripts/install-run-rush.js check-format
+    displayName: Check Formatting
 
-    echo ""
-    echo "Checking for changed output files..."
-    git add -A
-    git diff --exit-code --cached --name-only test/output
+  - script: |
+      cd packages/adl
+      npm run regen-samples
 
-    code=$?; if [ $code -ne 0 ]; then
       echo ""
-      echo "Files under test/output/ have changed!"
-      echo "Please run `npm run regen-samples`, evaluate the output, and add it to the PR if the output is expected."
-      echo "Here's the diff:"
-      echo ""
-      git diff --cached test/output
-      exit $code
-    fi
-  displayName: "Check Compiled Sample Output"
+      echo "Checking for changed output files..."
+      git add -A
+      git diff --exit-code --cached --name-only test/output
 
-- script: |
-    cd packages/adl
-    npm link
-    npx adl generate samples/confluent/ --client
-  displayName: "Sanity Check Client Generation"
+      code=$?; if [ $code -ne 0 ]; then
+        echo ""
+        echo "Files under test/output/ have changed!"
+        echo "Please run `npm run regen-samples`, evaluate the output, and add it to the PR if the output is expected."
+        echo "Here's the diff:"
+        echo ""
+        git diff --cached test/output
+        exit $code
+      fi
+    displayName: "Check Compiled Sample Output"
+
+  - script: |
+      cd packages/adl
+      npm link
+      npx adl generate samples/rpaas/liftr.confluent/ --client
+    displayName: "Sanity Check Client Generation"

@@ -151,27 +151,37 @@
 &emsp;&emsp;&emsp;<a name="SingleLineCommentChar-lvvfp8iw"></a>*[SourceCharacter](#SourceCharacter)* **but not** *[LineTerminator](#LineTerminator)*  
   
 &emsp;&emsp;<a name="ADLScript"></a>*ADLScript* **:**  
-&emsp;&emsp;&emsp;<a name="ADLScript-qwwklbsn"></a>*[StatementList](#StatementList)*<sub>opt</sub>  
+&emsp;&emsp;&emsp;<a name="ADLScript--oao9itw"></a>*[ADLScriptItemList](#ADLScriptItemList)*<sub>opt</sub>  
+  
+&emsp;&emsp;<a name="ADLScriptItemList"></a>*ADLScriptItemList* **:**  
+&emsp;&emsp;&emsp;<a name="ADLScriptItemList-46dtbnwh"></a>*[ADLScriptItemList](#ADLScriptItemList)*<sub>opt</sub>&emsp;*[ADLScriptItem](#ADLScriptItem)*  
+  
+&emsp;&emsp;<a name="ADLScriptItem"></a>*ADLScriptItem* **:**  
+&emsp;&emsp;&emsp;<a name="ADLScriptItem-sgwx93oj"></a>*[BlocklessNamespaceStatement](#BlocklessNamespaceStatement)*  
+&emsp;&emsp;&emsp;<a name="ADLScriptItem-zi_5hwi0"></a>*[ImportStatement](#ImportStatement)*  
+&emsp;&emsp;&emsp;<a name="ADLScriptItem-pyyivtxj"></a>*[Statement](#Statement)*  
+  
+&emsp;&emsp;<a name="BlocklessNamespaceStatement"></a>*BlocklessNamespaceStatement* **:**  
+&emsp;&emsp;&emsp;<a name="BlocklessNamespaceStatement-woshe1r5"></a>*[DecoratorList](#DecoratorList)*<sub>opt</sub>&emsp;`` namespace ``&emsp;*[IdentifierOrMemberExpression](#IdentifierOrMemberExpression)*&emsp;`` ; ``  
+  
+&emsp;&emsp;<a name="ImportStatement"></a>*ImportStatement* **:**  
+&emsp;&emsp;&emsp;<a name="ImportStatement-fhkncxvv"></a>`` import ``&emsp;*[StringLiteral](#StringLiteral)*&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="StatementList"></a>*StatementList* **:**  
 &emsp;&emsp;&emsp;<a name="StatementList-ssyorrl_"></a>*[StatementList](#StatementList)*<sub>opt</sub>&emsp;*[Statement](#Statement)*  
   
 &emsp;&emsp;<a name="Statement"></a>*Statement* **:**  
-&emsp;&emsp;&emsp;<a name="Statement-zi_5hwi0"></a>*[ImportStatement](#ImportStatement)*  
 &emsp;&emsp;&emsp;<a name="Statement-ngbc4m7o"></a>*[ModelStatement](#ModelStatement)*  
 &emsp;&emsp;&emsp;<a name="Statement-_ljtj5og"></a>*[NamespaceStatement](#NamespaceStatement)*  
+&emsp;&emsp;&emsp;<a name="Statement-qlyu8ssa"></a>*[OperationStatement](#OperationStatement)*  
 &emsp;&emsp;&emsp;<a name="Statement-sg2sawim"></a>`` ; ``  
-  
-&emsp;&emsp;<a name="ImportStatement"></a>*ImportStatement* **:**  
-&emsp;&emsp;&emsp;<a name="ImportStatement-_cksowvz"></a>`` import ``&emsp;*[Identifier](#Identifier)*&emsp;`` ; ``  
-&emsp;&emsp;&emsp;<a name="ImportStatement-v1kip791"></a>`` import ``&emsp;*[Identifier](#Identifier)*&emsp;`` as ``&emsp;`` { ``&emsp;*[NamedImports](#NamedImports)*<sub>opt</sub>&emsp;`` } ``&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="NamedImports"></a>*NamedImports* **:**  
 &emsp;&emsp;&emsp;<a name="NamedImports-bras6mo_"></a>*[Identifier](#Identifier)*  
 &emsp;&emsp;&emsp;<a name="NamedImports-arox3l8x"></a>*[NamedImports](#NamedImports)*&emsp;`` , ``&emsp;*[Identifier](#Identifier)*  
   
 &emsp;&emsp;<a name="ModelStatement"></a>*ModelStatement* **:**  
-&emsp;&emsp;&emsp;<a name="ModelStatement-8hqza0pe"></a>*[DecoratorList](#DecoratorList)*<sub>opt</sub>&emsp;`` model ``&emsp;*[Identifier](#Identifier)*&emsp;*[TemplateParameters](#TemplateParameters)*<sub>opt</sub>&emsp;`` { ``&emsp;*[ModelBody](#ModelBody)*<sub>opt</sub>&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="ModelStatement-w3a1y-ib"></a>*[DecoratorList](#DecoratorList)*<sub>opt</sub>&emsp;`` model ``&emsp;*[Identifier](#Identifier)*&emsp;*[TemplateParameters](#TemplateParameters)*<sub>opt</sub>&emsp;*[ModelHeritage](#ModelHeritage)*<sub>opt</sub>&emsp;`` { ``&emsp;*[ModelBody](#ModelBody)*<sub>opt</sub>&emsp;`` } ``  
 &emsp;&emsp;&emsp;<a name="ModelStatement-gvibrs-4"></a>*[DecoratorList](#DecoratorList)*<sub>opt</sub>&emsp;`` model ``&emsp;*[Identifier](#Identifier)*&emsp;*[TemplateParameters](#TemplateParameters)*<sub>opt</sub>&emsp;`` = ``&emsp;*[Expression](#Expression)*&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="ModelHeritage"></a>*ModelHeritage* **:**  
@@ -206,19 +216,10 @@
 &emsp;&emsp;&emsp;<a name="ModelSpreadProperty-r9kkoml-"></a>`` ... ``&emsp;*[ReferenceExpression](#ReferenceExpression)*  
   
 &emsp;&emsp;<a name="NamespaceStatement"></a>*NamespaceStatement* **:**  
-&emsp;&emsp;&emsp;<a name="NamespaceStatement-lllfloam"></a>*[DecoratorList](#DecoratorList)*<sub>opt</sub>&emsp;`` namespace ``&emsp;*[Identifier](#Identifier)*&emsp;`` { ``&emsp;*[NamespaceBody](#NamespaceBody)*<sub>opt</sub>&emsp;`` } ``  
+&emsp;&emsp;&emsp;<a name="NamespaceStatement-lrsdvje0"></a>*[DecoratorList](#DecoratorList)*<sub>opt</sub>&emsp;`` namespace ``&emsp;*[IdentifierOrMemberExpression](#IdentifierOrMemberExpression)*&emsp;`` { ``&emsp;*[StatementList](#StatementList)*<sub>opt</sub>&emsp;`` } ``  
   
-&emsp;&emsp;<a name="NamespaceBody"></a>*NamespaceBody* **:**  
-&emsp;&emsp;&emsp;<a name="NamespaceBody-ihomezph"></a>*[NamespacePropertyList](#NamespacePropertyList)*&emsp;`` , ``<sub>opt</sub>  
-&emsp;&emsp;&emsp;<a name="NamespaceBody-srhr2gdj"></a>*[NamespacePropertyList](#NamespacePropertyList)*&emsp;`` ; ``<sub>opt</sub>  
-  
-&emsp;&emsp;<a name="NamespacePropertyList"></a>*NamespacePropertyList* **:**  
-&emsp;&emsp;&emsp;<a name="NamespacePropertyList-feggpj5t"></a>*[NamespaceProperty](#NamespaceProperty)*  
-&emsp;&emsp;&emsp;<a name="NamespacePropertyList-8g_wmadx"></a>*[NamespacePropertyList](#NamespacePropertyList)*&emsp;`` , ``&emsp;*[NamespaceProperty](#NamespaceProperty)*  
-&emsp;&emsp;&emsp;<a name="NamespacePropertyList-isnpt3gn"></a>*[NamespacePropertyList](#NamespacePropertyList)*&emsp;`` ; ``&emsp;*[NamespaceProperty](#NamespaceProperty)*  
-  
-&emsp;&emsp;<a name="NamespaceProperty"></a>*NamespaceProperty* **:**  
-&emsp;&emsp;&emsp;<a name="NamespaceProperty-vbdf9viv"></a>*[DecoratorList](#DecoratorList)*<sub>opt</sub>&emsp;`` op ``&emsp;*[Identifier](#Identifier)*&emsp;`` ( ``&emsp;*[ModelPropertyList](#ModelPropertyList)*<sub>opt</sub>&emsp;`` ) ``&emsp;`` : ``&emsp;*[Expression](#Expression)*  
+&emsp;&emsp;<a name="OperationStatement"></a>*OperationStatement* **:**  
+&emsp;&emsp;&emsp;<a name="OperationStatement-fic4qgph"></a>*[DecoratorList](#DecoratorList)*<sub>opt</sub>&emsp;`` op ``&emsp;*[Identifier](#Identifier)*&emsp;`` ( ``&emsp;*[ModelPropertyList](#ModelPropertyList)*<sub>opt</sub>&emsp;`` ) ``&emsp;`` : ``&emsp;*[Expression](#Expression)*&emsp;`` ; ``  
   
 &emsp;&emsp;<a name="Expression"></a>*Expression* **:**  
 &emsp;&emsp;&emsp;<a name="Expression-otzlm2nv"></a>*[UnionExpressionOrHigher](#UnionExpressionOrHigher)*  

@@ -1,4 +1,12 @@
-import { NamespaceStatementNode, ModelStatementNode, ModelType, Type, Statement } from "../compiler/types";
+import {
+  NamespaceStatementNode,
+  ModelStatementNode,
+  ModelType,
+  Type,
+  Statement,
+  SyntaxKind,
+  OperationStatementNode,
+} from "../compiler/types.js";
 import { Program } from "../compiler/program";
 import { parse } from "../compiler/parser.js";
 import { resource } from "./rest.js";
@@ -22,12 +30,19 @@ export function TrackedResource(
   program: Program,
   target: Type,
   resourceRoot: string,
-  propertyType: Type) {
-
+  propertyType: Type
+) {
   const checker = program.checker;
   if (checker === undefined) {
     throw new Error("Program does not have a checker assigned");
   }
+
+  if (propertyType.node.kind !== SyntaxKind.ModelStatement) {
+    throw new Error("Property type must be a model.");
+  }
+
+  // Get the fully qualified name of the property type
+  const propertyTypeName = checker.getTypeName(propertyType);
 
   if (target.kind === "Namespace") {
     if (propertyType.kind === "Model") {
@@ -36,7 +51,7 @@ export function TrackedResource(
       // TODO: How do I put this in a parent namespace?
       program.evalAdlScript(`
          @extension("x-ms-azure-resource", true) \
-         model ${resourceModelName} = ArmTrackedResource<${propertyType.name}>;
+         model ${resourceModelName} = ArmTrackedResource<${propertyTypeName}>;
 
          @resource("/subscriptions/{subscriptionId}/providers/${resourceRoot}")
          namespace ${target.name}ListAll {
@@ -61,13 +76,24 @@ export function TrackedResource(
         }`
       );
 
-      // Add all of the properties from the parsed namespace 
-      for (const prop of resourceNamespaceNode.properties) {
-        target.properties.set(prop.id.sv, checker.checkNamespaceProperty(prop));
+      const ops = (resourceNamespaceNode.statements as Statement[]).filter(
+        (s) => s.kind === SyntaxKind.OperationStatement
+      );
+
+      // Add all of the properties from the parsed namespace
+      for (const op of ops) {
+        target.operations.set(
+          (op as OperationStatementNode).id.sv,
+          checker.checkOperation(op as OperationStatementNode)
+        );
       }
 
       // Add the @resource decorator
-      resource(program, target, `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}/{name}`);
+      resource(
+        program,
+        target,
+        `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}/{name}`
+      );
     } else {
       throw new Error("TrackedResource property type must be a model");
     }

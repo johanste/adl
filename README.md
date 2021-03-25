@@ -49,3 +49,13 @@ adl generate --client samples/petstore/
 ```
 
 Parameters for generating clients in other languages will be added soon.
+
+
+### Installing VS Code Extension
+
+```
+adl code install
+```
+
+This will download and install the latest VS Code extension. Use `adl code uninstall` 
+to remove it. Pass `--insiders` if you use VS Code Insiders edition.

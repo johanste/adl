@@ -1,4 +1,5 @@
 import { SymbolTable } from "./binder";
+import { MultiKeyMap } from "./checker";
 
 /**
  * Type System types
@@ -13,8 +14,8 @@ export type Type =
   | ModelType
   | ModelTypeProperty
   | TemplateParameterType
-  | Namespace
-  | NamespaceProperty
+  | NamespaceType
+  | OperationType
   | StringLiteralType
   | NumericLiteralType
   | BooleanLiteralType
@@ -23,8 +24,9 @@ export type Type =
   | UnionType;
 
 export interface ModelType extends BaseType {
-  kind: 'Model';
+  kind: "Model";
   name: string;
+  namespace?: NamespaceType;
   properties: Map<string, ModelTypeProperty>;
   baseModels: Array<ModelType>;
   templateArguments?: Array<Type>;
@@ -33,7 +35,7 @@ export interface ModelType extends BaseType {
 }
 
 export interface ModelTypeProperty {
-  kind: 'ModelProperty';
+  kind: "ModelProperty";
   node: ModelPropertyNode | ModelSpreadPropertyNode;
   name: string;
   type: Type;
@@ -43,77 +45,90 @@ export interface ModelTypeProperty {
   optional: boolean;
 }
 
-export interface NamespaceProperty {
-  kind: 'NamespaceProperty';
-  node: NamespacePropertyNode;
+export interface OperationType {
+  kind: "Operation";
+  node: OperationStatementNode;
   name: string;
+  namespace?: NamespaceType;
   parameters?: ModelType;
   returnType: Type;
 }
 
-export interface Namespace extends BaseType {
-  kind: 'Namespace';
+export interface NamespaceType extends BaseType {
+  kind: "Namespace";
   name: string;
+  namespace?: NamespaceType;
   node: NamespaceStatementNode;
-  properties: Map<string, NamespaceProperty>;
-  parameters?: ModelType;
+  models: Map<string, ModelType>;
+  operations: Map<string, OperationType>;
+  namespaces: Map<string, NamespaceType>;
 }
 
 export type LiteralType = StringLiteralType | NumericLiteralType | BooleanLiteralType;
 
 export interface StringLiteralType extends BaseType {
-  kind: 'String';
+  kind: "String";
   node: StringLiteralNode;
   value: string;
 }
 
 export interface NumericLiteralType extends BaseType {
-  kind: 'Number';
+  kind: "Number";
   node: NumericLiteralNode;
   value: number;
 }
 
 export interface BooleanLiteralType extends BaseType {
-  kind: 'Boolean';
+  kind: "Boolean";
   node: BooleanLiteralNode;
   value: boolean;
 }
 
 export interface ArrayType extends BaseType {
-  kind: 'Array';
+  kind: "Array";
   node: ArrayExpressionNode;
   elementType: Type;
 }
 
 export interface TupleType extends BaseType {
-  kind: 'Tuple';
+  kind: "Tuple";
   node: TupleExpressionNode;
   values: Array<Type>;
 }
 
 export interface UnionType extends BaseType {
-  kind: 'Union';
+  kind: "Union";
   options: Array<Type>;
 }
 
 export interface TemplateParameterType extends BaseType {
-  kind: 'TemplateParameter';
+  kind: "TemplateParameter";
 }
 
 // trying to avoid masking built-in Symbol
 export type Sym = DecoratorSymbol | TypeSymbol;
 
 export interface DecoratorSymbol {
-  kind: 'decorator';
+  kind: "decorator";
   path: string;
   name: string;
   value: (...args: Array<any>) => any;
 }
 
 export interface TypeSymbol {
-  kind: 'type';
+  kind: "type";
   node: Node;
   name: string;
+  id?: number;
+}
+
+export interface SymbolLinks {
+  type?: Type;
+
+  // for types which can be instantiated, we split `type` into declaredType and
+  // a map of instantiations.
+  declaredType?: Type;
+  instantiations?: MultiKeyMap<Type>;
 }
 
 /**
@@ -127,7 +142,7 @@ export enum SyntaxKind {
   DecoratorExpression,
   MemberExpression,
   NamespaceStatement,
-  NamespaceProperty,
+  OperationStatement,
   ModelStatement,
   ModelExpression,
   ModelProperty,
@@ -139,8 +154,8 @@ export enum SyntaxKind {
   StringLiteral,
   NumericLiteral,
   BooleanLiteral,
-  TemplateApplication,
-  TemplateParameterDeclaration
+  TypeReference,
+  TemplateParameterDeclaration,
 }
 
 export interface BaseNode extends TextRange {
@@ -148,16 +163,16 @@ export interface BaseNode extends TextRange {
   parent?: Node;
 }
 
-export type Node = 
-  | ADLScriptNode 
+export type Node =
+  | ADLScriptNode
   | TemplateParameterDeclarationNode
   | ModelPropertyNode
-  | NamespacePropertyNode
+  | OperationStatementNode
   | NamedImportNode
   | ModelPropertyNode
   | ModelSpreadPropertyNode
   | DecoratorExpressionNode
-  | Statement 
+  | Statement
   | Expression;
 
 export interface ADLScriptNode extends BaseNode {
@@ -169,7 +184,21 @@ export interface ADLScriptNode extends BaseNode {
 export type Statement =
   | ImportStatementNode
   | ModelStatementNode
-  | NamespaceStatementNode;
+  | NamespaceStatementNode
+  | OperationStatementNode;
+
+export interface DeclarationNode {
+  symbol?: TypeSymbol; // tracks the symbol assigned to this declaration
+  namespaceSymbol?: TypeSymbol; // tracks the namespace this declaration is in
+}
+
+export type Declaration =
+  | ModelStatementNode
+  | NamespaceStatementNode
+  | OperationStatementNode
+  | TemplateParameterDeclarationNode;
+
+export type ScopeNode = NamespaceStatementNode | ModelStatementNode;
 
 export interface ImportStatementNode extends BaseNode {
   kind: SyntaxKind.ImportStatement;
@@ -200,16 +229,13 @@ export type Expression =
   | TupleExpressionNode
   | UnionExpressionNode
   | IntersectionExpressionNode
-  | TemplateApplicationNode
+  | TypeReferenceNode
   | IdentifierNode
   | StringLiteralNode
   | NumericLiteralNode
   | BooleanLiteralNode;
 
-export type ReferenceExpression =
-  | TemplateApplicationNode
-  | MemberExpressionNode
-  | IdentifierNode;
+export type ReferenceExpression = TypeReferenceNode | MemberExpressionNode | IdentifierNode;
 
 export interface MemberExpressionNode extends BaseNode {
   kind: SyntaxKind.MemberExpression;
@@ -217,24 +243,24 @@ export interface MemberExpressionNode extends BaseNode {
   base: MemberExpressionNode | IdentifierNode;
 }
 
-export interface NamespaceStatementNode extends BaseNode {
+export interface NamespaceStatementNode extends BaseNode, DeclarationNode {
   kind: SyntaxKind.NamespaceStatement;
-  id: IdentifierNode;
-  parameters?: ModelExpressionNode;
-  properties: Array<NamespacePropertyNode>;
+  name: IdentifierNode;
+  statements?: Array<Statement> | NamespaceStatementNode;
+  locals?: SymbolTable;
+  exports?: SymbolTable;
   decorators: Array<DecoratorExpressionNode>;
 }
 
-export interface NamespacePropertyNode extends BaseNode {
-  kind: SyntaxKind.NamespaceProperty;
+export interface OperationStatementNode extends BaseNode, DeclarationNode {
+  kind: SyntaxKind.OperationStatement;
   id: IdentifierNode;
   parameters: ModelExpressionNode;
   returnType: Expression;
   decorators: Array<DecoratorExpressionNode>;
 }
 
-
-export interface ModelStatementNode extends BaseNode {
+export interface ModelStatementNode extends BaseNode, DeclarationNode {
   kind: SyntaxKind.ModelStatement;
   id: IdentifierNode;
   properties?: Array<ModelPropertyNode | ModelSpreadPropertyNode>;
@@ -300,15 +326,16 @@ export interface IntersectionExpressionNode extends BaseNode {
   options: Array<Expression>;
 }
 
-export interface TemplateApplicationNode extends BaseNode {
-  kind: SyntaxKind.TemplateApplication;
-  target: Expression;
+export interface TypeReferenceNode extends BaseNode {
+  kind: SyntaxKind.TypeReference;
+  target: ReferenceExpression;
   arguments: Array<Expression>;
 }
 
 export interface TemplateParameterDeclarationNode extends BaseNode {
   kind: SyntaxKind.TemplateParameterDeclaration;
-  sv: string;
+  id: IdentifierNode;
+  symbol?: TypeSymbol;
 }
 
 /**
@@ -360,13 +387,13 @@ export interface SourceFile {
 }
 
 export interface TextRange {
-  /** 
+  /**
    * The starting position of the ranger measured in UTF-16 code units from the
    * start of the full string. Inclusive.
    */
   pos: number;
 
-  /** 
+  /**
    * The ending position measured in UTF-16 code units from the start of the
    * full string. Exclusive.
    */
@@ -378,7 +405,33 @@ export interface SourceLocation extends TextRange {
 }
 
 export interface Message {
-  code: number;
+  code?: number;
   text: string;
-  category: 'error' | 'warning';
+  severity: "error" | "warning";
+}
+
+interface Dirent {
+  isFile(): boolean;
+  name: string;
+  isDirectory(): boolean;
+}
+
+export interface CompilerHost {
+  // read a utf-8 encoded file
+  readFile(path: string): Promise<string | undefined>;
+
+  // read the contents of a directory
+  readDir(path: string): Promise<Dirent[]>;
+
+  // get the directory ADL is executing from
+  getExecutionRoot(): string;
+
+  // get the directories we should load standard library files from
+  getLibDirs(): string[];
+
+  // get a promise for the ESM module shape of a JS module
+  getJsImport(path: string): Promise<any>;
+
+  // get the current working directory
+  getCwd(): string;
 }

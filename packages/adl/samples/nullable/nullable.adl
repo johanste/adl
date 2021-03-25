@@ -1,5 +1,6 @@
 model HasNullables {
   str: string;
+  when: plainTime;
   strOrNull: string | null;
   modelOrNull: AnotherModel | null;
   literalsOrNull: "one" | "two" | null;
@@ -10,7 +11,7 @@ model HasNullables {
 
 @resource("/test")
 namespace NullableMethods {
-  @get op read(@query someParam: string | null, modelOrNull: AnotherModel | null): HasNullables
+  @get op read(@query someParam: string | null, modelOrNull: AnotherModel | null): HasNullables;
 }
 
 model AnotherModel {
