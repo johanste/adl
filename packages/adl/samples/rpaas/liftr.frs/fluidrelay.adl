@@ -1,0 +1,49 @@
+@doc("A string that represents a URI.")
+model Uri = string;
+
+@doc("The representation of a secret value, represented as a string on the wire")
+@secret
+model SecretKey = string;
+
+@TrackedResource("Microsoft.FluidRelay/fluidServers", FluidRelayServer) 
+interface FluidServers {
+    @doc("Regenerate the primary or secondary key for this server.")
+    @post op regenerateKey(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body parameters: RegenerateKeyRequest) : ArmResponse<FluidRelayServerKeys>;
+    @doc("Retrieve the keys for this server.")
+    @post op getKeys(@path subscriptionId: string, @path resourceGroup: string, @path name: string) : ArmResponse<FluidRelayServerKeys>;
+}
+
+@doc("The properties of a Fluid Relay Service resource.")
+model FluidRelayServer {
+    @doc("The Fluid tenantId for this server")
+    @visibility("read")
+    frsTenantId: string;
+    @doc("The Fluid service endpoints for this server.")
+    @visibility("read")
+    frsEndpoints: FluidRelayServerEndpoints;
+}
+
+@doc("The Fluid endpoints for this server.")
+model FluidRelayServerEndpoints {
+    @doc("The Fluid Relay Orderer Endpoints.")
+    @visibility("read")
+    ordererEndpoints: Uri[];
+    @doc("The Fluid Relay storage endpoints.")
+    @visibility("read")
+    storageEndpoints: Uri[];
+}
+
+model FluidRelayServerKeys {
+   @doc("The primary key for this server.")
+   @visibility("read")
+   key1: SecretKey;
+
+   @doc("The secondary key for this server.")
+   @visibility("read")
+   key2: SecretKey;
+}
+
+model RegenerateKeyRequest {
+    @doc("The key to regenerate.")
+    keyName : "key1" | "key2";
+}
