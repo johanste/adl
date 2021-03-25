@@ -38,7 +38,7 @@ for (const folderName of sampleFolders) {
   console.log(`\nExecuting \`adl compile ${inputPath}\``);
   const ret = spawnSync(
     process.execPath,
-    ["dist/compiler/cli.js", "compile", inputPath, `--output-path=${outputPath}`],
+    ["dist/compiler/cli.js", "compile", inputPath, `--output-path=${outputPath}`, `--debug`],
     {
       stdio: ["inherit", "pipe", "inherit"],
     }
