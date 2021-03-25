@@ -4,6 +4,10 @@ namespace PetStore {
   model Pet {
     name: string;
     tag?: string;
+
+    @minValue 0
+    @maxValue 20
+    age: int32;
   }
 
   model Toy {

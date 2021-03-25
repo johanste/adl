@@ -23,6 +23,8 @@ import {
   isList,
   isIntrinsic,
   getVisibility,
+  getMinValue,
+  isNumericType,
 } from "./decorators.js";
 import {
   basePathForResource,
@@ -693,7 +695,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       }
 
       // Apply decorators on the property to the type's schema
-      modelSchema.properties[name] = applyStringDecorators(prop, getSchemaOrRef(prop.type));
+      modelSchema.properties[name] = applyIntrinsicDecorators(prop, getSchemaOrRef(prop.type));
       if (description) {
         modelSchema.properties[name].description = description;
       }
@@ -820,7 +822,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     return false;
   }
 
-  function applyStringDecorators(adlType: Type, schemaType: any): any {
+  function applyIntrinsicDecorators(adlType: Type, schemaType: any): any {
     const pattern = getFormat(adlType);
     if (schemaType.type === "string" && !schemaType.format && pattern) {
       schemaType = {
@@ -842,6 +844,22 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       schemaType = {
         ...schemaType,
         maxLength,
+      };
+    }
+
+    const minValue = getMinValue(adlType);
+    if (isNumericType(adlType) && !schemaType.minimum && minValue !== undefined) {
+      schemaType = {
+        ...schemaType,
+        minimum: minValue,
+      };
+    }
+
+    const maxValue = getMinValue(adlType);
+    if (isNumericType(adlType) && !schemaType.maximum && maxValue !== undefined) {
+      schemaType = {
+        ...schemaType,
+        maximum: maxValue,
       };
     }
 
@@ -873,16 +891,15 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
           case "byte":
             return { type: "string", format: "byte" };
           case "int32":
-            return { type: "integer", format: "int32" };
+            return applyIntrinsicDecorators(adlType, { type: "integer", format: "int32" });
           case "int64":
-            return { type: "integer", format: "int64" };
+            return applyIntrinsicDecorators(adlType, { type: "integer", format: "int64" });
           case "float64":
-            return { type: "number", format: "double" };
+            return applyIntrinsicDecorators(adlType, { type: "number", format: "double" });
           case "float32":
-            return { type: "number", format: "float" };
+            return applyIntrinsicDecorators(adlType, { type: "number", format: "float" });
           case "string":
-            // Return a string schema augmented by decorators
-            return applyStringDecorators(adlType, { type: "string" });
+            return applyIntrinsicDecorators(adlType, { type: "string" });
           case "boolean":
             return { type: "boolean" };
           case "plainDate":
@@ -902,7 +919,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
             // Recursively call this function to find the underlying OpenAPI type
             if (adlType.assignmentType) {
               const assignedType = mapADLTypeToOpenAPI(adlType.assignmentType);
-              return assignedType ? applyStringDecorators(adlType, assignedType) : undefined;
+              return assignedType ? applyIntrinsicDecorators(adlType, assignedType) : undefined;
             }
             break;
         }

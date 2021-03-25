@@ -242,10 +242,17 @@
         },
         "tag": {
           "type": "string"
+        },
+        "age": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 0
         }
       },
       "required": [
-        "name"
+        "name",
+        "age"
       ]
     },
     "PetStore.Toy": {
