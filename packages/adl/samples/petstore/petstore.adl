@@ -1,5 +1,7 @@
 @serviceTitle "Pet Store Service"
 @serviceVersion "2021-03-25"
+@produces("application/json", "image/png")
+@consumes("application/json")
 namespace PetStore {
 
   // Model types

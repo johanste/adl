@@ -38,6 +38,8 @@ import {
   HttpVerb,
   getServiceTitle,
   getServiceVersion,
+  getConsumes,
+  getProduces,
 } from "./rest.js";
 
 export function onBuild(p: Program) {
@@ -86,6 +88,8 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       version: getServiceVersion(),
     },
     schemes: ["https"],
+    produces: [], // Pre-initialize produces and consumes so that
+    consumes: [], // they show up at the top of the document
     tags: [],
     paths: {},
     definitions: {},
@@ -107,6 +111,9 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   // De-dupe the per-endpoint tags that will be added into the #/tags
   const tags = new Set<string>();
 
+  const globalProduces = new Set<string>();
+  const globalConsumes = new Set<string>();
+
   return { emitOpenAPI };
 
   function emitOpenAPI() {
@@ -120,14 +127,34 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     emitReferences();
     emitTags();
 
+    // Finalize global produces/consumes
+    if (globalProduces.size > 0) {
+      root.produces = [...globalProduces.values()];
+    } else {
+      delete root.produces;
+    }
+    if (globalConsumes.size > 0) {
+      root.consumes = [...globalConsumes.values()];
+    } else {
+      delete root.consumes;
+    }
+
     if (!program.compilerOptions.noEmit) {
       // Write out the OpenAPI document to the output path
       fs.writeFileSync(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
     }
   }
 
-  function emitResource(resource: NamespaceType) {
+  function emitResource(resource: NamespaceType): void {
     currentBasePath = basePathForResource(resource);
+
+    // Gather produces/consumes data up the namespace hierarchy
+    let currentNamespace: NamespaceType | undefined = resource;
+    while (currentNamespace) {
+      getProduces(currentNamespace).forEach((p) => globalProduces.add(p));
+      getConsumes(currentNamespace).forEach((c) => globalConsumes.add(c));
+      currentNamespace = currentNamespace.namespace;
+    }
 
     for (const [name, op] of resource.operations) {
       emitEndpoint(resource, op);
