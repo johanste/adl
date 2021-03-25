@@ -4,20 +4,12 @@
     "title": "Azure Fluid Relay Service",
     "version": "2021-03-01-preview"
   },
-  "schemes": [
-    "https"
-  ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "security": [
     {
-      "azure_auth": [
-        "user_impersonation"
-      ]
+      "azure_auth": ["user_impersonation"]
     }
   ],
   "securityDefinitions": {
@@ -34,9 +26,7 @@
   "paths": {
     "/providers/Microsoft.FluidRelay/operations": {
       "get": {
-        "tags": [
-          "FluidRelayOperations"
-        ],
+        "tags": ["FluidRelayOperations"],
         "summary": "List all operations provided by Microsoft.FluidRelay.",
         "operationId": "FluidRelayOperations_List",
         "parameters": [
@@ -66,9 +56,7 @@
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidServers/{name}": {
       "get": {
         "operationId": "FluidServers_Get",
-        "tags": [
-          "FluidServers"
-        ],
+        "tags": ["FluidServers"],
         "summary": "Get a fluid cluster.",
         "parameters": [
           {
@@ -109,9 +97,7 @@
       },
       "put": {
         "operationId": "FluidServers_CreateOrUpdate",
-        "tags": [
-          "FluidServers"
-        ],
+        "tags": ["FluidServers"],
         "summary": "Create or Update a fluid Cluster.",
         "parameters": [
           {
@@ -161,9 +147,7 @@
       },
       "patch": {
         "operationId": "FluidServers_Update",
-        "tags": [
-          "FluidServers"
-        ],
+        "tags": ["FluidServers"],
         "summary": "Update a fluid cluster.",
         "parameters": [
           {
@@ -213,9 +197,7 @@
       },
       "delete": {
         "operationId": "FluidServers_Delete",
-        "tags": [
-          "FluidServers"
-        ],
+        "tags": ["FluidServers"],
         "summary": "Delete a fluid cluster.",
         "parameters": [
           {
@@ -267,9 +249,7 @@
       "post": {
         "operationId": "FluidServers_RegenerateKey",
         "summary": "Regenerate the primary or secondary key for this cluster.",
-        "tags": [
-          "FluidServers"
-        ],
+        "tags": ["FluidServers"],
         "parameters": [
           {
             "$ref": "#/parameters/SubscriptionId"
@@ -321,9 +301,7 @@
       "post": {
         "operationId": "FluidServers_GetKeys",
         "summary": "Regenerate the primary or secondary key for this cluster.",
-        "tags": [
-          "FluidServers"
-        ],
+        "tags": ["FluidServers"],
         "parameters": [
           {
             "$ref": "#/parameters/SubscriptionId"
@@ -366,9 +344,7 @@
       "get": {
         "operationId": "FluidServers_ListBySubscription",
         "summary": "List all fluid clusters in a subscription.",
-        "tags": [
-          "FluidServers"
-        ],
+        "tags": ["FluidServers"],
         "parameters": [
           {
             "$ref": "#/parameters/SubscriptionId"
@@ -407,9 +383,7 @@
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidServers": {
       "get": {
         "operationId": "FluidServers_ListByResourceGroup",
-        "tags": [
-          "FluidServers"
-        ],
+        "tags": ["FluidServers"],
         "summary": "List all fluid servers in a resource group.",
         "parameters": [
           {
@@ -517,11 +491,7 @@
             "type": "string"
           },
           "readOnly": false,
-          "x-ms-mutability": [
-            "read",
-            "create",
-            "update"
-          ],
+          "x-ms-mutability": ["read", "create", "update"],
           "description": "Resource tags."
         }
       },
@@ -544,10 +514,7 @@
         }
       },
       "description": "Paged response",
-      "required": [
-        "value",
-        "nextLink"
-      ],
+      "required": ["value", "nextLink"],
       "x-adl-name": "Page<FluidServer>"
     },
     "FluidServer": {
@@ -558,10 +525,7 @@
           "description": "The resource-specific properties for this resource.",
           "readOnly": false,
           "x-ms-client-flatten": true,
-          "x-ms-mutability": [
-            "read",
-            "create"
-          ]
+          "x-ms-mutability": ["read", "create"]
         },
         "systemData": {
           "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
@@ -600,10 +564,7 @@
       "properties": {
         "keyName": {
           "type": "string",
-          "enum": [
-            "key1",
-            "key2"
-          ],
+          "enum": ["key1", "key2"],
           "x-ms-enum": {
             "modelAsString": false,
             "name": "KeyName"
@@ -613,9 +574,7 @@
         }
       },
       "description": "Specifies which key should be generated.",
-      "required": [
-        "keyName"
-      ]
+      "required": ["keyName"]
     },
     "FluidServerProperties": {
       "type": "object",
@@ -631,11 +590,7 @@
           "readOnly": true
         },
         "provisioningState": {
-          "enum": [
-            "Succeeded",
-            "Failed",
-            "Canceled"
-          ],
+          "enum": ["Succeeded", "Failed", "Canceled"],
           "type": "string",
           "description": "Provision states for FluidRelay RP",
           "title": "ProvisioningState",
