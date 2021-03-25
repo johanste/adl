@@ -11,6 +11,7 @@ import {
   Type,
   UnionType,
   SyntaxKind,
+  StringLiteralType,
 } from "../compiler/types.js";
 import {
   getDoc,
@@ -635,18 +636,10 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     const schema: any = { type };
     if (values.length > 0) {
       schema.enum = values;
+      addXMSEnum(union, schema);
     }
     if (nullable) {
       schema["x-nullable"] = true;
-    }
-
-    // For now, automatically treat any nominal union type as an `x-ms-enum`
-    // that is expandable, i.e. sets `modelAsString: true`
-    if (union.node.parent && union.node.parent.kind === SyntaxKind.ModelStatement) {
-      schema["x-ms-enum"] = {
-        name: union.node.parent.id.sv,
-        modelAsString: true,
-      };
     }
 
     return schema;
@@ -873,12 +866,25 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     return schemaType;
   }
 
+  function addXMSEnum(type: StringLiteralType | UnionType, schema: any): any {
+    // For now, automatically treat any nominal union type as an `x-ms-enum`
+    // that is expandable, i.e. sets `modelAsString: true`
+    if (type.node.parent && type.node.parent.kind === SyntaxKind.ModelStatement) {
+      schema["x-ms-enum"] = {
+        name: type.node.parent.id.sv,
+        modelAsString: true,
+      };
+    }
+
+    return schema;
+  }
+
   function mapADLTypeToOpenAPI(adlType: Type): any {
     switch (adlType.kind) {
       case "Number":
         return { type: "number", enum: [adlType.value] };
       case "String":
-        return { type: "string", enum: [adlType.value] };
+        return addXMSEnum(adlType, { type: "string", enum: [adlType.value] });
       case "Boolean":
         return { type: "boolean", enum: [adlType.value] };
       case "Model":
