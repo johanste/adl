@@ -37,7 +37,7 @@ export function TrackedResource(
     throw new Error("Program does not have a checker assigned");
   }
 
-  if (propertyType.node.kind !== SyntaxKind.ModelStatement) {
+  if (propertyType.node!.kind !== SyntaxKind.ModelStatement) {
     throw new Error("Property type must be a model.");
   }
 
