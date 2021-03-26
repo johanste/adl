@@ -43,22 +43,25 @@ export function TrackedResource(
   const propertyTypeName = checker.getTypeName(propertyType);
 
   if (target.kind === "Namespace") {
+    // Get the fully-qualified parent namespace
+    let parentNamespace = checker.getNamespaceString(target.namespace);
     if (propertyType.kind === "Model") {
       // Create the resource model type and evaluate it
       const resourceModelName = `${target.name}Resource`;
-      // TODO: How do I put this in a parent namespace?
       program.evalAdlScript(`
-         @extension("x-ms-azure-resource", true) \
-         model ${resourceModelName} = ArmTrackedResource<${propertyTypeName}>;
+         namespace ${parentNamespace} {
+           @extension("x-ms-azure-resource", true) \
+           model ${resourceModelName} = ArmTrackedResource<${propertyTypeName}>;
 
-         @resource("/subscriptions/{subscriptionId}/providers/${resourceRoot}")
-         namespace ${target.name}ListAll {
-           @list @get op listAll(@path subscriptionId: string): Page<${resourceModelName}>;
-         }
+           @resource("/subscriptions/{subscriptionId}/providers/${resourceRoot}")
+           namespace ${target.name}ListAll {
+             @list @get op listAll(@path subscriptionId: string): Page<${resourceModelName}>;
+           }
 
-         @resource("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}")
-         namespace ${target.name}List {
-           @list @get op listByResourceGroup(@path subscriptionId: string, @path resourceGroup: string): Page<${resourceModelName}>;
+           @resource("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}")
+           namespace ${target.name}List {
+             @list @get op listByResourceGroup(@path subscriptionId: string, @path resourceGroup: string): Page<${resourceModelName}>;
+           }
          }
       `);
 
