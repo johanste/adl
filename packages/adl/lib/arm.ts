@@ -62,32 +62,13 @@ export function TrackedResource(
            namespace ${target.name}List {
              @list @get op listByResourceGroup(@path subscriptionId: string, @path resourceGroup: string): Page<${resourceModelName}>;
            }
+
+           @get op get(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}>; \
+           @put op createOrUpdate(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}) : ArmResponse<${resourceModelName}>; \
+           @patch op update(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}>; \
+           @_delete op delete(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}>; \
          }
       `);
-
-      // Create a temporary namespace and parse it so
-      // that we can harvest its namespace properties
-      const resourceNamespaceNode = parseStatement<NamespaceStatementNode>(
-        // TODO: Might need to generate dynamic namespace here!
-        `namespace Temp { \
-          @get op get(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}>; \
-          @put op createOrUpdate(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}) : ArmResponse<${resourceModelName}>; \
-          @patch op update(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}>; \
-          @_delete op delete(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}>; \
-        }`
-      );
-
-      const ops = (resourceNamespaceNode.statements as Statement[]).filter(
-        (s) => s.kind === SyntaxKind.OperationStatement
-      );
-
-      // Add all of the properties from the parsed namespace
-      for (const op of ops) {
-        target.operations.set(
-          (op as OperationStatementNode).id.sv,
-          checker.checkOperation(op as OperationStatementNode)
-        );
-      }
 
       // Add the @resource decorator
       resource(
