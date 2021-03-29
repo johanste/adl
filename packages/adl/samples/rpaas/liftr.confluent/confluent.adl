@@ -1,4 +1,9 @@
-﻿@doc "A string that represents a URI."
+﻿@armNamespace "Microsoft.Confluent"
+@serviceTitle "Microsoft.Confluent"
+@serviceVersion "2020-03-01-preview"
+namespace Microsoft.Confluent;
+
+@doc "A string that represents a URI."
 model Uri = string;
 
 @doc "Reusable representation of an email address"

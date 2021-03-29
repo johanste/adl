@@ -1,11 +1,18 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "(title)",
-    "version": "0000-00-00"
+    "title": "Pet Store Service",
+    "version": "2021-03-25"
   },
   "schemes": [
     "https"
+  ],
+  "produces": [
+    "application/json",
+    "image/png"
+  ],
+  "consumes": [
+    "application/json"
   ],
   "tags": [],
   "paths": {
@@ -34,7 +41,7 @@
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/PetStore.Error"
+              "$ref": "#/definitions/Error"
             }
           }
         }
@@ -55,19 +62,19 @@
           "200": {
             "description": "A successful response",
             "schema": {
-              "$ref": "#/definitions/PetStore.Pet"
+              "$ref": "#/definitions/Pet"
             }
           },
           "304": {
             "description": "Not modified",
             "schema": {
-              "$ref": "#/definitions/PetStore.Pet"
+              "$ref": "#/definitions/Pet"
             }
           },
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/PetStore.Error"
+              "$ref": "#/definitions/Error"
             }
           }
         }
@@ -98,7 +105,7 @@
                 "items": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/PetStore.Pet"
+                    "$ref": "#/definitions/Pet"
                   },
                   "x-adl-name": "PetStore.Pet[]"
                 },
@@ -116,7 +123,7 @@
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/PetStore.Error"
+              "$ref": "#/definitions/Error"
             }
           }
         },
@@ -138,7 +145,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/PetStore.Pet"
+              "$ref": "#/definitions/Pet"
             }
           }
         ],
@@ -146,13 +153,13 @@
           "200": {
             "description": "A successful response",
             "schema": {
-              "$ref": "#/definitions/PetStore.Pet"
+              "$ref": "#/definitions/Pet"
             }
           },
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/PetStore.Error"
+              "$ref": "#/definitions/Error"
             }
           }
         }
@@ -188,7 +195,7 @@
                 "items": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/PetStore.Toy"
+                    "$ref": "#/definitions/Toy"
                   },
                   "x-adl-name": "PetStore.Toy[]"
                 },
@@ -206,7 +213,7 @@
           "default": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/PetStore.Error"
+              "$ref": "#/definitions/Error"
             }
           }
         },
@@ -217,7 +224,7 @@
     }
   },
   "definitions": {
-    "PetStore.Error": {
+    "Error": {
       "type": "object",
       "properties": {
         "code": {
@@ -234,7 +241,7 @@
         "message"
       ]
     },
-    "PetStore.Pet": {
+    "Pet": {
       "type": "object",
       "properties": {
         "name": {
@@ -255,7 +262,7 @@
         "age"
       ]
     },
-    "PetStore.Toy": {
+    "Toy": {
       "type": "object",
       "properties": {
         "id": {

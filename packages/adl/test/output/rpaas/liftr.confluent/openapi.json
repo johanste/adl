@@ -1,15 +1,64 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "(title)",
-    "version": "0000-00-00"
+    "title": "Microsoft.Confluent",
+    "version": "2020-03-01-preview"
   },
   "schemes": [
     "https"
   ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
   "tags": [],
   "paths": {
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Confluent/organizations/{name}": {
+      "post": {
+        "operationId": "Organization_getKeys",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resourceGroup",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/OrganizationKeys"
+            }
+          }
+        }
+      },
       "get": {
         "operationId": "Organization_get",
         "consumes": [],
@@ -203,49 +252,6 @@
             }
           }
         }
-      },
-      "post": {
-        "operationId": "Organization_getKeys",
-        "consumes": [],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "resourceGroup",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "headers": {
-              "x-ms-client-request-id": {
-                "type": "string"
-              },
-              "x-ms-correlation-request-id": {
-                "type": "string"
-              }
-            },
-            "description": "Typed response envelope for ARM operations.",
-            "schema": {
-              "$ref": "#/definitions/OrganizationKeys"
-            }
-          }
-        }
       }
     },
     "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/organizations": {
@@ -282,7 +288,7 @@
                   "items": {
                     "$ref": "#/definitions/OrganizationResource"
                   },
-                  "x-adl-name": "OrganizationResource[]",
+                  "x-adl-name": "Microsoft.Confluent.OrganizationResource[]",
                   "description": "The items on this page"
                 },
                 "nextLink": {
@@ -294,7 +300,7 @@
                 "value",
                 "nextLink"
               ],
-              "x-adl-name": "(anonymous model)<OrganizationResource>"
+              "x-adl-name": "(anonymous model)<Microsoft.Confluent.OrganizationResource>"
             }
           }
         },
@@ -343,7 +349,7 @@
                   "items": {
                     "$ref": "#/definitions/OrganizationResource"
                   },
-                  "x-adl-name": "OrganizationResource[]",
+                  "x-adl-name": "Microsoft.Confluent.OrganizationResource[]",
                   "description": "The items on this page"
                 },
                 "nextLink": {
@@ -355,7 +361,7 @@
                 "value",
                 "nextLink"
               ],
-              "x-adl-name": "(anonymous model)<OrganizationResource>"
+              "x-adl-name": "(anonymous model)<Microsoft.Confluent.OrganizationResource>"
             }
           }
         },
@@ -366,6 +372,25 @@
     }
   },
   "definitions": {
+    "OrganizationKeys": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "type": "string",
+          "format": "password",
+          "description": "The primary key."
+        },
+        "secondary": {
+          "type": "string",
+          "format": "password",
+          "description": "The secondary Key."
+        }
+      },
+      "required": [
+        "primary",
+        "secondary"
+      ]
+    },
     "OrganizationResource": {
       "type": "object",
       "properties": {
@@ -409,25 +434,6 @@
         }
       ],
       "x-ms-azure-resource": true
-    },
-    "OrganizationKeys": {
-      "type": "object",
-      "properties": {
-        "primary": {
-          "type": "string",
-          "format": "password",
-          "description": "The primary key."
-        },
-        "secondary": {
-          "type": "string",
-          "format": "password",
-          "description": "The secondary Key."
-        }
-      },
-      "required": [
-        "primary",
-        "secondary"
-      ]
     },
     "OrganizationProperties": {
       "type": "object",

@@ -36,6 +36,11 @@ import {
   isBody,
   getOperationRoute,
   HttpVerb,
+  getServiceTitle,
+  getServiceVersion,
+  getConsumes,
+  getProduces,
+  detectServiceNamespace,
 } from "./rest.js";
 
 export function onBuild(p: Program) {
@@ -80,15 +85,20 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   const root: any = {
     swagger: "2.0",
     info: {
-      title: "(title)",
-      version: "0000-00-00",
+      title: getServiceTitle(),
+      version: getServiceVersion(),
     },
     schemes: ["https"],
+    produces: [], // Pre-initialize produces and consumes so that
+    consumes: [], // they show up at the top of the document
     tags: [],
     paths: {},
     definitions: {},
     parameters: {},
   };
+
+  // Attempt to detect the service namespace for use in name shortening
+  const serviceNamespace: string | undefined = detectServiceNamespace(program);
 
   let currentBasePath: string | undefined = "";
   let currentPath: any = root.paths;
@@ -105,6 +115,10 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   // De-dupe the per-endpoint tags that will be added into the #/tags
   const tags = new Set<string>();
 
+  // The set of produces/consumes values found in all operations
+  const globalProduces = new Set<string>();
+  const globalConsumes = new Set<string>();
+
   return { emitOpenAPI };
 
   function emitOpenAPI() {
@@ -118,14 +132,34 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     emitReferences();
     emitTags();
 
+    // Finalize global produces/consumes
+    if (globalProduces.size > 0) {
+      root.produces = [...globalProduces.values()];
+    } else {
+      delete root.produces;
+    }
+    if (globalConsumes.size > 0) {
+      root.consumes = [...globalConsumes.values()];
+    } else {
+      delete root.consumes;
+    }
+
     if (!program.compilerOptions.noEmit) {
       // Write out the OpenAPI document to the output path
       fs.writeFileSync(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
     }
   }
 
-  function emitResource(resource: NamespaceType) {
+  function emitResource(resource: NamespaceType): void {
     currentBasePath = basePathForResource(resource);
+
+    // Gather produces/consumes data up the namespace hierarchy
+    let currentNamespace: NamespaceType | undefined = resource;
+    while (currentNamespace) {
+      getProduces(currentNamespace).forEach((p) => globalProduces.add(p));
+      getConsumes(currentNamespace).forEach((c) => globalConsumes.add(c));
+      currentNamespace = currentNamespace.namespace;
+    }
 
     for (const [name, op] of resource.operations) {
       emitEndpoint(resource, op);
@@ -803,7 +837,16 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
         return getIntrinsicType(type) || "{}";
       }
     }
-    return program!.checker!.getTypeName(type);
+
+    // Try to shorten the type name to exclude the top-level service namespace
+    const typeName = program!.checker!.getTypeName(type);
+    if (isRefSafeName(typeName)) {
+      if (serviceNamespace && typeName.startsWith(serviceNamespace)) {
+        return typeName.substring(serviceNamespace.length + 1);
+      }
+    }
+
+    return typeName;
   }
 
   function hasSchemaProperties(properties: Map<string, ModelTypeProperty>) {
