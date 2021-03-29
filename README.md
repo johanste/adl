@@ -57,5 +57,13 @@ Parameters for generating clients in other languages will be added soon.
 adl code install
 ```
 
-This will download and install the latest VS Code extension. Use `adl code uninstall` 
-to remove it. Pass `--insiders` if you use VS Code Insiders edition.
+This will download and install the latest VS Code extension. Use `adl code
+uninstall` to remove it. Pass `--insiders` if you use VS Code Insiders edition.
+
+If `adl-server` cannot be found on PATH by VS Code in your setup, you can
+configure its location in VS Code settings. Search for "ADL" in File ->
+Preferences -> Settings, and adjust `adl.adl-server.path` accordingly. You may
+need to restart VS Code after changing this.
+
+You can also configure a project to use a local npm install of
+`@azure-tools/adl`. See [local-adl sample](packages/adl/samples/local-adl).
