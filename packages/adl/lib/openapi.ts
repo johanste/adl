@@ -40,6 +40,7 @@ import {
   getServiceVersion,
   getConsumes,
   getProduces,
+  detectServiceNamespace,
 } from "./rest.js";
 
 export function onBuild(p: Program) {
@@ -96,6 +97,9 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     parameters: {},
   };
 
+  // Attempt to detect the service namespace for use in name shortening
+  const serviceNamespace: string | undefined = detectServiceNamespace(program);
+
   let currentBasePath: string | undefined = "";
   let currentPath: any = root.paths;
   let currentEndpoint: any;
@@ -111,6 +115,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   // De-dupe the per-endpoint tags that will be added into the #/tags
   const tags = new Set<string>();
 
+  // The set of produces/consumes values found in all operations
   const globalProduces = new Set<string>();
   const globalConsumes = new Set<string>();
 
@@ -832,7 +837,16 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
         return getIntrinsicType(type) || "{}";
       }
     }
-    return program!.checker!.getTypeName(type);
+
+    // Try to shorten the type name to exclude the top-level service namespace
+    const typeName = program!.checker!.getTypeName(type);
+    if (isRefSafeName(typeName)) {
+      if (serviceNamespace && typeName.startsWith(serviceNamespace)) {
+        return typeName.substring(serviceNamespace.length + 1);
+      }
+    }
+
+    return typeName;
   }
 
   function hasSchemaProperties(properties: Map<string, ModelTypeProperty>) {

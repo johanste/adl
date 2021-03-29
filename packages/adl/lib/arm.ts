@@ -43,14 +43,22 @@ export function TrackedResource(
   const propertyTypeName = checker.getTypeName(propertyType);
 
   if (target.kind === "Namespace") {
-    // Get the fully-qualified namespace
-    let targetNamespace = checker.getNamespaceString(target);
+    // Ensure that there is a parent namespace
+    if (!target.namespace) {
+      throw new Error(
+        `The @TrackedResource decorator cannot be used on a namespace that does not have a parent.
+Consider adding a file-level namespace declaration.`
+      );
+    }
+
+    // Get the fully-qualified parent namespace
+    let parentNamespace = checker.getNamespaceString(target.namespace);
 
     if (propertyType.kind === "Model") {
       // Create the resource model type and evaluate it
       const resourceModelName = `${target.name}Resource`;
       program.evalAdlScript(`
-         namespace ${targetNamespace} {
+         namespace ${parentNamespace} {
            @extension("x-ms-azure-resource", true) \
            model ${resourceModelName} = ArmTrackedResource<${propertyTypeName}>;
 
@@ -64,10 +72,12 @@ export function TrackedResource(
              @list @get op listByResourceGroup(@path subscriptionId: string, @path resourceGroup: string): Page<${resourceModelName}>;
            }
 
-           @get op get(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}>; \
-           @put op createOrUpdate(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}) : ArmResponse<${resourceModelName}>; \
-           @patch op update(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}>; \
-           @_delete op delete(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}>; \
+           namespace ${target.name} {
+             @get op get(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}>; \
+             @put op createOrUpdate(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}) : ArmResponse<${resourceModelName}>; \
+             @patch op update(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}>; \
+             @_delete op delete(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}>; \
+           }
          }
       `);
 

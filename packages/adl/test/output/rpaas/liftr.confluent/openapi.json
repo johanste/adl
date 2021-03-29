@@ -54,7 +54,201 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/Microsoft.Confluent.OrganizationKeys"
+              "$ref": "#/definitions/OrganizationKeys"
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "Organization_get",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resourceGroup",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/OrganizationResource"
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "Organization_createOrUpdate",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resourceGroup",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationResource"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/OrganizationResource"
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "Organization_update",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resourceGroup",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/OrganizationResource"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/OrganizationResource"
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "Organization_delete",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resourceGroup",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "x-adl-name": "{}"
             }
           }
         }
@@ -92,7 +286,7 @@
                 "value": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Microsoft.Confluent.OrganizationResource"
+                    "$ref": "#/definitions/OrganizationResource"
                   },
                   "x-adl-name": "Microsoft.Confluent.OrganizationResource[]",
                   "description": "The items on this page"
@@ -153,7 +347,7 @@
                 "value": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Microsoft.Confluent.OrganizationResource"
+                    "$ref": "#/definitions/OrganizationResource"
                   },
                   "x-adl-name": "Microsoft.Confluent.OrganizationResource[]",
                   "description": "The items on this page"
@@ -178,7 +372,7 @@
     }
   },
   "definitions": {
-    "Microsoft.Confluent.OrganizationKeys": {
+    "OrganizationKeys": {
       "type": "object",
       "properties": {
         "primary": {
@@ -197,7 +391,7 @@
         "secondary"
       ]
     },
-    "Microsoft.Confluent.OrganizationResource": {
+    "OrganizationResource": {
       "type": "object",
       "properties": {
         "location": {
@@ -221,7 +415,7 @@
           ]
         },
         "properties": {
-          "$ref": "#/definitions/Microsoft.Confluent.OrganizationProperties",
+          "$ref": "#/definitions/OrganizationProperties",
           "description": "The resource-specific properties for this resource.",
           "x-ms-mutability": [
             "read",
@@ -241,7 +435,7 @@
       ],
       "x-ms-azure-resource": true
     },
-    "Microsoft.Confluent.OrganizationProperties": {
+    "OrganizationProperties": {
       "type": "object",
       "properties": {
         "createdTime": {
@@ -261,11 +455,11 @@
           "readOnly": true
         },
         "offerDetail": {
-          "$ref": "#/definitions/Microsoft.Confluent.OfferDetail",
+          "$ref": "#/definitions/OfferDetail",
           "description": "Details of the product offering."
         },
         "userDetail": {
-          "$ref": "#/definitions/Microsoft.Confluent.UserDetail",
+          "$ref": "#/definitions/UserDetail",
           "description": "Subscriber details."
         }
       },
@@ -301,7 +495,7 @@
         "type"
       ]
     },
-    "Microsoft.Confluent.OfferDetail": {
+    "OfferDetail": {
       "type": "object",
       "properties": {
         "publisherId": {
@@ -365,7 +559,7 @@
         "status"
       ]
     },
-    "Microsoft.Confluent.UserDetail": {
+    "UserDetail": {
       "type": "object",
       "properties": {
         "firstName": {
