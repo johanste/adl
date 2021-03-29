@@ -43,13 +43,14 @@ export function TrackedResource(
   const propertyTypeName = checker.getTypeName(propertyType);
 
   if (target.kind === "Namespace") {
-    // Get the fully-qualified parent namespace
-    let parentNamespace = checker.getNamespaceString(target.namespace);
+    // Get the fully-qualified namespace
+    let targetNamespace = checker.getNamespaceString(target);
+
     if (propertyType.kind === "Model") {
       // Create the resource model type and evaluate it
       const resourceModelName = `${target.name}Resource`;
       program.evalAdlScript(`
-         namespace ${parentNamespace} {
+         namespace ${targetNamespace} {
            @extension("x-ms-azure-resource", true) \
            model ${resourceModelName} = ArmTrackedResource<${propertyTypeName}>;
 
