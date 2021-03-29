@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/tmlanguage-generator",
+      "comment": "Add PList emit support",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/tmlanguage-generator",
+  "email": "nicholg@microsoft.com"
+}
