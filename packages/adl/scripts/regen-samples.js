@@ -5,7 +5,7 @@
 
 import url from "url";
 import mkdirp from "mkdirp";
-import { spawnSync, fork } from "child_process";
+import { run } from "../../../eng/scripts/helpers.js";
 
 // Get this from samples/ directory listing when reliable
 const sampleFolders = [
@@ -35,20 +35,11 @@ for (const folderName of sampleFolders) {
   const outputPath = resolvePath("../test/output/", folderName);
   mkdirp(outputPath);
 
-  console.log(`\nExecuting \`adl compile ${inputPath}\``);
-  const ret = spawnSync(
-    process.execPath,
-    ["dist/compiler/cli.js", "compile", inputPath, `--output-path=${outputPath}`, `--debug`],
-    {
-      stdio: ["inherit", "pipe", "inherit"],
-    }
-  );
-
-  if (ret.error) {
-    throw ret.error;
-  }
-
-  if (ret.status != 0) {
-    throw new Error("Compilation failed");
-  }
+  run(process.execPath, [
+    "dist/compiler/cli.js",
+    "compile",
+    inputPath,
+    `--output-path=${outputPath}`,
+    `--debug`,
+  ]);
 }

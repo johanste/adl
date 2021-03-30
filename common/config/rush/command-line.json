@@ -12,57 +12,41 @@
   "commands": [
     {
       "commandKind": "global",
+      "safeForSimultaneousRushProcesses": true,
       "name": "watch",
-      "summary": "run npm watch on all projects",
+      "summary": "(CUSTOM) Runs TypeScript compiler in watch mode on all projects.",
       "shellCommand": "node eng/scripts/watch.js"
     },
     {
       "commandKind": "global",
-      "name": "clean",
-      "summary": "run npm clean on all projects",
-      "shellCommand": "node eng/scripts/npm-run.js clean"
-    },
-    {
-      "commandKind": "global",
       "name": "test",
-      "summary": "run all npm test",
+      "summary": "(CUSTOM) Runs all tests.",
       "shellCommand": "node eng/scripts/npm-run.js test"
     },
     {
       "commandKind": "global",
       "name": "format",
-      "summary": "run all npm format",
+      "summary": "(CUSTOM) Formats all code with Prettier.",
       "shellCommand": "node eng/scripts/npm-run.js format"
     },
     {
       "commandKind": "global",
       "name": "check-format",
-      "summary": "run all npm check-format",
+      "summary": "(CUSTOM) Checks formatting of all code with with Prettier.",
       "shellCommand": "node eng/scripts/npm-run.js check-format"
     },
     {
       "commandKind": "global",
       "name": "regen-samples",
-      "summary": "run all npm regen-samples",
+      "summary": "(CUSTOM) Regenerate samples.",
       "shellCommand": "node eng/scripts/npm-run.js regen-samples"
     },
     {
       "commandKind": "global",
-      "name": "compile",
-      "summary": "run all npm compile",
-      "shellCommand": "node eng/scripts/npm-run.js compile"
-    },
-    {
-      "commandKind": "global",
-      "name": "pack",
-      "summary": "run all npm pack",
-      "shellCommand": "node eng/scripts/npm-run.js pack"
-    },
-    {
-      "commandKind": "global",
+      "safeForSimultaneousRushProcesses": true,
       "name": "dogfood",
-      "summary": "run all npm dogfood",
-      "shellCommand": "node eng/scripts/npm-run.js dogfood"
+      "summary": "(CUSTOM) Globally installs local builds of @azure-tools/adl and adl-vscode.",
+      "shellCommand": "node eng/scripts/dogfood.js"
     }
   ],
   /**
