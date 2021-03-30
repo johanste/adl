@@ -18,6 +18,7 @@ const sampleFolders = [
   "petstore",
   "recursive",
   "rpaas/liftr.confluent",
+  "rpaas/liftr.frs",
   "tags",
   "testserver/media-types",
   "testserver/body-boolean",
