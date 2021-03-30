@@ -1,5 +1,5 @@
 @resource "/operations"
 namespace Operations {
-  @get op get(@path id: string): OperationStatusResult;
-  @get op list(): OperationListResult | ErrorResponse;
+  @get op get(@path id: string): ArmResponse<OperationStatusResult>;
+  @get op list(): ArmResponse<OperationListResult> | ErrorResponse;
 }

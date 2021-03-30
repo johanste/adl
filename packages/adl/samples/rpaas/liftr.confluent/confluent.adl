@@ -23,13 +23,13 @@ model ShortString = string;
 @secret
 model OrganizationKey = string;
 
-@TrackedResource("Microsoft.Confluent/organizations", OrganizationProperties)
-namespace Organization {
-  @post op getKeys(
+@TrackedResource("organizations", OrganizationProperties)
+namespace Organizations {
+  @post op GetKeys(
     @path subscriptionId: string,
     @path resourceGroup: string,
     @path name: string
-  ): ArmResponse<OrganizationKeys>;
+  ): ArmResponse<OrganizationKeys> | ErrorResponse;
 }
 
 @doc "Details of the Confluent organization."

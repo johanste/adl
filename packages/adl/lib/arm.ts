@@ -1,25 +1,7 @@
-import {
-  NamespaceStatementNode,
-  Type,
-  Statement,
-  SyntaxKind,
-  OperationStatementNode,
-} from "../compiler/types.js";
+import { Type, SyntaxKind, NamespaceType } from "../compiler/types.js";
 import { Program } from "../compiler/program";
-import { parse } from "../compiler/parser.js";
 import { consumes, produces, resource } from "./rest.js";
-
-function parseStatement<TNode extends Statement>(adlStatement: string): TNode {
-  // We're assuming that the parser will throw on bad input,
-  // so no error handling is added at this level
-  const script = parse(adlStatement);
-
-  if (script.statements.length === 0) {
-    throw new Error("No statements found in parsed input.");
-  }
-
-  return script.statements[0] as TNode;
-}
+import { throwDiagnostic } from "../compiler/diagnostics.js";
 
 // TODO: We can't name this ArmTrackedResource because that name
 //       is already taken.  Consider having decorators occupy a
@@ -27,7 +9,7 @@ function parseStatement<TNode extends Statement>(adlStatement: string): TNode {
 export function TrackedResource(
   program: Program,
   target: Type,
-  resourceRoot: string,
+  resourceSubPath: string,
   propertyType: Type
 ) {
   const checker = program.checker;
@@ -45,9 +27,19 @@ export function TrackedResource(
   if (target.kind === "Namespace") {
     // Ensure that there is a parent namespace
     if (!target.namespace) {
-      throw new Error(
+      throwDiagnostic(
         `The @TrackedResource decorator cannot be used on a namespace that does not have a parent.
-Consider adding a file-level namespace declaration.`
+Consider adding a file-level namespace declaration.`,
+        target
+      );
+    }
+
+    // Locate the ARM namespace in the namespace hierarchy
+    let armNamespace = getArmNamespace(target);
+    if (!armNamespace) {
+      throwDiagnostic(
+        "The @armNamespace must be used to define the ARM namespace of the service.  This is best applied to the file-level namespace.",
+        target
       );
     }
 
@@ -55,28 +47,61 @@ Consider adding a file-level namespace declaration.`
     let parentNamespace = checker.getNamespaceString(target.namespace);
 
     if (propertyType.kind === "Model") {
+      // We require the property type to follow a naming convention of being the
+      // desired resource type name with "Properties" appended so that we can
+      // easily determine the core resource type name.  The plural version of
+      // the name should be entered by the user as the namespace upon which
+      // `@TrackedResource` is applied.  This ensures that the user has given
+      // us both the singular and plural versions of the resource type name
+      // without any automatic pluralization on our side.
+      if (!propertyType.name.endsWith("Properties")) {
+        throwDiagnostic(
+          `The property model type provided to @TrackedResource must end with the word "Properties".`,
+          propertyType
+        );
+      }
+
       // Create the resource model type and evaluate it
-      const resourceModelName = `${target.name}Resource`;
+      const resourceName = propertyType.name.substring(0, propertyType.name.indexOf("Properties"));
+      const resourceRoot = `${armNamespace}/${resourceSubPath}`;
+      const resourceModelName = `${resourceName}Resource`;
+      const resourceListName = `${resourceModelName}ListResult`;
+      const operationGroup = target.name;
+
       program.evalAdlScript(`
          namespace ${parentNamespace} {
            @extension("x-ms-azure-resource", true) \
            model ${resourceModelName} = ArmTrackedResource<${propertyTypeName}>;
 
+           @doc "The response of a ${resourceModelName} list operation."
+           model ${resourceListName} = Page<${resourceModelName}>;
+
+           @tag "${operationGroup}"
            @resource("/subscriptions/{subscriptionId}/providers/${resourceRoot}")
-           namespace ${target.name}ListAll {
-             @list @get op listAll(@path subscriptionId: string): Page<${resourceModelName}>;
+           namespace ${target.name}ListBySubscription {
+             @operationId "${operationGroup}_ListBySubscription"
+             @list @get op listBySubscription(@path subscriptionId: string): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
+           @tag "${operationGroup}"
            @resource("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}")
            namespace ${target.name}List {
-             @list @get op listByResourceGroup(@path subscriptionId: string, @path resourceGroup: string): Page<${resourceModelName}>;
+             @operationId "${operationGroup}_ListByResourceGroup"
+             @list @get op listByResourceGroup(@path subscriptionId: string, @path resourceGroup: string): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
            namespace ${target.name} {
-             @get op get(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}>; \
-             @put op createOrUpdate(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}) : ArmResponse<${resourceModelName}>; \
-             @patch op update(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}>; \
-             @_delete op delete(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}>; \
+             @tag "${operationGroup}"
+             @get op Get(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}> | ErrorResponse;
+
+             @tag "${operationGroup}"
+             @put op CreateOrUpdate(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
+
+             @tag "${operationGroup}"
+             @patch op Update(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
+
+             @tag "${operationGroup}"
+             @_delete op Delete(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}> | ErrorResponse;
            }
          }
       `);
@@ -112,4 +137,19 @@ export function armNamespace(program: Program, entity: Type, namespace: string) 
   // ARM services need to have "application/json" set on produces/consumes
   produces(program, entity, "application/json");
   consumes(program, entity, "application/json");
+}
+
+export function getArmNamespace(namespace: NamespaceType): string | undefined {
+  let currentNamespace: NamespaceType | undefined = namespace;
+  let armNamespace: string | undefined;
+  while (currentNamespace) {
+    armNamespace = armNamespaces.get(currentNamespace);
+    if (armNamespace) {
+      return armNamespace;
+    }
+
+    currentNamespace = currentNamespace.namespace;
+  }
+
+  return undefined;
 }

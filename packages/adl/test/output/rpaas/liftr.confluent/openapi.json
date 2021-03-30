@@ -13,11 +13,15 @@
   "consumes": [
     "application/json"
   ],
-  "tags": [],
+  "tags": [
+    {
+      "name": "Organizations"
+    }
+  ],
   "paths": {
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Confluent/organizations/{name}": {
       "post": {
-        "operationId": "Organization_getKeys",
+        "operationId": "Organizations_GetKeys",
         "consumes": [],
         "produces": [
           "application/json"
@@ -56,11 +60,17 @@
             "schema": {
               "$ref": "#/definitions/OrganizationKeys"
             }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
         }
       },
       "get": {
-        "operationId": "Organization_get",
+        "operationId": "Organizations_Get",
         "consumes": [],
         "produces": [
           "application/json"
@@ -99,11 +109,20 @@
             "schema": {
               "$ref": "#/definitions/OrganizationResource"
             }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
-        }
+        },
+        "tags": [
+          "Organizations"
+        ]
       },
       "put": {
-        "operationId": "Organization_createOrUpdate",
+        "operationId": "Organizations_CreateOrUpdate",
         "consumes": [
           "application/json"
         ],
@@ -152,11 +171,20 @@
             "schema": {
               "$ref": "#/definitions/OrganizationResource"
             }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
-        }
+        },
+        "tags": [
+          "Organizations"
+        ]
       },
       "patch": {
-        "operationId": "Organization_update",
+        "operationId": "Organizations_Update",
         "consumes": [
           "application/json"
         ],
@@ -205,11 +233,20 @@
             "schema": {
               "$ref": "#/definitions/OrganizationResource"
             }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
-        }
+        },
+        "tags": [
+          "Organizations"
+        ]
       },
       "delete": {
-        "operationId": "Organization_delete",
+        "operationId": "Organizations_Delete",
         "consumes": [],
         "produces": [
           "application/json"
@@ -250,13 +287,22 @@
               "properties": {},
               "x-adl-name": "{}"
             }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
-        }
+        },
+        "tags": [
+          "Organizations"
+        ]
       }
     },
     "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/organizations": {
       "get": {
-        "operationId": "OrganizationListAll_listAll",
+        "operationId": "Organizations_ListBySubscription",
         "consumes": [],
         "produces": [
           "application/json"
@@ -279,31 +325,21 @@
                 "type": "string"
               }
             },
-            "description": "Paged response",
+            "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "type": "object",
-              "properties": {
-                "value": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/OrganizationResource"
-                  },
-                  "x-adl-name": "Microsoft.Confluent.OrganizationResource[]",
-                  "description": "The items on this page"
-                },
-                "nextLink": {
-                  "type": "string",
-                  "description": "The link to the next page of items"
-                }
-              },
-              "required": [
-                "value",
-                "nextLink"
-              ],
-              "x-adl-name": "(anonymous model)<Microsoft.Confluent.OrganizationResource>"
+              "$ref": "#/definitions/OrganizationResourceListResult"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
             }
           }
         },
+        "tags": [
+          "Organizations"
+        ],
         "x-ms-pageable": {
           "nextLinkName": "nextLink"
         }
@@ -311,7 +347,7 @@
     },
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Confluent/organizations": {
       "get": {
-        "operationId": "OrganizationList_listByResourceGroup",
+        "operationId": "Organizations_ListByResourceGroup",
         "consumes": [],
         "produces": [
           "application/json"
@@ -340,31 +376,21 @@
                 "type": "string"
               }
             },
-            "description": "Paged response",
+            "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "type": "object",
-              "properties": {
-                "value": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/OrganizationResource"
-                  },
-                  "x-adl-name": "Microsoft.Confluent.OrganizationResource[]",
-                  "description": "The items on this page"
-                },
-                "nextLink": {
-                  "type": "string",
-                  "description": "The link to the next page of items"
-                }
-              },
-              "required": [
-                "value",
-                "nextLink"
-              ],
-              "x-adl-name": "(anonymous model)<Microsoft.Confluent.OrganizationResource>"
+              "$ref": "#/definitions/OrganizationResourceListResult"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
             }
           }
         },
+        "tags": [
+          "Organizations"
+        ],
         "x-ms-pageable": {
           "nextLinkName": "nextLink"
         }
@@ -390,6 +416,16 @@
         "primary",
         "secondary"
       ]
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/ErrorDetail",
+          "description": "The error object."
+        }
+      },
+      "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations."
     },
     "OrganizationResource": {
       "type": "object",
@@ -434,6 +470,67 @@
         }
       ],
       "x-ms-azure-resource": true
+    },
+    "OrganizationResourceListResult": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrganizationResource"
+          },
+          "x-adl-name": "Microsoft.Confluent.OrganizationResource[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
+        }
+      },
+      "description": "The response of a OrganizationResource list operation.",
+      "required": [
+        "value",
+        "nextLink"
+      ]
+    },
+    "ErrorDetail": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The error code.",
+          "readOnly": true
+        },
+        "message": {
+          "type": "string",
+          "description": "The error message.",
+          "readOnly": true
+        },
+        "target": {
+          "type": "string",
+          "description": "The error target.",
+          "readOnly": true
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ErrorDetail"
+          },
+          "x-adl-name": "ErrorDetail[]",
+          "description": "The error details.",
+          "readOnly": true
+        },
+        "additionalInfo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ErrorAdditionalInfo"
+          },
+          "x-adl-name": "ErrorAdditionalInfo[]",
+          "description": "The error additional info.",
+          "readOnly": true
+        }
+      },
+      "description": "The error detail."
     },
     "OrganizationProperties": {
       "type": "object",
@@ -494,6 +591,24 @@
         "name",
         "type"
       ]
+    },
+    "ErrorAdditionalInfo": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The additional info type.",
+          "readOnly": true
+        },
+        "info": {
+          "type": "object",
+          "properties": {},
+          "description": "The additional info.",
+          "x-adl-name": "{}",
+          "readOnly": true
+        }
+      },
+      "description": "The resource management error additional info."
     },
     "OfferDetail": {
       "type": "object",
