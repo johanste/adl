@@ -127,9 +127,14 @@ Consider adding a file-level namespace declaration.`,
 
 const armNamespaces = new Map<Type, string>();
 
-export function armNamespace(program: Program, entity: Type, namespace: string) {
+export function armNamespace(program: Program, entity: Type, namespace?: string) {
   if (entity.kind !== "Namespace") {
     throw new Error("The @armNamespace decorator can only be applied to namespaces.");
+  }
+
+  // 'namespace' is optional, use the actual namespace string if omitted
+  if (!namespace) {
+    namespace = program.checker!.getNamespaceString(entity);
   }
 
   armNamespaces.set(entity, namespace);

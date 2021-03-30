@@ -1,4 +1,4 @@
-﻿@armNamespace "Microsoft.Confluent"
+﻿@armNamespace
 @serviceTitle "Microsoft.Confluent"
 @serviceVersion "2020-03-01-preview"
 namespace Microsoft.Confluent;
