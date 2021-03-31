@@ -61,6 +61,12 @@
       "projectFolder": "packages/adl-vscode",
       "reviewCategory": "production",
       "shouldPublish": true
+    },
+    {
+      "packageName": "@azure-tools/adl-vs",
+      "projectFolder": "packages/adl-vs",
+      "reviewCategory": "production",
+      "shouldPublish": false
     }
   ]
 }
