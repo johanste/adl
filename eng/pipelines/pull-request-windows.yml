@@ -1,0 +1,9 @@
+trigger: none
+pr:
+  - master
+
+pool:
+  vmImage: windows-2019
+
+steps:
+  - template: pull-request-common.yml

@@ -1,5 +1,3 @@
-# Temporary copy of pull-request-linux.yml to avoid breaking things during transition
-
 trigger: none
 pr:
   - master
