@@ -45,14 +45,11 @@ model ArmResponse<T> {
 
 @doc "Paged response"
 model Page<T> {
-  ... ArmResponseBase;
-  @body body: {
-    @doc "The items on this page"
-    value: T[];
+  @doc "The items on this page"
+  value: T[];
 
-    @doc "The link to the next page of items"
-    nextLink: string;
-  }
+  @doc "The link to the next page of items"
+  nextLink: string;
 }
 
 @doc "Details of a REST API operation, returned from the Resource Provider Operations API"

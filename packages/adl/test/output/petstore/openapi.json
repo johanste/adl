@@ -7,13 +7,6 @@
   "schemes": [
     "https"
   ],
-  "produces": [
-    "application/json",
-    "image/png"
-  ],
-  "consumes": [
-    "application/json"
-  ],
   "tags": [],
   "paths": {
     "/pets/{petId}": {

@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Microsoft.Confluent",
-    "version": "2020-03-01-preview"
+    "title": "Azure Fluid Relay",
+    "version": "2021-03-12-preview"
   },
   "schemes": [
     "https"
@@ -15,14 +15,17 @@
   ],
   "tags": [
     {
-      "name": "Organizations"
+      "name": "FluidRelayServers"
     }
   ],
   "paths": {
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Confluent/organizations/{name}": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidRelayServers/{name}/regenerateKey": {
       "post": {
-        "operationId": "Organizations_GetKeys",
-        "consumes": [],
+        "operationId": "FluidRelayServers_regenerateKey",
+        "summary": "Regenerate the primary or secondary key for this server.",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -44,6 +47,14 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "parameters",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegenerateKeyRequest"
+            }
           }
         ],
         "responses": {
@@ -58,7 +69,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationKeys"
+              "$ref": "#/definitions/FluidRelayServerKeys"
             }
           },
           "default": {
@@ -68,9 +79,12 @@
             }
           }
         }
-      },
-      "get": {
-        "operationId": "Organizations_Get",
+      }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidRelayServers/{name}/getKeys": {
+      "post": {
+        "operationId": "FluidRelayServers_getKeys",
+        "summary": "Retrieve the keys for this server.",
         "consumes": [],
         "produces": [
           "application/json"
@@ -107,7 +121,58 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationResource"
+              "$ref": "#/definitions/FluidRelayServerKeys"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidRelayServers/{name}": {
+      "get": {
+        "operationId": "FluidRelayServers_Get",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "subscriptionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resourceGroup",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/FluidRelayServerResource"
             }
           },
           "default": {
@@ -118,11 +183,11 @@
           }
         },
         "tags": [
-          "Organizations"
+          "FluidRelayServers"
         ]
       },
       "put": {
-        "operationId": "Organizations_CreateOrUpdate",
+        "operationId": "FluidRelayServers_CreateOrUpdate",
         "consumes": [
           "application/json"
         ],
@@ -153,7 +218,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrganizationResource"
+              "$ref": "#/definitions/FluidRelayServerResource"
             }
           }
         ],
@@ -169,7 +234,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationResource"
+              "$ref": "#/definitions/FluidRelayServerResource"
             }
           },
           "default": {
@@ -180,11 +245,11 @@
           }
         },
         "tags": [
-          "Organizations"
+          "FluidRelayServers"
         ]
       },
       "patch": {
-        "operationId": "Organizations_Update",
+        "operationId": "FluidRelayServers_Update",
         "consumes": [
           "application/json"
         ],
@@ -215,7 +280,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrganizationResource"
+              "$ref": "#/definitions/FluidRelayServerResource"
             }
           }
         ],
@@ -231,7 +296,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationResource"
+              "$ref": "#/definitions/FluidRelayServerResource"
             }
           },
           "default": {
@@ -242,11 +307,11 @@
           }
         },
         "tags": [
-          "Organizations"
+          "FluidRelayServers"
         ]
       },
       "delete": {
-        "operationId": "Organizations_Delete",
+        "operationId": "FluidRelayServers_Delete",
         "consumes": [],
         "produces": [
           "application/json"
@@ -296,13 +361,13 @@
           }
         },
         "tags": [
-          "Organizations"
+          "FluidRelayServers"
         ]
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/organizations": {
+    "/subscriptions/{subscriptionId}/providers/Microsoft.FluidRelay/fluidRelayServers": {
       "get": {
-        "operationId": "Organizations_ListBySubscription",
+        "operationId": "FluidRelayServers_ListBySubscription",
         "consumes": [],
         "produces": [
           "application/json"
@@ -327,7 +392,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationResourceListResult"
+              "$ref": "#/definitions/FluidRelayServerResourceListResult"
             }
           },
           "default": {
@@ -338,16 +403,16 @@
           }
         },
         "tags": [
-          "Organizations"
+          "FluidRelayServers"
         ],
         "x-ms-pageable": {
           "nextLinkName": "nextLink"
         }
       }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Confluent/organizations": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidRelayServers": {
       "get": {
-        "operationId": "Organizations_ListByResourceGroup",
+        "operationId": "FluidRelayServers_ListByResourceGroup",
         "consumes": [],
         "produces": [
           "application/json"
@@ -378,7 +443,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationResourceListResult"
+              "$ref": "#/definitions/FluidRelayServerResourceListResult"
             }
           },
           "default": {
@@ -389,7 +454,7 @@
           }
         },
         "tags": [
-          "Organizations"
+          "FluidRelayServers"
         ],
         "x-ms-pageable": {
           "nextLinkName": "nextLink"
@@ -398,24 +463,45 @@
     }
   },
   "definitions": {
-    "OrganizationKeys": {
+    "RegenerateKeyRequest": {
       "type": "object",
       "properties": {
-        "primary": {
+        "keyName": {
           "type": "string",
-          "format": "password",
-          "description": "The primary key."
-        },
-        "secondary": {
-          "type": "string",
-          "format": "password",
-          "description": "The secondary Key."
+          "enum": [
+            "key1",
+            "key2"
+          ],
+          "x-ms-enum": {
+            "name": "KeyName",
+            "modelAsString": true
+          },
+          "x-adl-name": "key1 | key2",
+          "description": "The key to regenerate."
         }
       },
+      "description": "Specifies which key should be generated.",
       "required": [
-        "primary",
-        "secondary"
+        "keyName"
       ]
+    },
+    "FluidRelayServerKeys": {
+      "type": "object",
+      "properties": {
+        "key1": {
+          "type": "string",
+          "format": "password",
+          "description": "The primary key for this server.",
+          "readOnly": true
+        },
+        "key2": {
+          "type": "string",
+          "format": "password",
+          "description": "The secondary key for this server.",
+          "readOnly": true
+        }
+      },
+      "description": "The set of available keys for this server."
     },
     "ErrorResponse": {
       "type": "object",
@@ -427,7 +513,7 @@
       },
       "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations."
     },
-    "OrganizationResource": {
+    "FluidRelayServerResource": {
       "type": "object",
       "properties": {
         "location": {
@@ -451,7 +537,7 @@
           ]
         },
         "properties": {
-          "$ref": "#/definitions/OrganizationProperties",
+          "$ref": "#/definitions/FluidRelayServerProperties",
           "description": "The resource-specific properties for this resource.",
           "x-ms-mutability": [
             "read",
@@ -471,15 +557,15 @@
       ],
       "x-ms-azure-resource": true
     },
-    "OrganizationResourceListResult": {
+    "FluidRelayServerResourceListResult": {
       "type": "object",
       "properties": {
         "value": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/OrganizationResource"
+            "$ref": "#/definitions/FluidRelayServerResource"
           },
-          "x-adl-name": "Microsoft.Confluent.OrganizationResource[]",
+          "x-adl-name": "Microsoft.FluidRelay.FluidRelayServerResource[]",
           "description": "The items on this page"
         },
         "nextLink": {
@@ -487,7 +573,7 @@
           "description": "The link to the next page of items"
         }
       },
-      "description": "The response of a OrganizationResource list operation.",
+      "description": "The response of a FluidRelayServerResource list operation.",
       "required": [
         "value",
         "nextLink"
@@ -532,42 +618,35 @@
       },
       "description": "The error detail."
     },
-    "OrganizationProperties": {
+    "FluidRelayServerProperties": {
       "type": "object",
       "properties": {
-        "createdTime": {
+        "frsTenantId": {
           "type": "string",
-          "format": "date-time",
-          "description": "UTC Time when Organization resource was created.",
+          "description": "The Fluid tenantId for this server",
           "readOnly": true
         },
-        "organizationId": {
-          "type": "string",
-          "description": "Id of the Confluent organization.",
+        "fluidRelayEndpoints": {
+          "$ref": "#/definitions/FluidRelayEndpoints",
+          "description": "The Fluid service endpoints for this server.",
           "readOnly": true
         },
-        "ssoUrl": {
+        "provisioningState": {
           "type": "string",
-          "description": "Single sign-on url for the Confluent organization.",
-          "readOnly": true
-        },
-        "offerDetail": {
-          "$ref": "#/definitions/OfferDetail",
-          "description": "Details of the product offering."
-        },
-        "userDetail": {
-          "$ref": "#/definitions/UserDetail",
-          "description": "Subscriber details."
+          "enum": [
+            "Succeeded",
+            "Failed",
+            "Cancelled"
+          ],
+          "x-ms-enum": {
+            "name": "ProvisioningState",
+            "modelAsString": true
+          },
+          "x-adl-name": "Succeeded | Failed | Cancelled",
+          "description": "Provisioning states for FluidRelay RP"
         }
       },
-      "description": "Details of the Confluent organization.",
-      "required": [
-        "createdTime",
-        "organizationId",
-        "ssoUrl",
-        "offerDetail",
-        "userDetail"
-      ]
+      "description": "The properties of a Fluid Relay Service resource."
     },
     "ArmResource": {
       "type": "object",
@@ -610,96 +689,32 @@
       },
       "description": "The resource management error additional info."
     },
-    "OfferDetail": {
+    "FluidRelayEndpoints": {
       "type": "object",
       "properties": {
-        "publisherId": {
-          "type": "string",
-          "minLength": 5,
-          "maxLength": 50,
-          "description": "Id of the product publisher."
-        },
-        "id": {
-          "type": "string",
-          "minLength": 5,
-          "maxLength": 50,
-          "description": "Id of the product offering."
-        },
-        "planId": {
-          "type": "string",
-          "minLength": 5,
-          "maxLength": 50,
-          "description": "Id of the product offer plan."
-        },
-        "planName": {
-          "type": "string",
-          "minLength": 5,
-          "maxLength": 50,
-          "description": "Name of the product offer plan."
-        },
-        "termUnit": {
-          "type": "string",
-          "maxLength": 25,
-          "description": "Offer plan term unit."
-        },
-        "status": {
-          "type": "string",
-          "enum": [
-            "Started",
-            "PendingFulfillmentStart",
-            "InProgress",
-            "Subscribed",
-            "Suspended",
-            "Reinstated",
-            "Succeeded",
-            "Failed",
-            "Unsubscribed",
-            "Updating"
-          ],
-          "x-ms-enum": {
-            "name": "OfferStatus",
-            "modelAsString": true
+        "ordererEndpoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
           },
-          "x-adl-name": "Started | PendingFulfillmentStart | InProgress | Subscribed | Suspended | Reinstated | Succeeded | Failed | Unsubscribed | Updating",
-          "description": "SaaS offer status."
+          "x-adl-name": "Microsoft.FluidRelay.Uri[]",
+          "description": "The Fluid Relay Orderer Endpoints.",
+          "readOnly": true
+        },
+        "storageEndpoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-adl-name": "Microsoft.FluidRelay.Uri[]",
+          "description": "The Fluid Relay storage endpoints.",
+          "readOnly": true
         }
       },
-      "description": "Details of the product offering.",
+      "description": "The Fluid Relay Service endpoints for this server.",
       "required": [
-        "publisherId",
-        "id",
-        "planId",
-        "planName",
-        "termUnit",
-        "status"
-      ]
-    },
-    "UserDetail": {
-      "type": "object",
-      "properties": {
-        "firstName": {
-          "type": "string",
-          "minLength": 5,
-          "maxLength": 50,
-          "description": "Subscriber first name."
-        },
-        "lastName": {
-          "type": "string",
-          "minLength": 5,
-          "maxLength": 50,
-          "description": "Subscriber last name."
-        },
-        "emailAddress": {
-          "type": "string",
-          "pattern": "\\w+@\\w+\\.\\w+",
-          "description": "Subscriber email address."
-        }
-      },
-      "description": "Details of the subscriber",
-      "required": [
-        "firstName",
-        "lastName",
-        "emailAddress"
+        "ordererEndpoints",
+        "storageEndpoints"
       ]
     }
   },
