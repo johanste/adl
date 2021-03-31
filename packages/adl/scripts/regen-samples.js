@@ -15,6 +15,7 @@ const sampleFolders = [
   "nested",
   "nullable",
   "operations",
+  "overloads",
   "petstore",
   "recursive",
   "rpaas/liftr.confluent",
