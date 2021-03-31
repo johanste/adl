@@ -93,6 +93,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     consumes: [], // they show up at the top of the document
     tags: [],
     paths: {},
+    "x-ms-paths": {},
     definitions: {},
     parameters: {},
   };
@@ -142,6 +143,11 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       root.consumes = [...globalConsumes.values()];
     } else {
       delete root.consumes;
+    }
+
+    // Clean up empty entries
+    if (Object.keys(root["x-ms-paths"]).length === 0) {
+      delete root["x-ms-paths"];
     }
 
     if (!program.compilerOptions.noEmit) {
@@ -247,11 +253,14 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
 
     if (fullPath === undefined) throw new Error("uhoh");
 
-    if (!root.paths[fullPath]) {
-      root.paths[fullPath] = {};
+    // If path contains a literal query string parameter, add it to x-ms-paths instead
+    let pathsObject = fullPath.indexOf("?") < 0 ? root.paths : root["x-ms-paths"];
+
+    if (!pathsObject[fullPath]) {
+      pathsObject[fullPath] = {};
     }
 
-    currentPath = root.paths[fullPath];
+    currentPath = pathsObject[fullPath];
     if (!currentPath[verb]) {
       currentPath[verb] = {};
     }
