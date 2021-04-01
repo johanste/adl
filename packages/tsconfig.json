@@ -15,21 +15,9 @@
     "stripInternal": true,
     "noEmitHelpers": false,
     "target": "es2019",
-    "types": [
-      "node"
-    ],
-    "lib": [
-      "es2019"
-    ],
+    "types": ["node"],
+    "lib": ["es2019"],
     "experimentalDecorators": true,
     "newLine": "LF"
-  },
-  "exclude": [
-    "dist",
-    "test/scenarios/**",
-    "resources",
-    "node_modules/**",
-    "**/*.d.ts",
-    "**/*.adl.ts"
-  ]
+  }
 }
