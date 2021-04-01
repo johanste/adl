@@ -73,9 +73,9 @@ function getPageable(entity: Type): string | undefined {
 
 const securityDetails: {
   namespace?: NamespaceType;
-  requirements: any;
+  requirements: any[];
   definitions: any;
-} = { requirements: {}, definitions: {} };
+} = { requirements: [], definitions: {} };
 
 function setSecurityNamespace(namespace: NamespaceType) {
   if (securityDetails.namespace && securityDetails.namespace !== namespace) {
@@ -91,7 +91,10 @@ export function _addSecurityRequirement(
   scopes: string[]
 ): void {
   setSecurityNamespace(namespace);
-  securityDetails.requirements[name] = scopes;
+
+  const req: any = {};
+  req[name] = scopes;
+  securityDetails.requirements.push(req);
 }
 
 export function _addSecurityDefinition(namespace: NamespaceType, name: string, details: any): void {
