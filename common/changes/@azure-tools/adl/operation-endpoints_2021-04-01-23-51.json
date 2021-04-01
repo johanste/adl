@@ -1,0 +1,16 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl",
+      "comment": "Add api-version parameter to all ARM operations",
+      "type": "patch"
+    },
+    {
+      "packageName": "@azure-tools/adl",
+      "comment": "Add operations endpoint for ARM services",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl",
+  "email": "daviwil@microsoft.com"
+}
