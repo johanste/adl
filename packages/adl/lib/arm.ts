@@ -121,17 +121,28 @@ Consider adding a file-level namespace declaration.`,
 
 const armNamespaces = new Map<Type, string>();
 
-export function armNamespace(program: Program, entity: Type, namespace?: string) {
+export function armNamespace(program: Program, entity: Type, armNamespace?: string) {
   if (entity.kind !== "Namespace") {
     throw new Error("The @armNamespace decorator can only be applied to namespaces.");
   }
 
   // 'namespace' is optional, use the actual namespace string if omitted
-  if (!namespace) {
-    namespace = program.checker!.getNamespaceString(entity);
+  const adlNamespace = program.checker!.getNamespaceString(entity);
+  if (!armNamespace) {
+    armNamespace = adlNamespace;
   }
 
-  armNamespaces.set(entity, namespace);
+  armNamespaces.set(entity, armNamespace);
+
+  // Add the /operations endpoint for the ARM namespace
+  program.evalAdlScript(`
+    namespace ${adlNamespace} {
+      @tag "Operations"
+      @resource "/providers/${armNamespace}/operations"
+      namespace Operations {
+        @list @get op List(...ApiVersionParameter): ArmResponse<OperationListResult> | ErrorResponse;
+      }
+    }`);
 
   // ARM services need to have "application/json" set on produces/consumes
   produces(program, entity, "application/json");
