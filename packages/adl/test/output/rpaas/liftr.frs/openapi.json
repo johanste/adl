@@ -31,6 +31,9 @@
         ],
         "parameters": [
           {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
+          {
             "name": "subscriptionId",
             "in": "path",
             "required": true,
@@ -78,7 +81,10 @@
               "$ref": "#/definitions/ErrorResponse"
             }
           }
-        }
+        },
+        "tags": [
+          "FluidRelayServers"
+        ]
       }
     },
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidRelayServers/{name}/getKeys": {
@@ -90,6 +96,9 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
           {
             "name": "subscriptionId",
             "in": "path",
@@ -130,7 +139,10 @@
               "$ref": "#/definitions/ErrorResponse"
             }
           }
-        }
+        },
+        "tags": [
+          "FluidRelayServers"
+        ]
       }
     },
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.FluidRelay/fluidRelayServers/{name}": {
@@ -141,6 +153,9 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
           {
             "name": "subscriptionId",
             "in": "path",
@@ -195,6 +210,9 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
           {
             "name": "subscriptionId",
             "in": "path",
@@ -258,6 +276,9 @@
         ],
         "parameters": [
           {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
+          {
             "name": "subscriptionId",
             "in": "path",
             "required": true,
@@ -318,6 +339,9 @@
         ],
         "parameters": [
           {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
+          {
             "name": "subscriptionId",
             "in": "path",
             "required": true,
@@ -374,6 +398,9 @@
         ],
         "parameters": [
           {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
+          {
             "name": "subscriptionId",
             "in": "path",
             "required": true,
@@ -418,6 +445,9 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
           {
             "name": "subscriptionId",
             "in": "path",
@@ -718,5 +748,14 @@
       ]
     }
   },
-  "parameters": {}
+  "parameters": {
+    "ApiVersionParameter": {
+      "x-ms-parameter-location": "method",
+      "name": "api-version",
+      "in": "query",
+      "required": true,
+      "description": "The API version to use for this operation.",
+      "type": "string"
+    }
+  }
 }

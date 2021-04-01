@@ -52,6 +52,13 @@ model Page<T> {
   nextLink: string;
 }
 
+model ApiVersionParameter {
+  @query
+  @minLength 1
+  @doc "The API version to use for this operation."
+  "api-version": string;
+}
+
 @doc "Details of a REST API operation, returned from the Resource Provider Operations API"
 model Operation {
   @doc """
