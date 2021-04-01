@@ -40,7 +40,8 @@ import {
   getServiceVersion,
   getConsumes,
   getProduces,
-  detectServiceNamespace,
+  getServiceNamespaceString,
+  _checkIfServiceNamespace,
 } from "./rest.js";
 
 export function onBuild(p: Program) {
@@ -77,20 +78,14 @@ const securityDetails: {
   definitions: any;
 } = { requirements: [], definitions: {} };
 
-function setSecurityNamespace(namespace: NamespaceType) {
-  if (securityDetails.namespace && securityDetails.namespace !== namespace) {
-    throw new Error("Cannot add security details to more than one namespace in an ADL project.");
-  } else if (securityDetails.namespace === undefined) {
-    securityDetails.namespace = namespace;
-  }
-}
-
 export function _addSecurityRequirement(
   namespace: NamespaceType,
   name: string,
   scopes: string[]
 ): void {
-  setSecurityNamespace(namespace);
+  if (!_checkIfServiceNamespace(namespace)) {
+    throw new Error("Cannot add security details to a namespace other than the service namespace.");
+  }
 
   const req: any = {};
   req[name] = scopes;
@@ -98,7 +93,10 @@ export function _addSecurityRequirement(
 }
 
 export function _addSecurityDefinition(namespace: NamespaceType, name: string, details: any): void {
-  setSecurityNamespace(namespace);
+  if (!_checkIfServiceNamespace(namespace)) {
+    throw new Error("Cannot add security details to a namespace other than the service namespace.");
+  }
+
   securityDetails.definitions[name] = details;
 }
 
@@ -136,8 +134,8 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     parameters: {},
   };
 
-  // Attempt to detect the service namespace for use in name shortening
-  const serviceNamespace: string | undefined = detectServiceNamespace(program);
+  // Get the service namespace string for use in name shortening
+  const serviceNamespace: string | undefined = getServiceNamespaceString(program);
 
   let currentBasePath: string | undefined = "";
   let currentPath: any = root.paths;

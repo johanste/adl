@@ -1,6 +1,6 @@
 import { Type, SyntaxKind, NamespaceType } from "../compiler/types.js";
 import { Program } from "../compiler/program";
-import { consumes, produces, resource } from "./rest.js";
+import { consumes, produces, resource, _setServiceNamespace } from "./rest.js";
 import { throwDiagnostic } from "../compiler/diagnostics.js";
 import { _addSecurityDefinition, _addSecurityRequirement } from "./openapi.js";
 
@@ -132,6 +132,9 @@ export function armNamespace(program: Program, entity: Type, namespace?: string)
   if (entity.kind !== "Namespace") {
     throw new Error("The @armNamespace decorator can only be applied to namespaces.");
   }
+
+  // armNamespace will set the service namespace if it's not done already
+  _setServiceNamespace(entity);
 
   // 'namespace' is optional, use the actual namespace string if omitted
   if (!namespace) {
