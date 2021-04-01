@@ -67,3 +67,13 @@ need to restart VS Code after changing this.
 
 You can also configure a project to use a local npm install of
 `@azure-tools/adl`. See [local-adl sample](packages/adl/samples/local-adl).
+
+
+### Installing Visual Studio Extension
+
+```
+adl vs install
+```
+
+This will download and install the latest Visual Studio extension. Use `adl vs
+uninstall` to remove it.
