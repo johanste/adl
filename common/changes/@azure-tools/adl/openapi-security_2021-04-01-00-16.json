@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl",
+      "comment": "Enable security and securityDefinitions metadata to be applied to emitted OpenAPI documents; add default ARM security details",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl",
+  "email": "daviwil@microsoft.com"
+}

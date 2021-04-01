@@ -1,7 +1,8 @@
 import { Type, SyntaxKind, NamespaceType } from "../compiler/types.js";
 import { Program } from "../compiler/program";
-import { consumes, produces, resource } from "./rest.js";
+import { consumes, produces, resource, _setServiceNamespace } from "./rest.js";
 import { throwDiagnostic } from "../compiler/diagnostics.js";
+import { _addSecurityDefinition, _addSecurityRequirement } from "./openapi.js";
 
 // TODO: We can't name this ArmTrackedResource because that name
 //       is already taken.  Consider having decorators occupy a
@@ -132,6 +133,9 @@ export function armNamespace(program: Program, entity: Type, namespace?: string)
     throw new Error("The @armNamespace decorator can only be applied to namespaces.");
   }
 
+  // armNamespace will set the service namespace if it's not done already
+  _setServiceNamespace(entity);
+
   // 'namespace' is optional, use the actual namespace string if omitted
   if (!namespace) {
     namespace = program.checker!.getNamespaceString(entity);
@@ -142,6 +146,18 @@ export function armNamespace(program: Program, entity: Type, namespace?: string)
   // ARM services need to have "application/json" set on produces/consumes
   produces(program, entity, "application/json");
   consumes(program, entity, "application/json");
+
+  // Set default security definitions
+  _addSecurityRequirement(entity, "azure_auth", ["user_impersonation"]);
+  _addSecurityDefinition(entity, "azure_auth", {
+    type: "oauth2",
+    authorizationUrl: "https://login.microsoftonline.com/common/oauth2/authorize",
+    flow: "implicit",
+    description: "Azure Active Directory OAuth2 Flow.",
+    scopes: {
+      user_impersonation: "impersonate your user account",
+    },
+  });
 }
 
 export function getArmNamespace(namespace: NamespaceType): string | undefined {
