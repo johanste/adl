@@ -66,6 +66,39 @@ function getPageable(entity: Type): string | undefined {
   return pageableOperations.get(entity);
 }
 
+// NOTE: These functions aren't meant to be used directly as decorators but as a
+// helper functions for other decorators.  The security information given here
+// will be inserted into the `security` and `securityDefinitions` sections of
+// the emitted OpenAPI document.
+
+const securityDetails: {
+  namespace?: NamespaceType;
+  requirements: any;
+  definitions: any;
+} = { requirements: {}, definitions: {} };
+
+function setSecurityNamespace(namespace: NamespaceType) {
+  if (securityDetails.namespace && securityDetails.namespace !== namespace) {
+    throw new Error("Cannot add security details to more than one namespace in an ADL project.");
+  } else if (securityDetails.namespace === undefined) {
+    securityDetails.namespace = namespace;
+  }
+}
+
+export function _addSecurityRequirement(
+  namespace: NamespaceType,
+  name: string,
+  scopes: string[]
+): void {
+  setSecurityNamespace(namespace);
+  securityDetails.requirements[name] = scopes;
+}
+
+export function _addSecurityDefinition(namespace: NamespaceType, name: string, details: any): void {
+  setSecurityNamespace(namespace);
+  securityDetails.definitions[name] = details;
+}
+
 const openApiExtensions = new Map<Type, Map<string, any>>();
 export function extension(program: Program, entity: Type, extensionName: string, value: any) {
   let typeExtensions = openApiExtensions.get(entity) ?? new Map<string, any>();
@@ -91,6 +124,8 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     schemes: ["https"],
     produces: [], // Pre-initialize produces and consumes so that
     consumes: [], // they show up at the top of the document
+    security: securityDetails.requirements,
+    securityDefinitions: securityDetails.definitions,
     tags: [],
     paths: {},
     "x-ms-paths": {},
@@ -148,6 +183,12 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     // Clean up empty entries
     if (Object.keys(root["x-ms-paths"]).length === 0) {
       delete root["x-ms-paths"];
+    }
+    if (Object.keys(root.security).length === 0) {
+      delete root["security"];
+    }
+    if (Object.keys(root.securityDefinitions).length === 0) {
+      delete root["securityDefinitions"];
     }
 
     if (!program.compilerOptions.noEmit) {
