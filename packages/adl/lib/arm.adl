@@ -64,6 +64,38 @@ model ApiVersionParameter {
   "api-version": string;
 }
 
+model SubscriptionIdParameter {
+  @path
+  @minLength 1
+  @doc "The ID of the target subscription."
+  @armTypesParameter "SubscriptionIdParameter"
+  subscriptionId: string;
+}
+
+model ResourceGroupNameParameter {
+  @path
+  @minLength 1
+  @maxLength 90
+  @format "^[-\\w\\._\\(\\)]+$"
+  @doc "The name of the resource group. The name is case insensitive."
+  @armTypesParameter "ResourceGroupNameParameter"
+  resourceGroupName: string;
+}
+
+model OperationIdParameter {
+  @path
+  @minLength 1
+  @doc "The ID of an ongoing async operation."
+  @armTypesParameter "OperationIdParameter"
+  operationId: string;
+}
+
+model CommonResourceParameters {
+  ...ApiVersionParameter,
+  ...SubscriptionIdParameter,
+  ...ResourceGroupNameParameter
+}
+
 @armTypesDefinition
 @doc "Details of a REST API operation, returned from the Resource Provider Operations API"
 model Operation {

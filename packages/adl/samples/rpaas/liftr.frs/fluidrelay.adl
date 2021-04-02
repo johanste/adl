@@ -15,9 +15,7 @@ namespace FluidRelayServers {
   @doc "Regenerate the primary or secondary key for this server."
   @post "regenerateKey"
   op regenerateKey(
-    ...ApiVersionParameter,
-    @path subscriptionId: string,
-    @path resourceGroup: string,
+    ...CommonResourceParameters,
     @path name: string,
     @body parameters: RegenerateKeyRequest
   ): ArmResponse<FluidRelayServerKeys> | ErrorResponse;
@@ -25,9 +23,7 @@ namespace FluidRelayServers {
   @doc "Retrieve the keys for this server."
   @post "getKeys"
   op getKeys(
-    ...ApiVersionParameter,
-    @path subscriptionId: string,
-    @path resourceGroup: string,
+    ...CommonResourceParameters,
     @path name: string
   ): ArmResponse<FluidRelayServerKeys> | ErrorResponse;
 }

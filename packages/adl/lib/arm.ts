@@ -81,22 +81,22 @@ Consider adding a file-level namespace declaration.`,
            @resource "/subscriptions/{subscriptionId}/providers/${resourceRoot}"
            namespace ${target.name}ListBySubscription {
              @operationId "${operationGroup}_ListBySubscription"
-             @list @get op listBySubscription(...ApiVersionParameter, @path subscriptionId: string): ArmResponse<${resourceListName}> | ErrorResponse;
+             @list @get op listBySubscription(...ApiVersionParameter, ...SubscriptionIdParameter): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
            @tag "${operationGroup}"
-           @resource "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}"
+           @resource "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/${resourceRoot}"
            namespace ${target.name}List {
              @operationId "${operationGroup}_ListByResourceGroup"
-             @list @get op listByResourceGroup(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string): ArmResponse<${resourceListName}> | ErrorResponse;
+             @list @get op listByResourceGroup(...CommonResourceParameters): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
            @tag "${operationGroup}"
            namespace ${target.name} {
-             @get op Get(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}> | ErrorResponse;
-             @put op CreateOrUpdate(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
-             @patch op Update(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
-             @_delete op Delete(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}> | ErrorResponse;
+             @get op Get(...CommonResourceParameters, @path name: string): ArmResponse<${resourceModelName}> | ErrorResponse;
+             @put op CreateOrUpdate(...CommonResourceParameters, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
+             @patch op Update(...CommonResourceParameters, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
+             @_delete op Delete(...CommonResourceParameters, @path name: string): ArmResponse<{}> | ErrorResponse;
            }
          }
       `);
@@ -105,7 +105,7 @@ Consider adding a file-level namespace declaration.`,
       resource(
         program,
         target,
-        `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}/{name}`
+        `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/${resourceRoot}/{name}`
       );
     } else {
       throw new Error("TrackedResource property type must be a model");
