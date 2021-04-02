@@ -2,7 +2,7 @@ import { Type, SyntaxKind, NamespaceType } from "../compiler/types.js";
 import { Program } from "../compiler/program";
 import { consumes, produces, resource, _setServiceNamespace } from "./rest.js";
 import { throwDiagnostic } from "../compiler/diagnostics.js";
-import { _addSecurityDefinition, _addSecurityRequirement } from "./openapi.js";
+import { useRef, _addSecurityDefinition, _addSecurityRequirement } from "./openapi.js";
 
 // TODO: We can't name this ArmTrackedResource because that name
 //       is already taken.  Consider having decorators occupy a
@@ -178,4 +178,40 @@ export function getArmNamespace(namespace: NamespaceType): string | undefined {
   }
 
   return undefined;
+}
+
+export function armTypesDefinition(program: Program, entity: Type, definitionName?: string): void {
+  if (entity.kind !== "Model") {
+    throw new Error("The @armTypesDefinition decorator can only be applied to models.");
+  }
+
+  // Use the name of the model type if not specified
+  if (!definitionName) {
+    definitionName = entity.name;
+  }
+
+  useRef(
+    program,
+    entity,
+    `../../../../../common-types/resource-management/v2/types.json#/definitions/${definitionName}`
+  );
+}
+
+export function armTypesParameter(program: Program, entity: Type, parameterName?: string): void {
+  if (entity.kind !== "ModelProperty") {
+    throw new Error(
+      "The @armTypesParameter decorator can only be applied to model properties and operation parameters."
+    );
+  }
+
+  // Use the name of the model type if not specified
+  if (!parameterName) {
+    parameterName = entity.name;
+  }
+
+  useRef(
+    program,
+    entity,
+    `../../../../../common-types/resource-management/v2/types.json#/parameters/${parameterName}`
+  );
 }

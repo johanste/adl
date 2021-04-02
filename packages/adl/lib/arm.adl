@@ -10,8 +10,9 @@ model ArmResource {
   type: string;   
 }
 
-@doc "Common properties for all resources tracked by ARM."
-model ArmTrackedResource<TProperties> extends ArmResource {
+@armTypesDefinition "TrackedResource"
+@doc "The resource model definition for an Azure Resource Manager tracked top level resource"
+model ArmTrackedResourceBase extends ArmResource {
   @doc "The geo-location where the resource lives"
   @visibility("read", "create")
   location: string;
@@ -19,7 +20,10 @@ model ArmTrackedResource<TProperties> extends ArmResource {
   @doc "Resource tags."
   @visibility("read", "write", "create")
   tags?: Map<string, string>;
+}
 
+@doc "Concrete tracked resource types can be created by aliasing this type using a specific property type."
+model ArmTrackedResource<TProperties> extends ArmTrackedResourceBase {
   @doc "The resource-specific properties for this resource."
   @visibility("read", "create")
   @extension("x-ms-client-flatten", true)
@@ -56,9 +60,11 @@ model ApiVersionParameter {
   @query
   @minLength 1
   @doc "The API version to use for this operation."
+  @armTypesParameter "ApiVersionParameter"
   "api-version": string;
 }
 
+@armTypesDefinition
 @doc "Details of a REST API operation, returned from the Resource Provider Operations API"
 model Operation {
   @doc """
@@ -98,11 +104,13 @@ Enum. Indicates the action type. "Internal" refers to actions that are for inter
 """
 model ActionType = "Internal";
 
+@armTypesDefinition
 @doc """
 A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 """
 model OperationListResult = Page<Operation>;
 
+@armTypesDefinition
 @doc "Localized display information for and operation."
 model OperationDisplay {
   @doc """
@@ -124,6 +132,7 @@ model OperationDisplay {
   description?: string;
 }
 
+@armTypesDefinition
 @doc "The current status of an async operation."
 model OperationStatusResult {
   @doc "Fully qualified ID for the async operation."
@@ -153,12 +162,14 @@ model OperationStatusResult {
   error?: ErrorDetail;
 }
 
+@armTypesDefinition
 @doc "Common error response for all Azure Resource Manager APIs to return error details for failed operations."
 model ErrorResponse {
   @doc "The error object."
   error?: ErrorDetail;
 }
 
+@armTypesDefinition
 @doc "The error detail."
 model ErrorDetail {
   @doc "The error code."
@@ -182,6 +193,7 @@ model ErrorDetail {
   additionalInfo?: ErrorAdditionalInfo[];
 }
 
+@armTypesDefinition
 @doc "The resource management error additional info."
 model ErrorAdditionalInfo {
   @doc "The additional info type."

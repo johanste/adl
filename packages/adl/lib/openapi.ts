@@ -67,6 +67,19 @@ function getPageable(entity: Type): string | undefined {
   return pageableOperations.get(entity);
 }
 
+const refTargets = new Map<Type, string>();
+export function useRef(program: Program, entity: Type, refUrl: string): void {
+  if (entity.kind === "Model" || entity.kind === "ModelProperty") {
+    refTargets.set(entity, refUrl);
+  } else {
+    throw new Error("@useRef decorator can only be applied to models and operation parameters.");
+  }
+}
+
+function getRef(entity: Type): string | undefined {
+  return refTargets.get(entity);
+}
+
 // NOTE: These functions aren't meant to be used directly as decorators but as a
 // helper functions for other decorators.  The security information given here
 // will be inserted into the `security` and `securityDefinitions` sections of
@@ -433,6 +446,13 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   }
 
   function getSchemaOrRef(type: Type): any {
+    const refUrl = getRef(type);
+    if (refUrl) {
+      return {
+        $ref: refUrl,
+      };
+    }
+
     const builtIn = mapADLTypeToOpenAPI(type);
     if (builtIn !== undefined) {
       return builtIn;
@@ -468,6 +488,13 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       while (property.sourceProperty) {
         property = property.sourceProperty;
       }
+    }
+
+    const refUrl = getRef(property);
+    if (refUrl) {
+      return {
+        $ref: refUrl,
+      };
     }
 
     if (params.has(property)) {
@@ -576,8 +603,12 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
 
   function emitParameter(parent: ModelType | undefined, param: ModelTypeProperty, kind: string) {
     const ph = getParamPlaceholder(parent, param);
-    populateParameter(ph, param, kind);
     currentEndpoint.parameters.push(ph);
+
+    // If the parameter already has a $ref, don't bother populating it
+    if (!("$ref" in ph)) {
+      populateParameter(ph, param, kind);
+    }
   }
 
   function populateParameter(ph: any, param: ModelTypeProperty, kind: string | undefined) {
