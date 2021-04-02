@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl-vs",
+      "comment": "Improve debugging of VS extension itself",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl-vs",
+  "email": "nicholg@microsoft.com"
+}
