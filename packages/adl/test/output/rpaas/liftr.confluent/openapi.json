@@ -34,6 +34,9 @@
   "tags": [
     {
       "name": "Organizations"
+    },
+    {
+      "name": "Operations"
     }
   ],
   "paths": {
@@ -45,6 +48,9 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
           {
             "name": "subscriptionId",
             "in": "path",
@@ -85,7 +91,10 @@
               "$ref": "#/definitions/ErrorResponse"
             }
           }
-        }
+        },
+        "tags": [
+          "Organizations"
+        ]
       },
       "get": {
         "operationId": "Organizations_Get",
@@ -94,6 +103,9 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
           {
             "name": "subscriptionId",
             "in": "path",
@@ -148,6 +160,9 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
           {
             "name": "subscriptionId",
             "in": "path",
@@ -211,6 +226,9 @@
         ],
         "parameters": [
           {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
+          {
             "name": "subscriptionId",
             "in": "path",
             "required": true,
@@ -271,6 +289,9 @@
         ],
         "parameters": [
           {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
+          {
             "name": "subscriptionId",
             "in": "path",
             "required": true,
@@ -318,6 +339,48 @@
         ]
       }
     },
+    "/providers/Microsoft.Confluent/operations": {
+      "get": {
+        "operationId": "Operations_List",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/OperationListResult"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "Operations"
+        ],
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    },
     "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/organizations": {
       "get": {
         "operationId": "Organizations_ListBySubscription",
@@ -326,6 +389,9 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
           {
             "name": "subscriptionId",
             "in": "path",
@@ -371,6 +437,9 @@
           "application/json"
         ],
         "parameters": [
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
           {
             "name": "subscriptionId",
             "in": "path",
@@ -488,6 +557,28 @@
         }
       ],
       "x-ms-azure-resource": true
+    },
+    "OperationListResult": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Operation"
+          },
+          "x-adl-name": "Operation[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
+        }
+      },
+      "description": "A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.",
+      "required": [
+        "value",
+        "nextLink"
+      ]
     },
     "OrganizationResourceListResult": {
       "type": "object",
@@ -610,6 +701,52 @@
         "type"
       ]
     },
+    "Operation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the operation, as per Resource-Based Access Control (RBAC). Examples: \"Microsoft.Compute/virtualMachines/write\", \"Microsoft.Compute/virtualMachines/capture/action\"",
+          "readOnly": true
+        },
+        "isDataAction": {
+          "type": "boolean",
+          "description": "Whether the operation applies to data-plane. This is \"true\" for data-plane operations and \"false\" for ARM/control-plane operations.",
+          "readOnly": true
+        },
+        "display": {
+          "$ref": "#/definitions/OperationDisplay",
+          "description": "Localized display information for this particular operation."
+        },
+        "origin": {
+          "type": "string",
+          "enum": [
+            "user",
+            "system",
+            "user,system"
+          ],
+          "x-ms-enum": {
+            "name": "Origin",
+            "modelAsString": true
+          },
+          "x-adl-name": "user | system | user,system",
+          "description": "The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is \"user,system\"",
+          "readOnly": true
+        },
+        "actionType": {
+          "type": "string",
+          "enum": [
+            "Internal"
+          ],
+          "x-ms-enum": {
+            "name": "ActionType",
+            "modelAsString": true
+          },
+          "description": "Enum. Indicates the action type. \"Internal\" refers to actions that are for internal only APIs."
+        }
+      },
+      "description": "Details of a REST API operation, returned from the Resource Provider Operations API"
+    },
     "ErrorAdditionalInfo": {
       "type": "object",
       "properties": {
@@ -719,7 +856,38 @@
         "lastName",
         "emailAddress"
       ]
+    },
+    "OperationDisplay": {
+      "type": "object",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "description": "The localized friendly form of the resource provider name, e.g. \"Microsoft Monitoring Insights\" or \"Microsoft Compute\"."
+        },
+        "resource": {
+          "type": "string",
+          "description": "The localized friendly name of the resource type related to this operation. E.g. \"Virtual Machines\" or \"Job Schedule Collections\"."
+        },
+        "operation": {
+          "type": "string",
+          "description": "The concise, localized friendly name for the operation; suitable for dropdowns. E.g. \"Create or Update Virtual Machine\", \"Restart Virtual Machine\"."
+        },
+        "description": {
+          "type": "string",
+          "description": "The short, localized friendly description of the operation; suitable for tool tips and detailed views."
+        }
+      },
+      "description": "Localized display information for and operation."
     }
   },
-  "parameters": {}
+  "parameters": {
+    "ApiVersionParameter": {
+      "x-ms-parameter-location": "method",
+      "name": "api-version",
+      "in": "query",
+      "required": true,
+      "description": "The API version to use for this operation.",
+      "type": "string"
+    }
+  }
 }

@@ -78,31 +78,25 @@ Consider adding a file-level namespace declaration.`,
            model ${resourceListName} = Page<${resourceModelName}>;
 
            @tag "${operationGroup}"
-           @resource("/subscriptions/{subscriptionId}/providers/${resourceRoot}")
+           @resource "/subscriptions/{subscriptionId}/providers/${resourceRoot}"
            namespace ${target.name}ListBySubscription {
              @operationId "${operationGroup}_ListBySubscription"
-             @list @get op listBySubscription(@path subscriptionId: string): ArmResponse<${resourceListName}> | ErrorResponse;
+             @list @get op listBySubscription(...ApiVersionParameter, @path subscriptionId: string): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
            @tag "${operationGroup}"
-           @resource("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}")
+           @resource "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}"
            namespace ${target.name}List {
              @operationId "${operationGroup}_ListByResourceGroup"
-             @list @get op listByResourceGroup(@path subscriptionId: string, @path resourceGroup: string): ArmResponse<${resourceListName}> | ErrorResponse;
+             @list @get op listByResourceGroup(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
+           @tag "${operationGroup}"
            namespace ${target.name} {
-             @tag "${operationGroup}"
-             @get op Get(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}> | ErrorResponse;
-
-             @tag "${operationGroup}"
-             @put op CreateOrUpdate(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
-
-             @tag "${operationGroup}"
-             @patch op Update(@path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
-
-             @tag "${operationGroup}"
-             @_delete op Delete(@path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}> | ErrorResponse;
+             @get op Get(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}> | ErrorResponse;
+             @put op CreateOrUpdate(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
+             @patch op Update(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
+             @_delete op Delete(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}> | ErrorResponse;
            }
          }
       `);
@@ -128,7 +122,7 @@ Consider adding a file-level namespace declaration.`,
 
 const armNamespaces = new Map<Type, string>();
 
-export function armNamespace(program: Program, entity: Type, namespace?: string) {
+export function armNamespace(program: Program, entity: Type, armNamespace?: string) {
   if (entity.kind !== "Namespace") {
     throw new Error("The @armNamespace decorator can only be applied to namespaces.");
   }
@@ -137,11 +131,22 @@ export function armNamespace(program: Program, entity: Type, namespace?: string)
   _setServiceNamespace(entity);
 
   // 'namespace' is optional, use the actual namespace string if omitted
-  if (!namespace) {
-    namespace = program.checker!.getNamespaceString(entity);
+  const adlNamespace = program.checker!.getNamespaceString(entity);
+  if (!armNamespace) {
+    armNamespace = adlNamespace;
   }
 
-  armNamespaces.set(entity, namespace);
+  armNamespaces.set(entity, armNamespace);
+
+  // Add the /operations endpoint for the ARM namespace
+  program.evalAdlScript(`
+    namespace ${adlNamespace} {
+      @tag "Operations"
+      @resource "/providers/${armNamespace}/operations"
+      namespace Operations {
+        @list @get op List(...ApiVersionParameter): ArmResponse<OperationListResult> | ErrorResponse;
+      }
+    }`);
 
   // ARM services need to have "application/json" set on produces/consumes
   produces(program, entity, "application/json");

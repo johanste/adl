@@ -15,6 +15,7 @@ namespace FluidRelayServers {
   @doc "Regenerate the primary or secondary key for this server."
   @post "regenerateKey"
   op regenerateKey(
+    ...ApiVersionParameter,
     @path subscriptionId: string,
     @path resourceGroup: string,
     @path name: string,
@@ -24,6 +25,7 @@ namespace FluidRelayServers {
   @doc "Retrieve the keys for this server."
   @post "getKeys"
   op getKeys(
+    ...ApiVersionParameter,
     @path subscriptionId: string,
     @path resourceGroup: string,
     @path name: string
