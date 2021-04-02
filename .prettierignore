@@ -4,4 +4,7 @@
 **/dist/
 **/dist-dev/
 **/test/output/
-
+**/obj/
+common/temp/
+common/scripts/
+common/changes/

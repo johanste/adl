@@ -27,13 +27,13 @@
       "commandKind": "global",
       "name": "format",
       "summary": "(CUSTOM) Formats all code with Prettier.",
-      "shellCommand": "node eng/scripts/npm-run.js format"
+      "shellCommand": "node eng/scripts/format.js"
     },
     {
       "commandKind": "global",
       "name": "check-format",
       "summary": "(CUSTOM) Checks formatting of all code with with Prettier.",
-      "shellCommand": "node eng/scripts/npm-run.js check-format"
+      "shellCommand": "node eng/scripts/check-format.js"
     },
     {
       "commandKind": "global",
