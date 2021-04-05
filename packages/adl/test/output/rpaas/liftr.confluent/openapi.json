@@ -40,7 +40,7 @@
     }
   ],
   "paths": {
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Confluent/organizations/{name}": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{name}": {
       "post": {
         "operationId": "Organizations_GetKeys",
         "consumes": [],
@@ -49,19 +49,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersionParameter"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
           },
           {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "name": "resourceGroup",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "name": "name",
@@ -88,7 +82,7 @@
           "default": {
             "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
             "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
             }
           }
         },
@@ -104,19 +98,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersionParameter"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
           },
           {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "name": "resourceGroup",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "name": "name",
@@ -143,7 +131,7 @@
           "default": {
             "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
             "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
             }
           }
         },
@@ -161,19 +149,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersionParameter"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
           },
           {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "name": "resourceGroup",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "name": "name",
@@ -208,7 +190,7 @@
           "default": {
             "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
             "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
             }
           }
         },
@@ -226,19 +208,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersionParameter"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
           },
           {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "name": "resourceGroup",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "name": "name",
@@ -273,7 +249,7 @@
           "default": {
             "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
             "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
             }
           }
         },
@@ -289,19 +265,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersionParameter"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
           },
           {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "name": "resourceGroup",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
           },
           {
             "name": "name",
@@ -330,7 +300,7 @@
           "default": {
             "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
             "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
             }
           }
         },
@@ -348,7 +318,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersionParameter"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
           }
         ],
         "responses": {
@@ -363,13 +333,13 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OperationListResult"
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/OperationListResult"
             }
           },
           "default": {
             "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
             "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
             }
           }
         },
@@ -390,13 +360,10 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersionParameter"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
           },
           {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
           }
         ],
         "responses": {
@@ -417,7 +384,7 @@
           "default": {
             "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
             "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
             }
           }
         },
@@ -429,7 +396,7 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Confluent/organizations": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations": {
       "get": {
         "operationId": "Organizations_ListByResourceGroup",
         "consumes": [],
@@ -438,19 +405,13 @@
         ],
         "parameters": [
           {
-            "$ref": "#/parameters/ApiVersionParameter"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
           },
           {
-            "name": "subscriptionId",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "name": "resourceGroup",
-            "in": "path",
-            "required": true,
-            "type": "string"
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
           }
         ],
         "responses": {
@@ -471,7 +432,7 @@
           "default": {
             "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
             "schema": {
-              "$ref": "#/definitions/ErrorResponse"
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
             }
           }
         },
@@ -504,39 +465,9 @@
         "secondary"
       ]
     },
-    "ErrorResponse": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "$ref": "#/definitions/ErrorDetail",
-          "description": "The error object."
-        }
-      },
-      "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations."
-    },
     "OrganizationResource": {
       "type": "object",
       "properties": {
-        "location": {
-          "type": "string",
-          "description": "The geo-location where the resource lives",
-          "x-ms-mutability": [
-            "read",
-            "create"
-          ]
-        },
-        "tags": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          },
-          "description": "Resource tags.",
-          "x-ms-mutability": [
-            "read",
-            "update",
-            "create"
-          ]
-        },
         "properties": {
           "$ref": "#/definitions/OrganizationProperties",
           "description": "The resource-specific properties for this resource.",
@@ -548,37 +479,14 @@
         }
       },
       "required": [
-        "location",
         "properties"
       ],
       "allOf": [
         {
-          "$ref": "#/definitions/ArmResource"
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
         }
       ],
       "x-ms-azure-resource": true
-    },
-    "OperationListResult": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Operation"
-          },
-          "x-adl-name": "Operation[]",
-          "description": "The items on this page"
-        },
-        "nextLink": {
-          "type": "string",
-          "description": "The link to the next page of items"
-        }
-      },
-      "description": "A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.",
-      "required": [
-        "value",
-        "nextLink"
-      ]
     },
     "OrganizationResourceListResult": {
       "type": "object",
@@ -601,45 +509,6 @@
         "value",
         "nextLink"
       ]
-    },
-    "ErrorDetail": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "string",
-          "description": "The error code.",
-          "readOnly": true
-        },
-        "message": {
-          "type": "string",
-          "description": "The error message.",
-          "readOnly": true
-        },
-        "target": {
-          "type": "string",
-          "description": "The error target.",
-          "readOnly": true
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ErrorDetail"
-          },
-          "x-adl-name": "ErrorDetail[]",
-          "description": "The error details.",
-          "readOnly": true
-        },
-        "additionalInfo": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ErrorAdditionalInfo"
-          },
-          "x-adl-name": "ErrorAdditionalInfo[]",
-          "description": "The error additional info.",
-          "readOnly": true
-        }
-      },
-      "description": "The error detail."
     },
     "OrganizationProperties": {
       "type": "object",
@@ -677,93 +546,6 @@
         "offerDetail",
         "userDetail"
       ]
-    },
-    "ArmResource": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "readOnly": true
-        },
-        "name": {
-          "type": "string",
-          "readOnly": true
-        },
-        "type": {
-          "type": "string",
-          "readOnly": true
-        }
-      },
-      "description": "Common properties for all ARM resources.",
-      "required": [
-        "id",
-        "name",
-        "type"
-      ]
-    },
-    "Operation": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The name of the operation, as per Resource-Based Access Control (RBAC). Examples: \"Microsoft.Compute/virtualMachines/write\", \"Microsoft.Compute/virtualMachines/capture/action\"",
-          "readOnly": true
-        },
-        "isDataAction": {
-          "type": "boolean",
-          "description": "Whether the operation applies to data-plane. This is \"true\" for data-plane operations and \"false\" for ARM/control-plane operations.",
-          "readOnly": true
-        },
-        "display": {
-          "$ref": "#/definitions/OperationDisplay",
-          "description": "Localized display information for this particular operation."
-        },
-        "origin": {
-          "type": "string",
-          "enum": [
-            "user",
-            "system",
-            "user,system"
-          ],
-          "x-ms-enum": {
-            "name": "Origin",
-            "modelAsString": true
-          },
-          "x-adl-name": "user | system | user,system",
-          "description": "The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is \"user,system\"",
-          "readOnly": true
-        },
-        "actionType": {
-          "type": "string",
-          "enum": [
-            "Internal"
-          ],
-          "x-ms-enum": {
-            "name": "ActionType",
-            "modelAsString": true
-          },
-          "description": "Enum. Indicates the action type. \"Internal\" refers to actions that are for internal only APIs."
-        }
-      },
-      "description": "Details of a REST API operation, returned from the Resource Provider Operations API"
-    },
-    "ErrorAdditionalInfo": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "description": "The additional info type.",
-          "readOnly": true
-        },
-        "info": {
-          "type": "object",
-          "properties": {},
-          "description": "The additional info.",
-          "x-adl-name": "{}",
-          "readOnly": true
-        }
-      },
-      "description": "The resource management error additional info."
     },
     "OfferDetail": {
       "type": "object",
@@ -856,38 +638,7 @@
         "lastName",
         "emailAddress"
       ]
-    },
-    "OperationDisplay": {
-      "type": "object",
-      "properties": {
-        "provider": {
-          "type": "string",
-          "description": "The localized friendly form of the resource provider name, e.g. \"Microsoft Monitoring Insights\" or \"Microsoft Compute\"."
-        },
-        "resource": {
-          "type": "string",
-          "description": "The localized friendly name of the resource type related to this operation. E.g. \"Virtual Machines\" or \"Job Schedule Collections\"."
-        },
-        "operation": {
-          "type": "string",
-          "description": "The concise, localized friendly name for the operation; suitable for dropdowns. E.g. \"Create or Update Virtual Machine\", \"Restart Virtual Machine\"."
-        },
-        "description": {
-          "type": "string",
-          "description": "The short, localized friendly description of the operation; suitable for tool tips and detailed views."
-        }
-      },
-      "description": "Localized display information for and operation."
     }
   },
-  "parameters": {
-    "ApiVersionParameter": {
-      "x-ms-parameter-location": "method",
-      "name": "api-version",
-      "in": "query",
-      "required": true,
-      "description": "The API version to use for this operation.",
-      "type": "string"
-    }
-  }
+  "parameters": {}
 }

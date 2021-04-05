@@ -26,9 +26,7 @@ model OrganizationKey = string;
 @TrackedResource("organizations", OrganizationProperties)
 namespace Organizations {
   @post op GetKeys(
-    ...ApiVersionParameter,
-    @path subscriptionId: string,
-    @path resourceGroup: string,
+    ...CommonResourceParameters,
     @path name: string
   ): ArmResponse<OrganizationKeys> | ErrorResponse;
 }

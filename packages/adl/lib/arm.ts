@@ -2,7 +2,7 @@ import { Type, SyntaxKind, NamespaceType } from "../compiler/types.js";
 import { Program } from "../compiler/program";
 import { consumes, produces, resource, _setServiceNamespace } from "./rest.js";
 import { throwDiagnostic } from "../compiler/diagnostics.js";
-import { _addSecurityDefinition, _addSecurityRequirement } from "./openapi.js";
+import { useRef, _addSecurityDefinition, _addSecurityRequirement } from "./openapi.js";
 
 // TODO: We can't name this ArmTrackedResource because that name
 //       is already taken.  Consider having decorators occupy a
@@ -19,7 +19,7 @@ export function TrackedResource(
   }
 
   if (propertyType.node!.kind !== SyntaxKind.ModelStatement) {
-    throw new Error("Property type must be a model.");
+    throwDiagnostic("Property type must be a model.", target);
   }
 
   // Get the fully qualified name of the property type
@@ -81,22 +81,22 @@ Consider adding a file-level namespace declaration.`,
            @resource "/subscriptions/{subscriptionId}/providers/${resourceRoot}"
            namespace ${target.name}ListBySubscription {
              @operationId "${operationGroup}_ListBySubscription"
-             @list @get op listBySubscription(...ApiVersionParameter, @path subscriptionId: string): ArmResponse<${resourceListName}> | ErrorResponse;
+             @list @get op listBySubscription(...ApiVersionParameter, ...SubscriptionIdParameter): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
            @tag "${operationGroup}"
-           @resource "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}"
+           @resource "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/${resourceRoot}"
            namespace ${target.name}List {
              @operationId "${operationGroup}_ListByResourceGroup"
-             @list @get op listByResourceGroup(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string): ArmResponse<${resourceListName}> | ErrorResponse;
+             @list @get op listByResourceGroup(...CommonResourceParameters): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
            @tag "${operationGroup}"
            namespace ${target.name} {
-             @get op Get(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<${resourceModelName}> | ErrorResponse;
-             @put op CreateOrUpdate(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
-             @patch op Update(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
-             @_delete op Delete(...ApiVersionParameter, @path subscriptionId: string, @path resourceGroup: string, @path name: string): ArmResponse<{}> | ErrorResponse;
+             @get op Get(...CommonResourceParameters, @path name: string): ArmResponse<${resourceModelName}> | ErrorResponse;
+             @put op CreateOrUpdate(...CommonResourceParameters, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
+             @patch op Update(...CommonResourceParameters, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
+             @_delete op Delete(...CommonResourceParameters, @path name: string): ArmResponse<{}> | ErrorResponse;
            }
          }
       `);
@@ -105,13 +105,13 @@ Consider adding a file-level namespace declaration.`,
       resource(
         program,
         target,
-        `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/${resourceRoot}/{name}`
+        `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/${resourceRoot}/{name}`
       );
     } else {
-      throw new Error("TrackedResource property type must be a model");
+      throwDiagnostic("TrackedResource property type must be a model", target);
     }
   } else {
-    throw new Error("TrackedResource decorator can only be applied to namespaces");
+    throwDiagnostic("TrackedResource decorator can only be applied to namespaces", target);
   }
 }
 
@@ -124,7 +124,7 @@ const armNamespaces = new Map<Type, string>();
 
 export function armNamespace(program: Program, entity: Type, armNamespace?: string) {
   if (entity.kind !== "Namespace") {
-    throw new Error("The @armNamespace decorator can only be applied to namespaces.");
+    throwDiagnostic("The @armNamespace decorator can only be applied to namespaces.", entity);
   }
 
   // armNamespace will set the service namespace if it's not done already
@@ -178,4 +178,40 @@ export function getArmNamespace(namespace: NamespaceType): string | undefined {
   }
 
   return undefined;
+}
+
+export function getArmTypesPath(program: Program): string | undefined {
+  return (
+    program.getOption("arm-types-path") ||
+    "../../../../../common-types/resource-management/v2/types.json"
+  );
+}
+
+export function armCommonDefinition(program: Program, entity: Type, definitionName?: string): void {
+  if (entity.kind !== "Model") {
+    throwDiagnostic("The @armCommonDefinition decorator can only be applied to models.", entity);
+  }
+
+  // Use the name of the model type if not specified
+  if (!definitionName) {
+    definitionName = entity.name;
+  }
+
+  useRef(program, entity, `${getArmTypesPath(program)}#/definitions/${definitionName}`);
+}
+
+export function armCommonParameter(program: Program, entity: Type, parameterName?: string): void {
+  if (entity.kind !== "ModelProperty") {
+    throwDiagnostic(
+      "The @armCommonParameter decorator can only be applied to model properties and operation parameters.",
+      entity
+    );
+  }
+
+  // Use the name of the model type if not specified
+  if (!parameterName) {
+    parameterName = entity.name;
+  }
+
+  useRef(program, entity, `${getArmTypesPath(program)}#/parameters/${parameterName}`);
 }
