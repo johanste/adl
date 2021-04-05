@@ -2,12 +2,18 @@ dependencies:
   '@rollup/plugin-commonjs': 17.1.0_rollup@2.41.4
   '@rollup/plugin-node-resolve': 11.2.0_rollup@2.41.4
   '@rush-temp/adl': file:projects/adl.tgz
+  '@rush-temp/adl-vs': file:projects/adl-vs.tgz
   '@rush-temp/adl-vscode': file:projects/adl-vscode.tgz
+  '@rush-temp/openapi': file:projects/openapi.tgz
+  '@rush-temp/rest': file:projects/rest.tgz
+  '@rush-temp/rpaas': file:projects/rpaas.tgz
+  '@rush-temp/samples': file:projects/samples.tgz
   '@rush-temp/tmlanguage-generator': file:projects/tmlanguage-generator.tgz
   '@types/mkdirp': 1.0.1
   '@types/mocha': 7.0.2
   '@types/node': 14.0.27
   '@types/plist': 3.0.2
+  '@types/resolve': 1.20.0
   '@types/vscode': 1.54.0
   '@types/yargs': 15.0.13
   autorest: 3.0.6339
@@ -17,6 +23,7 @@ dependencies:
   onigasm: 2.2.5
   plist: 3.0.2
   prettier: 2.2.1
+  resolve: 1.20.0
   rollup: 2.41.4
   typescript: 4.1.5
   vsce: 1.85.1
@@ -189,6 +196,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==
+  /@types/resolve/1.20.0:
+    dev: false
+    resolution:
+      integrity: sha512-SFT3jdUNlLkjxUWwH/0QjLiEsV38hjdDX8oMcX9jZAD8KWNzRLdg6INZE7UMz9O86b2BOHzA3dR8nF+DbonX2Q==
   /@types/vscode/1.54.0:
     dev: false
     resolution:
@@ -1609,6 +1620,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-phENi2PLiHnHb6QBVot+dJnaAZ0xosj7p3fWl+znIjBDlnMI2PsZCJZ306BPTFOaHf5qdDEI8x5qFrSOBN5vrw==
+  file:projects/adl-vs.tgz:
+    dev: false
+    name: '@rush-temp/adl-vs'
+    resolution:
+      integrity: sha512-atA1mjICGOdjQWewg3Xyvb8TJpfjeFy8GEA1xbW3Rb31O0u4McAf5VnE6q5WH2OVeGwllMSIkhU8xHuS3jOS1g==
+      tarball: file:projects/adl-vs.tgz
+    version: 0.0.0
   file:projects/adl-vscode.tgz:
     dependencies:
       '@rollup/plugin-commonjs': 17.1.0_rollup@2.41.4
@@ -1627,7 +1645,7 @@ packages:
     dev: false
     name: '@rush-temp/adl-vscode'
     resolution:
-      integrity: sha512-ghVPOGQqkIOu5WBZEtVoy1G8dZF7h/GuGg94/y+KzW9lAumJ3AhcbBJAPc5e1ZgsMvbqF+ky7/3KXvPCH+FjaQ==
+      integrity: sha512-vVuDnfNp2ObAZkkv4FCZ3n1T8uex4k825veg9S848ll3D7GBKFNNbqrXFRBz6+hSc3UwpVpKwK9jh4QT8w4uFg==
       tarball: file:projects/adl-vscode.tgz
     version: 0.0.0
   file:projects/adl.tgz:
@@ -1635,12 +1653,14 @@ packages:
       '@types/mkdirp': 1.0.1
       '@types/mocha': 7.0.2
       '@types/node': 14.0.27
+      '@types/resolve': 1.20.0
       '@types/yargs': 15.0.13
       autorest: 3.0.6339
       grammarkdown: 3.1.2
       mkdirp: 1.0.4
       mocha: 7.1.2
       prettier: 2.2.1
+      resolve: 1.20.0
       typescript: 4.1.5
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.1
@@ -1648,8 +1668,60 @@ packages:
     dev: false
     name: '@rush-temp/adl'
     resolution:
-      integrity: sha512-heyU36s1bp3RpPzjePRvl1h92aXy6MMl7T6jtyLWMXvgMVYNtCRJhU1I4AxQaMxMiurDWLR9KuHbprR4h2D1xw==
+      integrity: sha512-96njYbRTk9e3eHe1qAbQ/83T4GgyXzfkFwnwL09VMb1V9Sa4kdyCkHAvOEZQhgHkHn8c+g0R74Cr9A+85eSPFA==
       tarball: file:projects/adl.tgz
+    version: 0.0.0
+  file:projects/openapi.tgz:
+    dependencies:
+      '@types/mocha': 7.0.2
+      '@types/node': 14.0.27
+      mocha: 7.1.2
+      prettier: 2.2.1
+      typescript: 4.1.5
+    dev: false
+    name: '@rush-temp/openapi'
+    resolution:
+      integrity: sha512-w5CNQmW8A1agHGHTRt2tF7ffT/3WRq46PeE4g9GOYNmpbfbanYLgB0jd1awD7SG/nCHDnNFZCZHvSnM0L5E7kQ==
+      tarball: file:projects/openapi.tgz
+    version: 0.0.0
+  file:projects/rest.tgz:
+    dependencies:
+      '@types/mocha': 7.0.2
+      '@types/node': 14.0.27
+      mocha: 7.1.2
+      prettier: 2.2.1
+      typescript: 4.1.5
+    dev: false
+    name: '@rush-temp/rest'
+    resolution:
+      integrity: sha512-ZgZpfxUY/ePtazykGUCykaE752b5UNhgyubdGayjaGfnmGktVcMcGO1HDnw5nTmxbL/eREpfAB0L9kl3jDb72A==
+      tarball: file:projects/rest.tgz
+    version: 0.0.0
+  file:projects/rpaas.tgz:
+    dependencies:
+      '@types/mocha': 7.0.2
+      '@types/node': 14.0.27
+      mocha: 7.1.2
+      prettier: 2.2.1
+      typescript: 4.1.5
+    dev: false
+    name: '@rush-temp/rpaas'
+    resolution:
+      integrity: sha512-6/rK1mkPKILrlh9ZxgaLGzzUz94BwFm7kTRycWzeygSQul0/CrveIvDiUGgBdttNIh8l82CLwQ7+Y0gELWZ2Zg==
+      tarball: file:projects/rpaas.tgz
+    version: 0.0.0
+  file:projects/samples.tgz:
+    dependencies:
+      '@types/mocha': 7.0.2
+      '@types/node': 14.0.27
+      mocha: 7.1.2
+      prettier: 2.2.1
+      typescript: 4.1.5
+    dev: false
+    name: '@rush-temp/samples'
+    resolution:
+      integrity: sha512-kjMZeTwHoizZKFAXaU7z2X/nEnuMC8uTdU9RZxvTIaLxjO/scNiXSSD7lTTJYQQG0sDq/zek4hB7cWSN0n56FA==
+      tarball: file:projects/samples.tgz
     version: 0.0.0
   file:projects/tmlanguage-generator.tgz:
     dependencies:
@@ -1668,12 +1740,18 @@ specifiers:
   '@rollup/plugin-commonjs': ^17.1.0
   '@rollup/plugin-node-resolve': ^11.2.0
   '@rush-temp/adl': file:./projects/adl.tgz
+  '@rush-temp/adl-vs': file:./projects/adl-vs.tgz
   '@rush-temp/adl-vscode': file:./projects/adl-vscode.tgz
+  '@rush-temp/openapi': file:./projects/openapi.tgz
+  '@rush-temp/rest': file:./projects/rest.tgz
+  '@rush-temp/rpaas': file:./projects/rpaas.tgz
+  '@rush-temp/samples': file:./projects/samples.tgz
   '@rush-temp/tmlanguage-generator': file:./projects/tmlanguage-generator.tgz
   '@types/mkdirp': ~1.0.1
   '@types/mocha': ^7.0.2
   '@types/node': 14.0.27
   '@types/plist': ^3.0.2
+  '@types/resolve': ~1.20.0
   '@types/vscode': ^1.53.0
   '@types/yargs': ~15.0.12
   autorest: ~3.0.6335
@@ -1683,6 +1761,7 @@ specifiers:
   onigasm: ^2.2.5
   plist: ^3.0.2
   prettier: ~2.2.1
+  resolve: ~1.20.0
   rollup: ^2.41.4
   typescript: ~4.1.5
   vsce: ^1.85.1

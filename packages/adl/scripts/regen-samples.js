@@ -33,7 +33,7 @@ function resolvePath(...parts) {
 }
 
 for (const folderName of sampleFolders) {
-  const inputPath = `samples/${folderName}`;
+  const inputPath = `../adl-samples/${folderName}`;
   const outputPath = resolvePath("../test/output/", folderName);
   mkdirp(outputPath);
 

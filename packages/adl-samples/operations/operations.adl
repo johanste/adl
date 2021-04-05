@@ -1,0 +1,9 @@
+import "@adl/rest";
+import "@adl/openapi";
+import "@adl/rpaas";
+
+@resource "/operations"
+namespace Operations {
+  @get op get(@path id: string): ArmResponse<OperationStatusResult>;
+  @get op list(): ArmResponse<OperationListResult> | ErrorResponse;
+}
