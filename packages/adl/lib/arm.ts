@@ -180,6 +180,13 @@ export function getArmNamespace(namespace: NamespaceType): string | undefined {
   return undefined;
 }
 
+export function getArmTypesPath(program: Program): string | undefined {
+  return (
+    (program.compilerOptions.rawParameters || {})["arm-types-path"] ||
+    "../../../../../common-types/resource-management/v2/types.json"
+  );
+}
+
 export function armCommonDefinition(program: Program, entity: Type, definitionName?: string): void {
   if (entity.kind !== "Model") {
     throwDiagnostic("The @armCommonDefinition decorator can only be applied to models.", entity);
@@ -190,11 +197,7 @@ export function armCommonDefinition(program: Program, entity: Type, definitionNa
     definitionName = entity.name;
   }
 
-  useRef(
-    program,
-    entity,
-    `../../../../../common-types/resource-management/v2/types.json#/definitions/${definitionName}`
-  );
+  useRef(program, entity, `${getArmTypesPath(program)}#/definitions/${definitionName}`);
 }
 
 export function armCommonParameter(program: Program, entity: Type, parameterName?: string): void {
@@ -210,9 +213,5 @@ export function armCommonParameter(program: Program, entity: Type, parameterName
     parameterName = entity.name;
   }
 
-  useRef(
-    program,
-    entity,
-    `../../../../../common-types/resource-management/v2/types.json#/parameters/${parameterName}`
-  );
+  useRef(program, entity, `${getArmTypesPath(program)}#/parameters/${parameterName}`);
 }
