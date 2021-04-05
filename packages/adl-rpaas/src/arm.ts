@@ -72,24 +72,24 @@ Consider adding a file-level namespace declaration.`,
            @extension("x-ms-azure-resource", true) \
            model ${resourceModelName} = ArmTrackedResource<${propertyTypeName}>;
 
-           @doc "The response of a ${resourceModelName} list operation."
+           @doc("The response of a ${resourceModelName} list operation.")
            model ${resourceListName} = Page<${resourceModelName}>;
 
-           @tag "${operationGroup}"
-           @resource "/subscriptions/{subscriptionId}/providers/${resourceRoot}"
+           @tag("${operationGroup}")
+           @resource("/subscriptions/{subscriptionId}/providers/${resourceRoot}")
            namespace ${target.name}ListBySubscription {
-             @operationId "${operationGroup}_ListBySubscription"
+             @operationId("${operationGroup}_ListBySubscription")
              @list @get op listBySubscription(...ApiVersionParameter, ...SubscriptionIdParameter): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
-           @tag "${operationGroup}"
-           @resource "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/${resourceRoot}"
+           @tag("${operationGroup}")
+           @resource("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/${resourceRoot}")
            namespace ${target.name}List {
-             @operationId "${operationGroup}_ListByResourceGroup"
+             @operationId("${operationGroup}_ListByResourceGroup")
              @list @get op listByResourceGroup(...CommonResourceParameters): ArmResponse<${resourceListName}> | ErrorResponse;
            }
 
-           @tag "${operationGroup}"
+           @tag("${operationGroup}")
            namespace ${target.name} {
              @get op Get(...CommonResourceParameters, @path name: string): ArmResponse<${resourceModelName}> | ErrorResponse;
              @put op CreateOrUpdate(...CommonResourceParameters, @path name: string, @body resource: ${resourceModelName}): ArmResponse<${resourceModelName}> | ErrorResponse;
@@ -139,8 +139,8 @@ export function armNamespace(program: Program, entity: Type, armNamespace?: stri
   // Add the /operations endpoint for the ARM namespace
   program.evalAdlScript(`
     namespace ${adlNamespace} {
-      @tag "Operations"
-      @resource "/providers/${armNamespace}/operations"
+      @tag("Operations")
+      @resource("/providers/${armNamespace}/operations")
       namespace Operations {
         @list @get op List(...ApiVersionParameter): ArmResponse<OperationListResult> | ErrorResponse;
       }

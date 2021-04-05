@@ -2,13 +2,13 @@ import "@adl/rest";
 import "@adl/openapi";
 
 namespace Root {
-  @resource "/sub/a"
+  @resource("/sub/a")
   namespace SubA {
     model Thing {
       id: int64;
     }
 
-    @resource "/sub/sub/a"
+    @resource("/sub/sub/a")
     namespace SubSubA {
       op DoSomething(thing: Thing): OkResponse<string>;
 
@@ -19,7 +19,7 @@ namespace Root {
     }
   }
 
-  @resource "/sub/b"
+  @resource("/sub/b")
   namespace SubB {
     // Uses the same name as
     model Thing {

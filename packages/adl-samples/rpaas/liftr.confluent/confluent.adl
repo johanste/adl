@@ -3,27 +3,27 @@ import "@adl/openapi";
 import "@adl/rpaas";
 
 @armNamespace
-@serviceTitle "Microsoft.Confluent"
-@serviceVersion "2020-03-01-preview"
+@serviceTitle("Microsoft.Confluent")
+@serviceVersion("2020-03-01-preview")
 namespace Microsoft.Confluent;
 
-@doc "A string that represents a URI."
+@doc("A string that represents a URI.")
 model Uri = string;
 
-@doc "Reusable representation of an email address"
-@format "\\w+@\\w+\\.\\w+"
+@doc("Reusable representation of an email address")
+@format("\\w+@\\w+\\.\\w+")
 model email = string;
 
-@doc "Shorthand for setting length limit."
+@doc("Shorthand for setting length limit.")
 @minLength(5)
 @maxLength(50)
 model MediumString = string;
 
-@doc "Shorthand for setting length limit."
+@doc("Shorthand for setting length limit.")
 @maxLength(25)
 model ShortString = string;
 
-@doc "An Organization key to be handled as a secret."
+@doc("An Organization key to be handled as a secret.")
 @secret
 model OrganizationKey = string;
 
@@ -35,70 +35,70 @@ namespace Organizations {
   ): ArmResponse<OrganizationKeys> | ErrorResponse;
 }
 
-@doc "Details of the Confluent organization."
+@doc("Details of the Confluent organization.")
 model OrganizationProperties {
-  @doc "UTC Time when Organization resource was created."
-  @visibility "read"
+  @doc("UTC Time when Organization resource was created.")
+  @visibility("read")
   createdTime: zonedDateTime;
 
-  @doc "Id of the Confluent organization."
-  @visibility "read"
+  @doc("Id of the Confluent organization.")
+  @visibility("read")
   organizationId: string;
 
-  @doc "Single sign-on url for the Confluent organization."
-  @visibility "read"
+  @doc("Single sign-on url for the Confluent organization.")
+  @visibility("read")
   ssoUrl: Uri;
 
-  @doc "Details of the product offering."
+  @doc("Details of the product offering.")
   offerDetail: OfferDetail;
 
-  @doc "Subscriber details."
+  @doc("Subscriber details.")
   userDetail: UserDetail;
 }
 
-@doc "SaaS offer status."
+@doc("SaaS offer status.")
 model OfferStatus =
     "Started" | "PendingFulfillmentStart" | "InProgress" |
     "Subscribed" | "Suspended" | "Reinstated" | "Succeeded" |
     "Failed" | "Unsubscribed" | "Updating";
 
-@doc "Details of the product offering."
+@doc("Details of the product offering.")
 model OfferDetail {
-  @doc "Id of the product publisher."
+  @doc("Id of the product publisher.")
   publisherId: MediumString;
 
-  @doc "Id of the product offering."
+  @doc("Id of the product offering.")
   id: MediumString;
 
-  @doc "Id of the product offer plan."
+  @doc("Id of the product offer plan.")
   planId: MediumString;
 
-  @doc "Name of the product offer plan."
+  @doc("Name of the product offer plan.")
   planName: MediumString;
 
-  @doc "Offer plan term unit."
+  @doc("Offer plan term unit.")
   termUnit: ShortString;
 
-  @doc "SaaS offer status."
+  @doc("SaaS offer status.")
   status: OfferStatus;
 }
 
-@doc "Details of the subscriber"
+@doc("Details of the subscriber")
 model UserDetail {
-  @doc "Subscriber first name."
+  @doc("Subscriber first name.")
   firstName: MediumString;
 
-  @doc "Subscriber last name."
+  @doc("Subscriber last name.")
   lastName: MediumString;
 
-  @doc "Subscriber email address."
+  @doc("Subscriber email address.")
   emailAddress: email;
 }
 
 model OrganizationKeys {
-  @doc "The primary key."
+  @doc("The primary key.")
   primary: OrganizationKey;
 
-  @doc "The secondary Key."
+  @doc("The secondary Key.")
   secondary: OrganizationKey;
 }

@@ -1,18 +1,18 @@
 import "@adl/rest";
 import "@adl/openapi";
 
-@serviceTitle "ADL Overloads Sample"
+@serviceTitle("ADL Overloads Sample")
 namespace ADL.Samples.Overloads;
 
-@resource "/adl/things"
+@resource("/adl/things")
 namespace Things {
   @post
   op postThing(thing: Thing): OkResponse<Thing>;
 
-  @post "?overload=withParam"
+  @post("?overload=withParam")
   op postThingWithParam(body: { thing: Thing, param: string}): OkResponse<Thing>;
 
-  @post "?overload=returnString"
+  @post("?overload=returnString")
   op postThingReturnString(thing: Thing): ThingStringResponse;
 }
 
