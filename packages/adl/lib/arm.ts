@@ -182,7 +182,7 @@ export function getArmNamespace(namespace: NamespaceType): string | undefined {
 
 export function getArmTypesPath(program: Program): string | undefined {
   return (
-    (program.compilerOptions.rawParameters || {})["arm-types-path"] ||
+    program.getOption("arm-types-path") ||
     "../../../../../common-types/resource-management/v2/types.json"
   );
 }
