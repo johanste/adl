@@ -19,7 +19,7 @@ export function TrackedResource(
   }
 
   if (propertyType.node!.kind !== SyntaxKind.ModelStatement) {
-    throw new Error("Property type must be a model.");
+    throwDiagnostic("Property type must be a model.", target);
   }
 
   // Get the fully qualified name of the property type
@@ -108,10 +108,10 @@ Consider adding a file-level namespace declaration.`,
         `/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/${resourceRoot}/{name}`
       );
     } else {
-      throw new Error("TrackedResource property type must be a model");
+      throwDiagnostic("TrackedResource property type must be a model", target);
     }
   } else {
-    throw new Error("TrackedResource decorator can only be applied to namespaces");
+    throwDiagnostic("TrackedResource decorator can only be applied to namespaces", target);
   }
 }
 
@@ -124,7 +124,7 @@ const armNamespaces = new Map<Type, string>();
 
 export function armNamespace(program: Program, entity: Type, armNamespace?: string) {
   if (entity.kind !== "Namespace") {
-    throw new Error("The @armNamespace decorator can only be applied to namespaces.");
+    throwDiagnostic("The @armNamespace decorator can only be applied to namespaces.", entity);
   }
 
   // armNamespace will set the service namespace if it's not done already
@@ -180,9 +180,9 @@ export function getArmNamespace(namespace: NamespaceType): string | undefined {
   return undefined;
 }
 
-export function armTypesDefinition(program: Program, entity: Type, definitionName?: string): void {
+export function armCommonDefinition(program: Program, entity: Type, definitionName?: string): void {
   if (entity.kind !== "Model") {
-    throw new Error("The @armTypesDefinition decorator can only be applied to models.");
+    throwDiagnostic("The @armCommonDefinition decorator can only be applied to models.", entity);
   }
 
   // Use the name of the model type if not specified
@@ -197,10 +197,11 @@ export function armTypesDefinition(program: Program, entity: Type, definitionNam
   );
 }
 
-export function armTypesParameter(program: Program, entity: Type, parameterName?: string): void {
+export function armCommonParameter(program: Program, entity: Type, parameterName?: string): void {
   if (entity.kind !== "ModelProperty") {
-    throw new Error(
-      "The @armTypesParameter decorator can only be applied to model properties and operation parameters."
+    throwDiagnostic(
+      "The @armCommonParameter decorator can only be applied to model properties and operation parameters.",
+      entity
     );
   }
 
