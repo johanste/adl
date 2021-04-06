@@ -1,6 +1,6 @@
 import { Type, SyntaxKind, NamespaceType, Program, throwDiagnostic } from "@azure-tools/adl";
-import { consumes, produces, resource, _setServiceNamespace } from "@adl/rest";
-import { useRef, _addSecurityDefinition, _addSecurityRequirement } from "@adl/openapi";
+import { consumes, produces, resource, _setServiceNamespace } from "@azure-tools/adl-rest";
+import { useRef, _addSecurityDefinition, _addSecurityRequirement } from "@azure-tools/adl-openapi";
 
 // TODO: We can't name this ArmTrackedResource because that name
 //       is already taken.  Consider having decorators occupy a

@@ -45,7 +45,7 @@ import {
   getProduces,
   getServiceNamespaceString,
   _checkIfServiceNamespace,
-} from "@adl/rest";
+} from "@azure-tools/adl-rest";
 
 export function onBuild(p: Program) {
   const options: OpenAPIEmitterOptions = {

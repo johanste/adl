@@ -1,5 +1,5 @@
 {
-  "name": "@adl/rpaas",
+  "name": "@azure-tools/adl-rpaas",
   "version": "0.1.0",
   "description": "Azure RPaaS ADL Library",
   "main": "dist/main.js",
@@ -44,8 +44,8 @@
   },
   "dependencies": {
     "@azure-tools/adl": "~0.7.0",
-    "@adl/rest": "~0.1.0",
-    "@adl/openapi": "~0.1.0"
+    "@azure-tools/adl-rest": "~0.1.0",
+    "@azure-tools/adl-openapi": "~0.1.0"
   },
   "type": "module"
 }

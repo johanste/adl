@@ -1,5 +1,5 @@
 {
-  "name": "@adl/openapi",
+  "name": "@azure-tools/adl-openapi",
   "version": "0.1.0",
   "description": "ADL library for emitting openapi from the ADL REST protocol binding",
   "main": "dist/openapi.js",
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@azure-tools/adl": "~0.7.0",
-    "@adl/rest": "~0.1.0"
+    "@azure-tools/adl-rest": "~0.1.0"
   },
   "type": "module"
 }

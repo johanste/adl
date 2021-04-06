@@ -1,5 +1,5 @@
-import "@adl/rest";
-import "@adl/openapi";
+import "@azure-tools/adl-rest";
+import "@azure-tools/adl-openapi";
 
 namespace Root {
   @resource("/sub/a")

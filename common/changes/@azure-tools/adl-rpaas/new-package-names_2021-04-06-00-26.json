@@ -1,11 +1,11 @@
 {
   "changes": [
     {
-      "packageName": "@adl/rpaas",
+      "packageName": "@azure-tools/adl-rpaas",
       "comment": "",
       "type": "none"
     }
   ],
-  "packageName": "@adl/rpaas",
+  "packageName": "@azure-tools/adl-rpaas",
   "email": "brian.terlson@microsoft.com"
 }

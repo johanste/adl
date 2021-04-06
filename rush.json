@@ -69,25 +69,25 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@adl/rest",
+      "packageName": "@azure-tools/adl-rest",
       "projectFolder": "packages/adl-rest",
       "reviewCategory": "production",
       "shouldPublish": true
     },
     {
-      "packageName": "@adl/rpaas",
+      "packageName": "@azure-tools/adl-rpaas",
       "projectFolder": "packages/adl-rpaas",
       "reviewCategory": "production",
       "shouldPublish": true
     },
     {
-      "packageName": "@adl/openapi",
+      "packageName": "@azure-tools/adl-openapi",
       "projectFolder": "packages/adl-openapi",
       "reviewCategory": "production",
       "shouldPublish": true
     },
     {
-      "packageName": "@adl/samples",
+      "packageName": "@azure-tools/adl-samples",
       "projectFolder": "packages/adl-samples",
       "reviewCategory": "production",
       "shouldPublish": false

@@ -1,11 +1,11 @@
 {
   "changes": [
     {
-      "packageName": "@adl/rest",
+      "packageName": "@azure-tools/adl-rest",
       "comment": "",
       "type": "none"
     }
   ],
-  "packageName": "@adl/rest",
+  "packageName": "@azure-tools/adl-rest",
   "email": "brian.terlson@microsoft.com"
 }

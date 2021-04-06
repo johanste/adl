@@ -1,6 +1,6 @@
-import "@adl/rest";
-import "@adl/openapi";
-import "@adl/rpaas";
+import "@azure-tools/adl-rest";
+import "@azure-tools/adl-openapi";
+import "@azure-tools/adl-rpaas";
 
 @resource("/operations")
 namespace Operations {
