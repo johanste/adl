@@ -14,8 +14,13 @@
     },
     {
       "label": "watch-source",
-      "type": "shell",
-      "command": "node ${workspaceFolder}/eng/scripts/watch.js",
+      "type": "process",
+      "command": "node",
+      "args": [
+        "${workspaceFolder}/packages/adl/node_modules/typescript/lib/tsc.js",
+        "--build",
+        "--watch"
+      ],
       "isBackground": true,
       "problemMatcher": "$tsc-watch",
       "presentation": {
@@ -29,13 +34,14 @@
     },
     {
       "label": "watch-tmlanguage",
-      "type": "shell",
-      "command": "npm run watch-tmlanguage",
+      "type": "process",
+      "command": "node",
+      "args": ["${workspaceFolder}/packages/adl-vscode/scripts/watch-tmlanguage.js"],
       "problemMatcher": {
         "base": "$msCompile",
         "background": {
-          "beginsPattern": "^@@BEGIN.*$",
-          "endsPattern": "^@@END.*$"
+          "beginsPattern": "^.*File changes detected.*$",
+          "endsPattern": "^.*Waiting for file changes.*$"
         }
       },
       "isBackground": true,
@@ -53,8 +59,9 @@
     },
     {
       "label": "watch-spec",
-      "type": "shell",
-      "command": "npm run watch",
+      "type": "process",
+      "command": "node",
+      "args": ["${workspaceFolder}/packages/adl-language/scripts/watch-spec.js"],
       "isBackground": true,
       "options": {
         "cwd": "${workspaceFolder}/packages/adl-language"
