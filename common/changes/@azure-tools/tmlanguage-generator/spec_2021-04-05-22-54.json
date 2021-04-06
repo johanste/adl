@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/tmlanguage-generator",
+      "comment": "Format errors to match VS Code problem matching",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/tmlanguage-generator",
+  "email": "nicholg@microsoft.com"
+}

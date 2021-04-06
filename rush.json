@@ -69,6 +69,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@azure-tools/adl-language",
+      "projectFolder": "packages/adl-language",
+      "reviewCategory": "production",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@azure-tools/adl-rest",
       "projectFolder": "packages/adl-rest",
       "reviewCategory": "production",

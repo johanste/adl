@@ -4,20 +4,73 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "build/watch",
-      "type": "shell",
-      "command": "node ${workspaceFolder}/packages/adl/node_modules/typescript/lib/tsc.js --build --watch",
-      "isBackground": true,
-      "problemMatcher": "$tsc-watch",
+      "label": "watch",
+      "dependsOn": ["watch-tmlanguage", "watch-spec", "watch-source"],
+      "dependsOrder": "parallel",
       "group": {
         "kind": "build",
         "isDefault": true
+      }
+    },
+    {
+      "label": "watch-source",
+      "type": "shell",
+      "command": "node ${workspaceFolder}/eng/scripts/watch.js",
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "watch-tmlanguage",
+      "type": "shell",
+      "command": "npm run watch-tmlanguage",
+      "problemMatcher": {
+        "base": "$msCompile",
+        "background": {
+          "beginsPattern": "^@@BEGIN.*$",
+          "endsPattern": "^@@END.*$"
+        }
+      },
+      "isBackground": true,
+      "options": {
+        "cwd": "${workspaceFolder}/packages/adl-vscode"
       },
       "presentation": {
         "echo": true,
         "reveal": "always",
         "focus": false,
-        "panel": "shared",
+        "panel": "dedicated",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "watch-spec",
+      "type": "shell",
+      "command": "npm run watch",
+      "problemMatcher": {
+        "base": "$msCompile",
+        "background": {
+          "beginsPattern": "^@@BEGIN.*$",
+          "endsPattern": "^@@END.*$"
+        }
+      },
+      "isBackground": true,
+      "options": {
+        "cwd": "${workspaceFolder}/packages/adl-language"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
         "showReuseMessage": false,
         "clear": true
       }
@@ -33,22 +86,6 @@
         "kind": "test",
         "isDefault": true
       },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared",
-        "showReuseMessage": false,
-        "clear": true
-      }
-    },
-    {
-      "label": "generate-tmlanguage",
-      "type": "shell",
-      "options": {
-        "cwd": "${workspaceFolder}/packages/adl-vscode"
-      },
-      "command": "npm run generate-tmlanguage",
       "presentation": {
         "echo": true,
         "reveal": "always",

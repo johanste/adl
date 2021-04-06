@@ -72,7 +72,6 @@
       "type": "extensionHost",
       "request": "launch",
       "args": ["--extensionDevelopmentPath=${workspaceRoot}/packages/adl-vscode"],
-      "preLaunchTask": "generate-tmlanguage",
       "env": {
         "ADL_DEVELOPMENT_MODE": "true",
         "ADL_SERVER_NODE_OPTIONS": "--nolazy --inspect=4242"
