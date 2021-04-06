@@ -671,16 +671,15 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       key += `.${property.name}`;
     }
 
-    const baseKey = getRefSafeName(key);
-    if (baseKey === key) {
-      return key;
-    }
+    // Try to shorten the type name to exclude the top-level service namespace
+    let baseKey = getRefSafeName(key);
+    if (serviceNamespace && key.startsWith(serviceNamespace)) {
+      baseKey = key.substring(serviceNamespace.length + 1);
 
-    // deal with collisions we could introduce by mangling name
-    let counter = 1;
-    while (root.parameters[key] !== undefined) {
-      key = baseKey + "." + counter;
-      counter++;
+      // If no parameter exists with the shortened name, use it, otherwise use the fully-qualified name
+      if (root.parameters[baseKey] === undefined) {
+        key = baseKey;
+      }
     }
 
     return key;

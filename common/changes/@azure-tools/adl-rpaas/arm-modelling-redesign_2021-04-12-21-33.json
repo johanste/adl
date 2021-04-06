@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl-rpaas",
+      "comment": "Redesign ARM modelling using the new @armResource decorator and base resource types",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@azure-tools/adl-rpaas",
+  "email": "daviwil@microsoft.com"
+}

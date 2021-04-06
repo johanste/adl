@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Azure Fluid Relay",
-    "version": "2021-03-12-preview"
+    "title": "CodeSigningManagementClient",
+    "version": "2020-12-14-preview"
   },
   "schemes": [
     "https"
@@ -33,340 +33,17 @@
   },
   "tags": [
     {
-      "name": "FluidRelayServers"
+      "name": "Operations"
     },
     {
-      "name": "Operations"
+      "name": "CodeSignAccounts"
+    },
+    {
+      "name": "CertificateProfiles"
     }
   ],
   "paths": {
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FluidRelay/fluidRelayServers/{name}/regenerateKey": {
-      "post": {
-        "operationId": "FluidRelayServers_regenerateKey",
-        "summary": "Regenerate the primary or secondary key for this server.",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "parameters",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RegenerateKeyRequest"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "headers": {
-              "x-ms-client-request-id": {
-                "type": "string"
-              },
-              "x-ms-correlation-request-id": {
-                "type": "string"
-              }
-            },
-            "description": "Typed response envelope for ARM operations.",
-            "schema": {
-              "$ref": "#/definitions/FluidRelayServerKeys"
-            }
-          },
-          "default": {
-            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
-            "schema": {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
-            }
-          }
-        },
-        "tags": [
-          "FluidRelayServers"
-        ]
-      }
-    },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FluidRelay/fluidRelayServers/{name}/getKeys": {
-      "post": {
-        "operationId": "FluidRelayServers_getKeys",
-        "summary": "Retrieve the keys for this server.",
-        "consumes": [],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "headers": {
-              "x-ms-client-request-id": {
-                "type": "string"
-              },
-              "x-ms-correlation-request-id": {
-                "type": "string"
-              }
-            },
-            "description": "Typed response envelope for ARM operations.",
-            "schema": {
-              "$ref": "#/definitions/FluidRelayServerKeys"
-            }
-          },
-          "default": {
-            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
-            "schema": {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
-            }
-          }
-        },
-        "tags": [
-          "FluidRelayServers"
-        ]
-      }
-    },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FluidRelay/fluidRelayServers/{name}": {
-      "get": {
-        "operationId": "FluidRelayServers_Get",
-        "summary": "Get a FluidRelayServer",
-        "consumes": [],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "$ref": "#/parameters/ResourceNameParameter"
-          }
-        ],
-        "responses": {
-          "200": {
-            "headers": {
-              "x-ms-client-request-id": {
-                "type": "string"
-              },
-              "x-ms-correlation-request-id": {
-                "type": "string"
-              }
-            },
-            "description": "Typed response envelope for ARM operations.",
-            "schema": {
-              "$ref": "#/definitions/FluidRelayServer"
-            }
-          },
-          "default": {
-            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
-            "schema": {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
-            }
-          }
-        },
-        "tags": [
-          "FluidRelayServers"
-        ]
-      },
-      "put": {
-        "operationId": "FluidRelayServers_CreateOrUpdate",
-        "summary": "Create a FluidRelayServer",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "$ref": "#/parameters/ResourceNameParameter"
-          },
-          {
-            "name": "resource",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/FluidRelayServer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "headers": {
-              "x-ms-client-request-id": {
-                "type": "string"
-              },
-              "x-ms-correlation-request-id": {
-                "type": "string"
-              }
-            },
-            "description": "Typed response envelope for ARM operations.",
-            "schema": {
-              "$ref": "#/definitions/FluidRelayServer"
-            }
-          },
-          "default": {
-            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
-            "schema": {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
-            }
-          }
-        },
-        "tags": [
-          "FluidRelayServers"
-        ]
-      },
-      "patch": {
-        "operationId": "FluidRelayServers_Update",
-        "summary": "Update a FluidRelayServer",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "$ref": "#/parameters/ResourceNameParameter"
-          },
-          {
-            "name": "resource",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/FluidRelayServer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "headers": {
-              "x-ms-client-request-id": {
-                "type": "string"
-              },
-              "x-ms-correlation-request-id": {
-                "type": "string"
-              }
-            },
-            "description": "Typed response envelope for ARM operations.",
-            "schema": {
-              "$ref": "#/definitions/FluidRelayServer"
-            }
-          },
-          "default": {
-            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
-            "schema": {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
-            }
-          }
-        },
-        "tags": [
-          "FluidRelayServers"
-        ]
-      },
-      "delete": {
-        "operationId": "FluidRelayServers_Delete",
-        "summary": "Delete a FluidRelayServer",
-        "consumes": [],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "$ref": "#/parameters/ResourceNameParameter"
-          }
-        ],
-        "responses": {
-          "200": {
-            "headers": {
-              "x-ms-client-request-id": {
-                "type": "string"
-              },
-              "x-ms-correlation-request-id": {
-                "type": "string"
-              }
-            },
-            "description": "Typed response envelope for ARM operations.",
-            "schema": {
-              "type": "object",
-              "properties": {},
-              "x-adl-name": "{}"
-            }
-          },
-          "default": {
-            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
-            "schema": {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
-            }
-          }
-        },
-        "tags": [
-          "FluidRelayServers"
-        ]
-      }
-    },
-    "/providers/Microsoft.FluidRelay/operations": {
+    "/providers/Microsoft.CodeSigning/operations": {
       "get": {
         "operationId": "Operations_List",
         "consumes": [],
@@ -408,10 +85,222 @@
         }
       }
     },
-    "/subscriptions/{subscriptionId}/providers/Microsoft.FluidRelay/fluidRelayServers": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSignAccounts/{accountName}": {
       "get": {
-        "operationId": "FluidRelayServers_ListBySubscription",
-        "summary": "List FluidRelayServer resources by subscription ID",
+        "operationId": "CodeSignAccounts_Get",
+        "summary": "Get a CodeSignAccount",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/AccountNameParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/CodeSignAccount"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "CodeSignAccounts"
+        ]
+      },
+      "put": {
+        "operationId": "CodeSignAccounts_CreateOrUpdate",
+        "summary": "Create a CodeSignAccount",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/AccountNameParameter"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CodeSignAccount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/CodeSignAccount"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "CodeSignAccounts"
+        ]
+      },
+      "patch": {
+        "operationId": "CodeSignAccounts_Update",
+        "summary": "Update a CodeSignAccount",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/AccountNameParameter"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CodeSignAccount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/CodeSignAccount"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "CodeSignAccounts"
+        ]
+      },
+      "delete": {
+        "operationId": "CodeSignAccounts_Delete",
+        "summary": "Delete a CodeSignAccount",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/AccountNameParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "x-adl-name": "{}"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "CodeSignAccounts"
+        ]
+      }
+    },
+    "/subscriptions/{subscriptionId}/providers/Microsoft.CodeSigning/codeSignAccounts": {
+      "get": {
+        "operationId": "CodeSignAccounts_ListBySubscription",
+        "summary": "List CodeSignAccount resources by subscription ID",
         "consumes": [],
         "produces": [
           "application/json"
@@ -436,7 +325,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/FluidRelayServerListResult"
+              "$ref": "#/definitions/CodeSignAccountListResult"
             }
           },
           "default": {
@@ -447,17 +336,17 @@
           }
         },
         "tags": [
-          "FluidRelayServers"
+          "CodeSignAccounts"
         ],
         "x-ms-pageable": {
           "nextLinkName": "nextLink"
         }
       }
     },
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FluidRelay/fluidRelayServers": {
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSignAccounts": {
       "get": {
-        "operationId": "FluidRelayServers_ListByResourceGroup",
-        "summary": "List FluidRelayServer resources by resource group",
+        "operationId": "CodeSignAccounts_ListByResourceGroup",
+        "summary": "List CodeSignAccount resources by resource group",
         "consumes": [],
         "produces": [
           "application/json"
@@ -485,7 +374,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/FluidRelayServerListResult"
+              "$ref": "#/definitions/CodeSignAccountListResult"
             }
           },
           "default": {
@@ -496,7 +385,171 @@
           }
         },
         "tags": [
-          "FluidRelayServers"
+          "CodeSignAccounts"
+        ],
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSignAccounts/{accountName}/certificateProfiles/{profileName}": {
+      "get": {
+        "operationId": "CertificateProfiles_Get",
+        "summary": "Get a CertificateProfile",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/AccountNameParameter"
+          },
+          {
+            "$ref": "#/parameters/ProfileNameParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/CertificateProfile"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "CertificateProfiles"
+        ]
+      },
+      "patch": {
+        "operationId": "CertificateProfiles_Update",
+        "summary": "Update a CertificateProfile",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/AccountNameParameter"
+          },
+          {
+            "$ref": "#/parameters/ProfileNameParameter"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CertificateProfile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/CertificateProfile"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "CertificateProfiles"
+        ]
+      }
+    },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSignAccounts/{accountName}/certificateProfiles": {
+      "get": {
+        "operationId": "CertificateProfiles_ListByCodeSignAccounts",
+        "summary": "List all CertificateProfile by accountName",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/AccountNameParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/CertificateProfileListResult"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "CertificateProfiles"
         ],
         "x-ms-pageable": {
           "nextLinkName": "nextLink"
@@ -505,51 +558,57 @@
     }
   },
   "definitions": {
-    "RegenerateKeyRequest": {
-      "type": "object",
-      "properties": {
-        "keyName": {
-          "type": "string",
-          "enum": [
-            "key1",
-            "key2"
-          ],
-          "x-ms-enum": {
-            "name": "KeyName",
-            "modelAsString": true
-          },
-          "x-adl-name": "key1 | key2",
-          "description": "The key to regenerate."
-        }
-      },
-      "description": "Specifies which key should be generated.",
-      "required": [
-        "keyName"
-      ]
-    },
-    "FluidRelayServerKeys": {
-      "type": "object",
-      "properties": {
-        "key1": {
-          "type": "string",
-          "format": "password",
-          "description": "The primary key for this server.",
-          "readOnly": true
-        },
-        "key2": {
-          "type": "string",
-          "format": "password",
-          "description": "The secondary key for this server.",
-          "readOnly": true
-        }
-      },
-      "description": "The set of available keys for this server."
-    },
-    "FluidRelayServer": {
+    "CodeSignAccount": {
       "type": "object",
       "properties": {
         "properties": {
-          "$ref": "#/definitions/FluidRelayServerProperties",
+          "$ref": "#/definitions/CodeSignAccountProperties",
+          "description": "The resource-specific properties for this resource.",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
+        }
+      },
+      "description": "A CodeSignAccount resource",
+      "required": [
+        "properties"
+      ],
+      "allOf": [
+        {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
+        }
+      ],
+      "x-ms-azure-resource": true
+    },
+    "CodeSignAccountListResult": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CodeSignAccount"
+          },
+          "x-adl-name": "Microsoft.CodeSigning.CodeSignAccount[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
+        }
+      },
+      "description": "The response of a CodeSignAccount list operation.",
+      "required": [
+        "value",
+        "nextLink"
+      ]
+    },
+    "CertificateProfile": {
+      "type": "object",
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/CertificateProfileProperties",
           "description": "The resource-specific properties for this resource.",
           "x-ms-mutability": [
             "read",
@@ -563,20 +622,20 @@
       ],
       "allOf": [
         {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ProxyResource"
         }
       ],
       "x-ms-azure-resource": true
     },
-    "FluidRelayServerListResult": {
+    "CertificateProfileListResult": {
       "type": "object",
       "properties": {
         "value": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/FluidRelayServer"
+            "$ref": "#/definitions/CertificateProfile"
           },
-          "x-adl-name": "Microsoft.FluidRelay.FluidRelayServer[]",
+          "x-adl-name": "Microsoft.CodeSigning.CertificateProfile[]",
           "description": "The items on this page"
         },
         "nextLink": {
@@ -584,23 +643,32 @@
           "description": "The link to the next page of items"
         }
       },
-      "description": "The response of a FluidRelayServer list operation.",
+      "description": "The response of a CertificateProfile list operation.",
       "required": [
         "value",
         "nextLink"
       ]
     },
-    "FluidRelayServerProperties": {
+    "CodeSignAccountProperties": {
       "type": "object",
       "properties": {
-        "frsTenantId": {
+        "accountUri": {
           "type": "string",
-          "description": "The Fluid tenantId for this server",
+          "description": "The URI of the code sign account for performing operations on certificate profiles. This property is readonly",
           "readOnly": true
         },
-        "fluidRelayEndpoints": {
-          "$ref": "#/definitions/FluidRelayEndpoints",
-          "description": "The Fluid service endpoints for this server.",
+        "verificationStatus": {
+          "type": "string",
+          "enum": [
+            "Completed",
+            "InProgress",
+            "NotCompleted"
+          ],
+          "x-ms-enum": {
+            "name": "VerificationStatus",
+            "modelAsString": true
+          },
+          "x-adl-name": "Completed | InProgress | NotCompleted",
           "readOnly": true
         },
         "provisioningState": {
@@ -608,54 +676,177 @@
           "enum": [
             "Succeeded",
             "Failed",
-            "Cancelled"
+            "Cancelled",
+            "Provisioning",
+            "Updating",
+            "Deleting",
+            "Accepted"
           ],
           "x-ms-enum": {
             "name": "ProvisioningState",
             "modelAsString": true
           },
-          "x-adl-name": "Succeeded | Failed | Cancelled",
-          "description": "Provisioning states for FluidRelay RP"
+          "x-adl-name": "Succeeded | Failed | Cancelled | Provisioning | Updating | Deleting | Accepted",
+          "readOnly": true
         }
       },
-      "description": "The properties of a Fluid Relay Service resource."
+      "description": "Properties of the code sign account"
     },
-    "FluidRelayEndpoints": {
+    "CertificateProfileProperties": {
       "type": "object",
       "properties": {
-        "ordererEndpoints": {
-          "type": "array",
-          "items": {
-            "type": "string"
+        "profileType": {
+          "type": "string",
+          "enum": [
+            "Test",
+            "Trial",
+            "PrivateTrust",
+            "PublicTrust"
+          ],
+          "x-ms-enum": {
+            "name": "ProfileType",
+            "modelAsString": true
           },
-          "x-adl-name": "Microsoft.FluidRelay.Uri[]",
-          "description": "The Fluid Relay Orderer Endpoints.",
+          "x-adl-name": "Test | Trial | PrivateTrust | PublicTrust"
+        },
+        "rotationPolicy": {
+          "type": "string",
+          "enum": [
+            "Monthly"
+          ],
+          "x-ms-enum": {
+            "name": "RotationPolicy",
+            "modelAsString": true
+          }
+        },
+        "commonName": {
+          "type": "string",
+          "description": "Name of the certificate"
+        },
+        "authority": {
+          "type": "string",
+          "description": "Certificate authority of the certificate",
           "readOnly": true
         },
-        "storageEndpoints": {
+        "subjectAlternativeName": {
+          "type": "string",
+          "description": "Subject Alternative Name of the certificate"
+        },
+        "organization": {
+          "type": "string",
+          "readOnly": true
+        },
+        "streetAddress": {
+          "type": "string",
+          "readOnly": true
+        },
+        "city": {
+          "type": "string",
+          "readOnly": true
+        },
+        "state": {
+          "type": "string",
+          "readOnly": true
+        },
+        "country": {
+          "type": "string",
+          "readOnly": true
+        },
+        "certificates": {
           "type": "array",
           "items": {
-            "type": "string"
+            "$ref": "#/definitions/Certificate"
           },
-          "x-adl-name": "Microsoft.FluidRelay.Uri[]",
-          "description": "The Fluid Relay storage endpoints.",
+          "x-adl-name": "Microsoft.CodeSigning.Certificate[]",
+          "readOnly": true
+        },
+        "provisioningState": {
+          "type": "string",
+          "enum": [
+            "Succeeded",
+            "Failed",
+            "Cancelled",
+            "Provisioning",
+            "Updating",
+            "Deleting",
+            "Accepted"
+          ],
+          "x-ms-enum": {
+            "name": "ProvisioningState",
+            "modelAsString": true
+          },
+          "x-adl-name": "Succeeded | Failed | Cancelled | Provisioning | Updating | Deleting | Accepted",
           "readOnly": true
         }
       },
-      "description": "The Fluid Relay Service endpoints for this server.",
+      "description": "Properties of the certificate profile",
       "required": [
-        "ordererEndpoints",
-        "storageEndpoints"
+        "profileType",
+        "rotationPolicy",
+        "commonName",
+        "subjectAlternativeName"
+      ]
+    },
+    "Certificate": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Id of the certificate",
+          "readOnly": true
+        },
+        "subjectName": {
+          "type": "string",
+          "description": "Subject name of the certificate",
+          "readOnly": true
+        },
+        "subjectAlternativeName": {
+          "type": "string",
+          "description": "Subject alternative name of the certificate",
+          "readOnly": true
+        },
+        "thumbprint": {
+          "type": "string",
+          "description": "Thumbprint of the certificate",
+          "readOnly": true
+        },
+        "createdDate": {
+          "type": "string",
+          "description": "Certificate created date",
+          "readOnly": true
+        },
+        "expiryDate": {
+          "type": "string",
+          "description": "Certificate expiry date",
+          "readOnly": true
+        }
+      },
+      "description": "Properties of the certificate",
+      "required": [
+        "id",
+        "subjectName",
+        "subjectAlternativeName",
+        "thumbprint",
+        "createdDate",
+        "expiryDate"
       ]
     }
   },
   "parameters": {
-    "ResourceNameParameter": {
+    "AccountNameParameter": {
       "x-ms-parameter-location": "method",
-      "name": "name",
+      "name": "accountName",
       "in": "path",
       "required": true,
-      "description": "The resource name.",
+      "description": "Code Signing account name",
+      "type": "string"
+    },
+    "ProfileNameParameter": {
+      "x-ms-parameter-location": "method",
+      "name": "profileName",
+      "in": "path",
+      "required": true,
+      "description": "Certificate profile name",
       "type": "string"
     }
   }

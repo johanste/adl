@@ -4,7 +4,7 @@ import "@azure-tools/adl-rpaas";
 
 @armNamespace
 @serviceTitle("Microsoft.Confluent")
-@serviceVersion("2020-03-01-preview")
+@serviceVersion("2021-03-01-preview")
 namespace Microsoft.Confluent;
 
 @doc("A string that represents a URI.")
@@ -23,16 +23,16 @@ model MediumString = string;
 @maxLength(25)
 model ShortString = string;
 
-@doc("An Organization key to be handled as a secret.")
-@secret
-model OrganizationKey = string;
+@armResource({
+  path: "organizations",
+  collectionName: "Organizations",
+  parameterType: OrganizationNameParameter,
+})
+model Organization = TrackedResource<OrganizationProperties>;
 
-@TrackedResource("organizations", OrganizationProperties)
-namespace Organizations {
-  @post op GetKeys(
-    ...CommonResourceParameters,
-    @path name: string
-  ): ArmResponse<OrganizationKeys> | ErrorResponse;
+model OrganizationNameParameter {
+  @doc("Organization resource name")
+  @path organizationName: string;
 }
 
 @doc("Details of the Confluent organization.")
@@ -95,10 +95,27 @@ model UserDetail {
   emailAddress: email;
 }
 
-model OrganizationKeys {
-  @doc("The primary key.")
-  primary: OrganizationKey;
+@armResource({
+  path: "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements",
+  collectionName: "MarketplaceAgreements",
+  parameterType: null,
+  pathParameters: [SubscriptionIdParameter]
+})
+@armListBy(SubscriptionIdParameter, "List")
+model ConfluentAgreementResource {
+  ...ArmResource;
+  properties: ConfluentAgreementResourceProperties;
+}
 
-  @doc("The secondary Key.")
-  secondary: OrganizationKey;
+model ConfluentAgreementResourceProperties {
+}
+
+@armResourceOperations(ConfluentAgreementResource)
+namespace MarketplaceAgreements {
+  @put("default")
+  op Create(
+    ...ApiVersionParameter,
+    ...SubscriptionIdParameter,
+    @body agreement: ConfluentAgreementResource
+  ): ArmResponse<ConfluentAgreementResource> | ErrorResponse;
 }

@@ -18,6 +18,8 @@ const sampleFolders = [
   "overloads",
   "petstore",
   "recursive",
+  "rpaas/codesigning",
+  "rpaas/servicelinker",
   "rpaas/liftr.confluent",
   "rpaas/liftr.frs",
   "tags",

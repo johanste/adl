@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Microsoft.Confluent",
-    "version": "2020-03-01-preview"
+    "version": "2021-03-01-preview"
   },
   "schemes": [
     "https"
@@ -33,114 +33,19 @@
   },
   "tags": [
     {
-      "name": "Organizations"
+      "name": "MarketplaceAgreements"
     },
     {
       "name": "Operations"
+    },
+    {
+      "name": "Organizations"
     }
   ],
   "paths": {
-    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{name}": {
-      "post": {
-        "operationId": "Organizations_GetKeys",
-        "consumes": [],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "headers": {
-              "x-ms-client-request-id": {
-                "type": "string"
-              },
-              "x-ms-correlation-request-id": {
-                "type": "string"
-              }
-            },
-            "description": "Typed response envelope for ARM operations.",
-            "schema": {
-              "$ref": "#/definitions/OrganizationKeys"
-            }
-          },
-          "default": {
-            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
-            "schema": {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
-            }
-          }
-        },
-        "tags": [
-          "Organizations"
-        ]
-      },
-      "get": {
-        "operationId": "Organizations_Get",
-        "consumes": [],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "headers": {
-              "x-ms-client-request-id": {
-                "type": "string"
-              },
-              "x-ms-correlation-request-id": {
-                "type": "string"
-              }
-            },
-            "description": "Typed response envelope for ARM operations.",
-            "schema": {
-              "$ref": "#/definitions/OrganizationResource"
-            }
-          },
-          "default": {
-            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
-            "schema": {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
-            }
-          }
-        },
-        "tags": [
-          "Organizations"
-        ]
-      },
+    "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements/default": {
       "put": {
-        "operationId": "Organizations_CreateOrUpdate",
+        "operationId": "MarketplaceAgreements_Create",
         "consumes": [
           "application/json"
         ],
@@ -155,20 +60,11 @@
             "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "resource",
+            "name": "agreement",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrganizationResource"
+              "$ref": "#/definitions/ConfluentAgreementResource"
             }
           }
         ],
@@ -184,7 +80,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationResource"
+              "$ref": "#/definitions/ConfluentAgreementResource"
             }
           },
           "default": {
@@ -195,11 +91,109 @@
           }
         },
         "tags": [
-          "Organizations"
+          "MarketplaceAgreements"
+        ]
+      }
+    },
+    "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/agreements": {
+      "get": {
+        "operationId": "MarketplaceAgreements_List",
+        "summary": "List all ConfluentAgreementResource by subscriptionId",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/ConfluentAgreementResourceListResult"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "MarketplaceAgreements"
+        ],
+        "x-ms-pageable": {
+          "nextLinkName": "nextLink"
+        }
+      },
+      "put": {
+        "operationId": "MarketplaceAgreements_CreateOrUpdate",
+        "summary": "Create a ConfluentAgreementResource",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ConfluentAgreementResource"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/ConfluentAgreementResource"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "MarketplaceAgreements"
         ]
       },
       "patch": {
-        "operationId": "Organizations_Update",
+        "operationId": "MarketplaceAgreements_Update",
+        "summary": "Update a ConfluentAgreementResource",
         "consumes": [
           "application/json"
         ],
@@ -214,20 +208,11 @@
             "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
           },
           {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
             "name": "resource",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/OrganizationResource"
+              "$ref": "#/definitions/ConfluentAgreementResource"
             }
           }
         ],
@@ -243,7 +228,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationResource"
+              "$ref": "#/definitions/ConfluentAgreementResource"
             }
           },
           "default": {
@@ -254,11 +239,12 @@
           }
         },
         "tags": [
-          "Organizations"
+          "MarketplaceAgreements"
         ]
       },
       "delete": {
-        "operationId": "Organizations_Delete",
+        "operationId": "MarketplaceAgreements_Delete",
+        "summary": "Delete a ConfluentAgreementResource",
         "consumes": [],
         "produces": [
           "application/json"
@@ -269,15 +255,6 @@
           },
           {
             "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
-          },
-          {
-            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
-          },
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
           }
         ],
         "responses": {
@@ -305,7 +282,7 @@
           }
         },
         "tags": [
-          "Organizations"
+          "MarketplaceAgreements"
         ]
       }
     },
@@ -351,9 +328,222 @@
         }
       }
     },
+    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}": {
+      "get": {
+        "operationId": "Organizations_Get",
+        "summary": "Get a Organization",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/OrganizationNameParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "Organizations"
+        ]
+      },
+      "put": {
+        "operationId": "Organizations_CreateOrUpdate",
+        "summary": "Create a Organization",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/OrganizationNameParameter"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "Organizations"
+        ]
+      },
+      "patch": {
+        "operationId": "Organizations_Update",
+        "summary": "Update a Organization",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/OrganizationNameParameter"
+          },
+          {
+            "name": "resource",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "Organizations"
+        ]
+      },
+      "delete": {
+        "operationId": "Organizations_Delete",
+        "summary": "Delete a Organization",
+        "consumes": [],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ApiVersionParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/SubscriptionIdParameter"
+          },
+          {
+            "$ref": "../../../../../common-types/resource-management/v2/types.json#/parameters/ResourceGroupNameParameter"
+          },
+          {
+            "$ref": "#/parameters/OrganizationNameParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Typed response envelope for ARM operations.",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "x-adl-name": "{}"
+            }
+          },
+          "default": {
+            "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
+            "schema": {
+              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "tags": [
+          "Organizations"
+        ]
+      }
+    },
     "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/organizations": {
       "get": {
         "operationId": "Organizations_ListBySubscription",
+        "summary": "List Organization resources by subscription ID",
         "consumes": [],
         "produces": [
           "application/json"
@@ -378,7 +568,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationResourceListResult"
+              "$ref": "#/definitions/OrganizationListResult"
             }
           },
           "default": {
@@ -399,6 +589,7 @@
     "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations": {
       "get": {
         "operationId": "Organizations_ListByResourceGroup",
+        "summary": "List Organization resources by resource group",
         "consumes": [],
         "produces": [
           "application/json"
@@ -426,7 +617,7 @@
             },
             "description": "Typed response envelope for ARM operations.",
             "schema": {
-              "$ref": "#/definitions/OrganizationResourceListResult"
+              "$ref": "#/definitions/OrganizationListResult"
             }
           },
           "default": {
@@ -446,26 +637,58 @@
     }
   },
   "definitions": {
-    "OrganizationKeys": {
+    "ConfluentAgreementResource": {
       "type": "object",
       "properties": {
-        "primary": {
+        "id": {
           "type": "string",
-          "format": "password",
-          "description": "The primary key."
+          "readOnly": true
         },
-        "secondary": {
+        "name": {
           "type": "string",
-          "format": "password",
-          "description": "The secondary Key."
+          "readOnly": true
+        },
+        "type": {
+          "type": "string",
+          "readOnly": true
+        },
+        "properties": {
+          "type": "object",
+          "properties": {},
+          "x-adl-name": "{}"
         }
       },
       "required": [
-        "primary",
-        "secondary"
+        "id",
+        "name",
+        "type",
+        "properties"
+      ],
+      "x-ms-azure-resource": true
+    },
+    "ConfluentAgreementResourceListResult": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfluentAgreementResource"
+          },
+          "x-adl-name": "Microsoft.Confluent.ConfluentAgreementResource[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
+        }
+      },
+      "description": "The response of a ConfluentAgreementResource list operation.",
+      "required": [
+        "value",
+        "nextLink"
       ]
     },
-    "OrganizationResource": {
+    "Organization": {
       "type": "object",
       "properties": {
         "properties": {
@@ -488,15 +711,15 @@
       ],
       "x-ms-azure-resource": true
     },
-    "OrganizationResourceListResult": {
+    "OrganizationListResult": {
       "type": "object",
       "properties": {
         "value": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/OrganizationResource"
+            "$ref": "#/definitions/Organization"
           },
-          "x-adl-name": "Microsoft.Confluent.OrganizationResource[]",
+          "x-adl-name": "Microsoft.Confluent.Organization[]",
           "description": "The items on this page"
         },
         "nextLink": {
@@ -504,7 +727,7 @@
           "description": "The link to the next page of items"
         }
       },
-      "description": "The response of a OrganizationResource list operation.",
+      "description": "The response of a Organization list operation.",
       "required": [
         "value",
         "nextLink"
@@ -640,5 +863,14 @@
       ]
     }
   },
-  "parameters": {}
+  "parameters": {
+    "OrganizationNameParameter": {
+      "x-ms-parameter-location": "method",
+      "name": "organizationName",
+      "in": "path",
+      "required": true,
+      "description": "Organization resource name",
+      "type": "string"
+    }
+  }
 }

@@ -14,7 +14,19 @@ model Uri = string;
 @secret
 model SecretKey = string;
 
-@TrackedResource("fluidRelayServers", FluidRelayServerProperties)
+@armResource({
+  path: "fluidRelayServers",
+  collectionName: "FluidRelayServers",
+  parameterType: ResourceNameParameter
+})
+model FluidRelayServer = TrackedResource<FluidRelayServerProperties>;
+
+model ResourceNameParameter {
+  @doc("The resource name.")
+  @path name: string;
+}
+
+@armResourceOperations(FluidRelayServer)
 namespace FluidRelayServers {
   @doc("Regenerate the primary or secondary key for this server.")
   @post("regenerateKey")
