@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl-openapi",
+      "comment": "",
+      "type": "none"
+    }
+  ],
+  "packageName": "@azure-tools/adl-openapi",
+  "email": "brian.terlson@microsoft.com"
+}

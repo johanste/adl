@@ -1,6 +1,6 @@
 {
   "name": "@azure-tools/adl-openapi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ADL library for emitting openapi from the ADL REST protocol binding",
   "main": "dist/openapi.js",
   "adlMain": "dist/openapi.js",
@@ -43,8 +43,8 @@
     "prettier": "~2.2.1"
   },
   "dependencies": {
-    "@azure-tools/adl": "~0.7.0",
-    "@azure-tools/adl-rest": "~0.1.0"
+    "@azure-tools/adl": "~0.8.0",
+    "@azure-tools/adl-rest": "~0.1.1"
   },
   "type": "module"
 }

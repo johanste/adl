@@ -2,8 +2,8 @@
   "changes": [
     {
       "packageName": "@azure-tools/adl",
-      "comment": "Implement library import with npm, abstract out rest, openapi, rpaas",
-      "type": "minor"
+      "comment": "",
+      "type": "none"
     }
   ],
   "packageName": "@azure-tools/adl",
