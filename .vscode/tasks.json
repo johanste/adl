@@ -55,13 +55,6 @@
       "label": "watch-spec",
       "type": "shell",
       "command": "npm run watch",
-      "problemMatcher": {
-        "base": "$msCompile",
-        "background": {
-          "beginsPattern": "^@@BEGIN.*$",
-          "endsPattern": "^@@END.*$"
-        }
-      },
       "isBackground": true,
       "options": {
         "cwd": "${workspaceFolder}/packages/adl-language"
