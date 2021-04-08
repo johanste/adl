@@ -40,7 +40,8 @@
       "problemMatcher": {
         "base": "$msCompile",
         "background": {
-          "beginsPattern": "^.*File changes detected.*$",
+          "activeOnStart": true,
+          "beginsPattern": "^.*File change detected.*$",
           "endsPattern": "^.*Waiting for file changes.*$"
         }
       },
@@ -62,6 +63,14 @@
       "type": "process",
       "command": "node",
       "args": ["${workspaceFolder}/packages/adl-language/scripts/watch-spec.js"],
+      "problemMatcher": {
+        "base": "$msCompile",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*File change detected.*$",
+          "endsPattern": "^.*Waiting for file changes.*$"
+        }
+      },
       "isBackground": true,
       "options": {
         "cwd": "${workspaceFolder}/packages/adl-language"

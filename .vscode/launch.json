@@ -29,7 +29,7 @@
       "request": "launch",
       "name": "Compile Scratch",
       "program": "${workspaceRoot}/packages/adl/dist/compiler/cli.js",
-      "args": ["compile", "samples/scratch", "--output-path=dist/scratch-adl-output"],
+      "args": ["compile", "../adl-samples/scratch", "--output-path=temp/scratch-adl-output"],
       "smartStep": true,
       "sourceMaps": true,
       "skipFiles": ["<node_internals>/**/*.js"],
@@ -41,17 +41,22 @@
       "request": "launch",
       "name": "Compile Scratch (nostdlib)",
       "program": "${workspaceRoot}/packages/adl/dist/compiler/cli.js",
-      "args": ["compile", "samples/scratch", "--output-path=dist/scratch-adl-output", "--nostdlib"],
+      "args": [
+        "compile",
+        "../adl-samples/scratch",
+        "--output-path=temp/scratch-adl-output",
+        "--nostdlib"
+      ],
       "smartStep": true,
       "sourceMaps": true,
       "skipFiles": ["<node_internals>/**/*.js"],
       "cwd": "${workspaceRoot}/packages/adl"
     },
     {
-      "name": "Regenerate TextMate Grammar",
+      "name": "Regenerate .tmlanguage",
       "type": "node",
       "protocol": "inspector",
-      "program": "${workspaceRoot}/packages/adl-vscode/dist-dev/adl.tmLanguage.js",
+      "program": "${workspaceRoot}/packages/adl-vscode/scripts/generate-tmlanguage.js",
       "request": "launch",
       "cwd": "${workspaceRoot}/packages/adl-vscode"
     },
