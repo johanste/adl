@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl-vs",
+      "comment": "Log messages from language server in output window pane",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl-vs",
+  "email": "nicholg@microsoft.com"
+}
