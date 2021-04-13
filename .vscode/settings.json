@@ -52,6 +52,7 @@
     "command-line.json": "jsonc",
     "version-policies.json": "jsonc"
   },
+  "typescript.tsdk": "./packages/adl/node_modules/typescript/lib",
   "git.ignoreLimitWarning": true,
   "mochaExplorer.files": "./packages/adl/dist/test/**/*.js",
   "mochaExplorer.cwd": "./packages/adl",

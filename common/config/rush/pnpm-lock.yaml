@@ -27,7 +27,6 @@ dependencies:
   prettier: 2.2.1
   resolve: 1.20.0
   rollup: 2.41.5
-  typescript: 4.1.5
   vsce: 1.85.1
   vscode-languageclient: 7.0.0
   vscode-languageserver: 7.0.0
@@ -2613,6 +2612,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-6OSu9PTIzmn9TCDiovULTnET6BgXtDYL4Gg4szY+cGsc3JP1dQL8qvE8kShTRx1NIw4Q9IBHlwODjkjWEtMUyA==
+  /typescript/4.2.4:
+    dev: false
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
   /uc.micro/1.0.6:
     dev: false
     resolution:
@@ -2958,23 +2964,23 @@ packages:
       '@types/node': 14.0.27
       ecmarkup: 7.0.3
       prettier: 2.2.1
-      typescript: 4.1.5
+      typescript: 4.2.4
       watch: 1.0.2
     dev: false
     name: '@rush-temp/adl-language'
     resolution:
-      integrity: sha512-nODKnhRkAus0kmm5fbgOqKNoI7AHntQSMPYORKgROZnRbPkmLM5RGITv8q9UQNnaIBA2rlWEPEhgO3cUqrBs8g==
+      integrity: sha512-UzQwHOS0sV+1lF+UkWVWm2+5PAna6+RBFliccZmeUGJ241If6Ry83Y9NpyOMFAVZDUOcjdJrK89n7VQZnCrq+w==
       tarball: file:projects/adl-language.tgz
     version: 0.0.0
   file:projects/adl-openapi.tgz:
     dependencies:
       '@types/node': 14.0.27
       prettier: 2.2.1
-      typescript: 4.1.5
+      typescript: 4.2.4
     dev: false
     name: '@rush-temp/adl-openapi'
     resolution:
-      integrity: sha512-1YPYlx2TTftc7KEaTDSB6ztdX3+tE8NbkoTW3bLfseIzezL3QOOcqxCdjirWhSy404xxjTKHNWJzBRReXOl4mg==
+      integrity: sha512-AIiKWTF3+jiRZb6uMeN/R7Fb2COlVxfFtw7NP/jxDB2RyWXCXfHKGeRfP3xpCUdiX3FdPupH7UXGNT/nySLKfA==
       tarball: file:projects/adl-openapi.tgz
     version: 0.0.0
   file:projects/adl-rest.tgz:
@@ -2992,22 +2998,22 @@ packages:
     dependencies:
       '@types/node': 14.0.27
       prettier: 2.2.1
-      typescript: 4.1.5
+      typescript: 4.2.4
     dev: false
     name: '@rush-temp/adl-rpaas'
     resolution:
-      integrity: sha512-ToRpqf0ziW/hkH47dXCJkBduJgFoRkFaVlAn6+2OlRjNC0SHMyRS5tscTxGxmOnb/ZCAFRgDxaJJSwjlQAAecQ==
+      integrity: sha512-kwJ7EfRhejENOIh7XNNkx5R5+j587lhmVjkmAWOelDNXzYpvs2FkARl/dCIx/4ePwiA0cPaAIKtSJS0uZk6Aiw==
       tarball: file:projects/adl-rpaas.tgz
     version: 0.0.0
   file:projects/adl-samples.tgz:
     dependencies:
       '@types/node': 14.0.27
       prettier: 2.2.1
-      typescript: 4.1.5
+      typescript: 4.2.4
     dev: false
     name: '@rush-temp/adl-samples'
     resolution:
-      integrity: sha512-R4+QL677TY5d9tupp/WonFaNGSQ4keNbSfBkCTyx5haXmaHEdykMEdBo3eq0QNamMZ3ijwNLGFzUzyDEamLhKQ==
+      integrity: sha512-N7dcWrFdSTNP1RD4Sf/OjGDfuhwV4u4LXALK5vCusdP5VkNZziyklt+LLUP1UCLlMiUTJUYT2jxcqStWFLGVMA==
       tarball: file:projects/adl-samples.tgz
     version: 0.0.0
   file:projects/adl-vs.tgz:
@@ -3024,14 +3030,14 @@ packages:
       '@types/node': 14.0.27
       '@types/vscode': 1.53.0
       rollup: 2.41.5
-      typescript: 4.1.5
+      typescript: 4.2.4
       vsce: 1.85.1
       vscode-languageclient: 7.0.0
       watch: 1.0.2
     dev: false
     name: '@rush-temp/adl-vscode'
     resolution:
-      integrity: sha512-D3trGEZ4PyUZgYDlf5OI5MseiufT1udU4VrHAIFKnH4aEa4IOT5y7d1g5qE3QTipmIGcLMujruCbxn7UbDjdew==
+      integrity: sha512-GRS0AApmv+S8S8vLX/MjRWs2hlFz5qvOg3I/d3MS2Od6zuixP0TCOVqTLALrrc/nM7fNyC7EeOYauq+bBoNt9A==
       tarball: file:projects/adl-vscode.tgz
     version: 0.0.0
   file:projects/adl.tgz:
@@ -3047,14 +3053,14 @@ packages:
       mocha: 7.1.2
       prettier: 2.2.1
       resolve: 1.20.0
-      typescript: 4.1.5
+      typescript: 4.2.4
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.1
       yargs: 16.2.0
     dev: false
     name: '@rush-temp/adl'
     resolution:
-      integrity: sha512-owrQCBjOKadYYeWsRk27xrLuVeU8C3PN2eEoBOu8/nMTGn5f757j4jdrEO6cUtdk4P2zgawfycwqXk8rkP8lGA==
+      integrity: sha512-VYEwteBjfYJRq6X8HkvNA7/qN75FwGpManNtg/Vlu6mKv7D/i7lnY0CRqBs5jzv4Th5qq3AVM+90Ct9rKuIKnQ==
       tarball: file:projects/adl.tgz
     version: 0.0.0
   file:projects/tmlanguage-generator.tgz:
@@ -3099,7 +3105,6 @@ specifiers:
   prettier: ~2.2.1
   resolve: ~1.20.0
   rollup: ~2.41.4
-  typescript: ~4.1.5
   vsce: ~1.85.1
   vscode-languageclient: ~7.0.0
   vscode-languageserver: ~7.0.0
