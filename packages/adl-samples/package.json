@@ -2,48 +2,42 @@
   "name": "@azure-tools/adl-samples",
   "private": true,
   "version": "1.0.0",
+  "author": "Microsoft Corporation",
   "description": "Samples for ADL",
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "scripts": {
-    "build": "echo \"nothing to do for samples\"",
-    "test": "echo \"no tests\""
-  },
+  "homepage": "https://github.com/Azure/adl",
+  "readme": "https://github.com/Azure/adl/blob/master/readme.md",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Azure/adl.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Azure/adl/issues"
   },
   "keywords": [
     "adl",
     "cli"
   ],
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Azure/adl/issues"
+  "type": "module",
+  "engines": {
+    "node": ">=14.0.0"
   },
-  "homepage": "https://github.com/Azure/adl#readme",
-  "readme": "https://github.com/Azure/adl/blob/master/readme.md",
+  "scripts": {
+    "build": "echo \"nothing to do for samples\""
+  },
   "files": [
     "lib/*.adl",
-    "dist/**",
-    "readme.md",
-    "samples",
-    "LICENSE"
+    "dist/**"
   ],
-  "devDependencies": {
-    "@types/mocha": "^7.0.2",
-    "@types/node": "14.0.27",
-    "mocha": "7.1.2",
-    "typescript": "~4.1.5",
-    "prettier": "~2.2.1"
-  },
   "dependencies": {
-    "@azure-tools/adl": "~0.8.0",
-    "@azure-tools/adl-rest": "~0.1.1",
-    "@azure-tools/adl-openapi": "~0.1.1",
-    "@azure-tools/adl-rpaas": "~0.1.1"
+    "@azure-tools/adl": "0.8.0",
+    "@azure-tools/adl-openapi": "0.1.1",
+    "@azure-tools/adl-rest": "0.1.1",
+    "@azure-tools/adl-rpaas": "0.1.1"
   },
-  "type": "module"
+  "devDependencies": {
+    "@types/node": "~14.0.27",
+    "prettier": "~2.2.1",
+    "typescript": "~4.1.5"
+  }
 }

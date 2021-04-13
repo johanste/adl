@@ -48,7 +48,9 @@
   },
   "files.associations": {
     "rush.json": "jsonc",
-    "command-line.json": "jsonc"
+    "common-versions.json": "jsonc",
+    "command-line.json": "jsonc",
+    "version-policies.json": "jsonc"
   },
   "git.ignoreLimitWarning": true,
   "mochaExplorer.files": "./packages/adl/dist/test/**/*.js",
