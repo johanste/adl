@@ -27,6 +27,7 @@ dependencies:
   prettier: 2.2.1
   resolve: 1.20.0
   rollup: 2.41.5
+  typescript: 4.2.4
   vsce: 1.85.1
   vscode-languageclient: 7.0.0
   vscode-languageserver: 7.0.0
@@ -2605,13 +2606,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-FrUshzZ1yxH8YwGR29PWWnfksLEILbWJydU7zfIRkyH7kAEzB62uMAl2WY6EyolWpLpVHeJGgQm45/MaruaHpw==
-  /typescript/4.1.5:
-    dev: false
-    engines:
-      node: '>=4.2.0'
-    hasBin: true
-    resolution:
-      integrity: sha512-6OSu9PTIzmn9TCDiovULTnET6BgXtDYL4Gg4szY+cGsc3JP1dQL8qvE8kShTRx1NIw4Q9IBHlwODjkjWEtMUyA==
   /typescript/4.2.4:
     dev: false
     engines:
@@ -2987,11 +2981,11 @@ packages:
     dependencies:
       '@types/node': 14.0.27
       prettier: 2.2.1
-      typescript: 4.1.5
+      typescript: 4.2.4
     dev: false
     name: '@rush-temp/adl-rest'
     resolution:
-      integrity: sha512-m+8UIshI+tEXZRpbY3D70IchCaDJCrvTldqwUZtUlNHpzoyZvLCMau8Srd3ABdAj1z3+f4m1Oy8xBlsLfQdT5Q==
+      integrity: sha512-WmzvoJQm+pthqkB2ZC9prUnDQi9u8VdbD3u2hjRh39KCWYaoA53PgGNRcx5VKH3qRtapWHKwT+r8zwjfEModOw==
       tarball: file:projects/adl-rest.tgz
     version: 0.0.0
   file:projects/adl-rpaas.tgz:
@@ -3105,6 +3099,7 @@ specifiers:
   prettier: ~2.2.1
   resolve: ~1.20.0
   rollup: ~2.41.4
+  typescript: ~4.2.4
   vsce: ~1.85.1
   vscode-languageclient: ~7.0.0
   vscode-languageserver: ~7.0.0
