@@ -47,13 +47,13 @@ import {
   _checkIfServiceNamespace,
 } from "@azure-tools/adl-rest";
 
-export function onBuild(p: Program) {
+export async function onBuild(p: Program) {
   const options: OpenAPIEmitterOptions = {
     outputFile: p.compilerOptions.swaggerOutputFile || path.resolve("./openapi.json"),
   };
 
   const emitter = createOAPIEmitter(p, options);
-  emitter.emitOpenAPI();
+  await emitter.emitOpenAPI();
 }
 
 const operationIds = new Map<Type, string>();
@@ -174,7 +174,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
 
   return { emitOpenAPI };
 
-  function emitOpenAPI() {
+  async function emitOpenAPI() {
     for (let resource of getResources()) {
       if (resource.kind !== "Namespace") {
         throwDiagnostic("Resource goes on namespace", resource);
@@ -210,7 +210,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
 
     if (!program.compilerOptions.noEmit) {
       // Write out the OpenAPI document to the output path
-      fs.writeFileSync(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
+      await program.host.writeFile(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
     }
   }
 
