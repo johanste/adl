@@ -14,7 +14,7 @@ model ArmResource {
 
 @armCommonDefinition("TrackedResource")
 @doc("The resource model definition for an Azure Resource Manager tracked top level resource")
-model ArmTrackedResourceBase extends ArmResource {
+model TrackedResourceBase extends ArmResource {
   @doc("The geo-location where the resource lives")
   @visibility("read", "create")
   location: string;
@@ -25,11 +25,37 @@ model ArmTrackedResourceBase extends ArmResource {
 }
 
 @doc("Concrete tracked resource types can be created by aliasing this type using a specific property type.")
-model ArmTrackedResource<TProperties> extends ArmTrackedResourceBase {
+model TrackedResource<TProperties> extends TrackedResourceBase {
   @doc("The resource-specific properties for this resource.")
   @visibility("read", "create")
   @extension("x-ms-client-flatten", true)
   properties: TProperties;
+}
+
+@armCommonDefinition("ProxyResource")
+model ProxyResourceBase {
+  ...ArmResource
+};
+
+@doc("Concrete proxy resource types can be created by aliasing this type using a specific property type.")
+model ProxyResource<TProperties> extends ProxyResourceBase {
+  @doc("The resource-specific properties for this resource.")
+  @visibility("read", "create")
+  @extension("x-ms-client-flatten", true)
+  properties: TProperties;
+}
+
+model ExtensionResource<TProperties> extends ArmResource {
+  @doc("The resource-specific properties for this resource.")
+  @visibility("read", "create")
+  @extension("x-ms-client-flatten", true)
+  properties: TProperties;
+}
+
+@doc("The default name parameter type")
+model NameParameter {
+  @doc("The name of the resource")
+  @path name: string;
 }
 
 @doc("Response envelope for ARM operations.")
@@ -82,6 +108,12 @@ model ResourceGroupNameParameter {
   @doc("The name of the resource group. The name is case insensitive.")
   @armCommonParameter("ResourceGroupNameParameter")
   resourceGroupName: string;
+}
+
+model ResourceUriParameter {
+  @doc("The fully qualified Azure Resource manager identifier of the resource.")
+  @extension("x-ms-skip-url-encoding", true)
+  @path resourceUri: string;
 }
 
 model OperationIdParameter {
