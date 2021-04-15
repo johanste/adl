@@ -9,7 +9,7 @@ model ArmResource {
   name: string; 
 
   @visibility("read")
-  type: string;   
+  type: string;
 }
 
 @armCommonDefinition("TrackedResource")
@@ -30,11 +30,19 @@ model TrackedResource<TProperties> extends TrackedResourceBase {
   @visibility("read", "create")
   @extension("x-ms-client-flatten", true)
   properties: TProperties;
+
+  @doc("System metadata for this resource.")
+  @visibility("read")
+  systemData: SystemData;
 }
 
 @armCommonDefinition("ProxyResource")
 model ProxyResourceBase {
-  ...ArmResource
+  ...ArmResource,
+
+  @doc("System metadata for this resource.")
+  @visibility("read")
+  systemData: SystemData;
 };
 
 @doc("Concrete proxy resource types can be created by aliasing this type using a specific property type.")
@@ -50,6 +58,10 @@ model ExtensionResource<TProperties> extends ArmResource {
   @visibility("read", "create")
   @extension("x-ms-client-flatten", true)
   properties: TProperties;
+
+  @doc("System metadata for this resource.")
+  @visibility("read")
+  systemData: SystemData;
 }
 
 @doc("The default name parameter type")
@@ -269,4 +281,35 @@ model ErrorAdditionalInfo {
   @doc("The additional info.")
   @visibility("read")
   info?: {};
+}
+
+// NOTE: This is how the enum is named in types.json
+model createdByType = "User" | "Application" | "ManagedIdentity" | "Key";
+
+@armCommonDefinition("systemData")
+@doc("Metadata pertaining to creation and last modification of the resource.")
+model SystemData {
+  @visibility("read")
+  @doc("The identity that created the resource.")
+  createdBy?: string;
+
+  @visibility("read")
+  @doc("The type of identity that created the resource.")
+  createdByType?: createdByType;
+
+  @visibility("read")
+  @doc("The type of identity that created the resource.")
+  createdAt?: plainDate;
+
+  @visibility("read")
+  @doc("The identity that last modified the resource.")
+  lastModifiedBy?: string;
+
+  @visibility("read")
+  @doc("The type of identity that last modified the resource.")
+  lastModifiedByType?: createdByType;
+
+  @visibility("read")
+  @doc("The timestamp of resource last modification (UTC)")
+  lastModifiedAt?: plainDate;
 }
