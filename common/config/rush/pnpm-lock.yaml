@@ -25,6 +25,7 @@ dependencies:
   onigasm: 2.2.5
   plist: 3.0.2
   prettier: 2.2.1
+  prettier-plugin-organize-imports: 1.1.1_prettier@2.2.1+typescript@4.2.4
   resolve: 1.20.0
   rollup: 2.41.5
   source-map-support: 0.5.19
@@ -1909,6 +1910,16 @@ packages:
       node: '>= 0.8.0'
     resolution:
       integrity: sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
+  /prettier-plugin-organize-imports/1.1.1_prettier@2.2.1+typescript@4.2.4:
+    dependencies:
+      prettier: 2.2.1
+      typescript: 4.2.4
+    dev: false
+    peerDependencies:
+      prettier: '>=1.10'
+      typescript: '>=2.8.2'
+    resolution:
+      integrity: sha512-rFA1lnek1FYkMGthm4xBKME41qUKItTovuo24bCGZu/Vu1n3gW71UPLAkIdwewwkZCe29gRVweSOPXvAdckFuw==
   /prettier/2.2.1:
     dev: false
     engines:
@@ -2742,7 +2753,7 @@ packages:
     dev: false
     name: '@rush-temp/adl-language'
     resolution:
-      integrity: sha512-UzQwHOS0sV+1lF+UkWVWm2+5PAna6+RBFliccZmeUGJ241If6Ry83Y9NpyOMFAVZDUOcjdJrK89n7VQZnCrq+w==
+      integrity: sha512-UpSZd/ZKAMUgyQkmjtkIRj6Rde6gxvm5GGEr2Yt7mmJ8EpPEPYYKf5tzUH2PPQUsDkpS7SDtofSIe0DspoWixA==
       tarball: file:projects/adl-language.tgz
     version: 0.0.0
   file:projects/adl-openapi.tgz:
@@ -2753,7 +2764,7 @@ packages:
     dev: false
     name: '@rush-temp/adl-openapi'
     resolution:
-      integrity: sha512-AIiKWTF3+jiRZb6uMeN/R7Fb2COlVxfFtw7NP/jxDB2RyWXCXfHKGeRfP3xpCUdiX3FdPupH7UXGNT/nySLKfA==
+      integrity: sha512-edGDG8RMTPQv5z/OFeI9MTFEyO21+d4PnS11zDH/ec3YZExcba3sH/25iDEZgumC1Hana97jNC/pwOZibrIvvA==
       tarball: file:projects/adl-openapi.tgz
     version: 0.0.0
   file:projects/adl-rest.tgz:
@@ -2764,7 +2775,7 @@ packages:
     dev: false
     name: '@rush-temp/adl-rest'
     resolution:
-      integrity: sha512-WmzvoJQm+pthqkB2ZC9prUnDQi9u8VdbD3u2hjRh39KCWYaoA53PgGNRcx5VKH3qRtapWHKwT+r8zwjfEModOw==
+      integrity: sha512-If2xmLZ/HyX9iqPY13yClD7lesaYrkdEscVKTjwdhQhzkeHSte7tPiG/LjHL+qGbHaIRCzbIhypXf/cj+wXlqQ==
       tarball: file:projects/adl-rest.tgz
     version: 0.0.0
   file:projects/adl-rpaas.tgz:
@@ -2775,7 +2786,7 @@ packages:
     dev: false
     name: '@rush-temp/adl-rpaas'
     resolution:
-      integrity: sha512-kwJ7EfRhejENOIh7XNNkx5R5+j587lhmVjkmAWOelDNXzYpvs2FkARl/dCIx/4ePwiA0cPaAIKtSJS0uZk6Aiw==
+      integrity: sha512-uvp9HPsL0i3fthVE884RJVoOP9KdzlfGtl1iRSZSE51rTCBW1ObF0iW7yw8fSbAz0YPsRMWi4PK4Dm/pTofbcg==
       tarball: file:projects/adl-rpaas.tgz
     version: 0.0.0
   file:projects/adl-samples.tgz:
@@ -2786,14 +2797,14 @@ packages:
     dev: false
     name: '@rush-temp/adl-samples'
     resolution:
-      integrity: sha512-N7dcWrFdSTNP1RD4Sf/OjGDfuhwV4u4LXALK5vCusdP5VkNZziyklt+LLUP1UCLlMiUTJUYT2jxcqStWFLGVMA==
+      integrity: sha512-ls+yG9nGLIppBIxDogP21JtSSJ1EGaMzquOn9O/mrpbXC0+fNVF5NwZ7kYbEYXO78jeO1oz1oa3ucMfB10zl2Q==
       tarball: file:projects/adl-samples.tgz
     version: 0.0.0
   file:projects/adl-vs.tgz:
     dev: false
     name: '@rush-temp/adl-vs'
     resolution:
-      integrity: sha512-atA1mjICGOdjQWewg3Xyvb8TJpfjeFy8GEA1xbW3Rb31O0u4McAf5VnE6q5WH2OVeGwllMSIkhU8xHuS3jOS1g==
+      integrity: sha512-SU1uRu9ZQxJPaLLUpdfglf85yVWCroQhKgNDQVAWW0cXqrUODH+Tqban9pL7PXLevuwVHhmWAyZkec2dzYzW8A==
       tarball: file:projects/adl-vs.tgz
     version: 0.0.0
   file:projects/adl-vscode.tgz:
@@ -2810,7 +2821,7 @@ packages:
     dev: false
     name: '@rush-temp/adl-vscode'
     resolution:
-      integrity: sha512-GRS0AApmv+S8S8vLX/MjRWs2hlFz5qvOg3I/d3MS2Od6zuixP0TCOVqTLALrrc/nM7fNyC7EeOYauq+bBoNt9A==
+      integrity: sha512-V5oPzzLcRLtwCKY69/pFO25vNt2+AGQSEAU+wJupj1Mc1CDxLbWZdV1lsz1HzMiTDgS2qWTwsze1pzxbSykpzA==
       tarball: file:projects/adl-vscode.tgz
     version: 0.0.0
   file:projects/adl.tgz:
@@ -2825,6 +2836,7 @@ packages:
       mkdirp: 1.0.4
       mocha: 8.3.2
       prettier: 2.2.1
+      prettier-plugin-organize-imports: 1.1.1_prettier@2.2.1+typescript@4.2.4
       resolve: 1.20.0
       source-map-support: 0.5.19
       typescript: 4.2.4
@@ -2834,7 +2846,7 @@ packages:
     dev: false
     name: '@rush-temp/adl'
     resolution:
-      integrity: sha512-L2JDjhGuJdGSSmi1zY4ioA5DPA+H58qKfCCOPGUR49lJbxQpCJj2O+bXK63b1KGf535dbybzbUxIvCsr0ekESg==
+      integrity: sha512-RSRbTTLsXD4Vg4+2P8kc+yzKtmlN6fSV3vj+lIyty659DFdxJmezS9ypDAYVP5FZOVpwMZCBSFd4ENpvtOrkVw==
       tarball: file:projects/adl.tgz
     version: 0.0.0
   file:projects/tmlanguage-generator.tgz:
@@ -2877,6 +2889,7 @@ specifiers:
   onigasm: ~2.2.5
   plist: ~3.0.2
   prettier: ~2.2.1
+  prettier-plugin-organize-imports: ~1.1.1
   resolve: ~1.20.0
   rollup: ~2.41.4
   source-map-support: ~0.5.19
