@@ -1,51 +1,45 @@
-import * as fs from "fs";
-import * as path from "path";
-
 import {
-  throwDiagnostic,
-  Program,
   ArrayType,
-  NamespaceType,
-  OperationType,
-  ModelType,
-  ModelTypeProperty,
-  Type,
-  UnionType,
-  SyntaxKind,
-  StringLiteralType,
-} from "@azure-tools/adl";
-
-import {
-  getDoc,
   getAllTags,
+  getDoc,
   getFormat,
   getIntrinsicType,
   getMaxLength,
   getMinLength,
-  isSecret,
-  isList,
-  isIntrinsic,
-  getVisibility,
   getMinValue,
+  getVisibility,
+  isIntrinsic,
+  isList,
   isNumericType,
+  isSecret,
+  ModelType,
+  ModelTypeProperty,
+  NamespaceType,
+  OperationType,
+  Program,
+  StringLiteralType,
+  SyntaxKind,
+  throwDiagnostic,
+  Type,
+  UnionType,
 } from "@azure-tools/adl";
-
 import {
   basePathForResource,
+  getConsumes,
   getHeaderFieldName,
+  getOperationRoute,
   getPathParamName,
+  getProduces,
   getQueryParamName,
   getResources,
-  isBody,
-  getOperationRoute,
-  HttpVerb,
+  getServiceNamespaceString,
   getServiceTitle,
   getServiceVersion,
-  getConsumes,
-  getProduces,
-  getServiceNamespaceString,
+  HttpVerb,
+  isBody,
   _checkIfServiceNamespace,
 } from "@azure-tools/adl-rest";
+import * as path from "path";
 
 export async function onBuild(p: Program) {
   const options: OpenAPIEmitterOptions = {

@@ -1,4 +1,4 @@
-import { Program, Type, throwDiagnostic } from "@azure-tools/adl";
+import { Program, throwDiagnostic, Type } from "@azure-tools/adl";
 import { useRef } from "@azure-tools/adl-openapi";
 
 export function getArmTypesPath(program: Program): string | undefined {

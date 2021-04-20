@@ -1,6 +1,6 @@
-import { NamespaceType, Program, Type, throwDiagnostic } from "@azure-tools/adl";
+import { NamespaceType, Program, throwDiagnostic, Type } from "@azure-tools/adl";
 import { resource } from "@azure-tools/adl-rest";
-import { getArmResourceInfo, ArmResourceInfo, ParameterInfo } from "./resource.js";
+import { ArmResourceInfo, getArmResourceInfo, ParameterInfo } from "./resource.js";
 
 type StandardOperationGenerator = (program: Program, target: Type, documentation?: string) => void;
 
