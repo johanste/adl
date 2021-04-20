@@ -59,6 +59,10 @@
   "mochaExplorer.monkeyPatch": true,
   "mochaExplorer.timeout": 500000,
   "mochaExplorer.require": "source-map-support/register",
-  "mochaExplorer.env": { "ADL_VERBOSE_TEST_OUTPUT": "true" },
+  "mochaExplorer.fullTrace": true,
+  "mochaExplorer.env": {
+    "ADL_VERBOSE_TEST_OUTPUT": "true",
+    "NODE_OPTIONS": "--stack-trace-limit=50"
+  },
   "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
