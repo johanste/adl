@@ -8,15 +8,45 @@ the Installation section below.  Please feel free to [file
 issues](https://github.com/Azure/adl/issues) for any issues you encounter while
 using the preview.
 
-## Installation
+## Getting Started
 
-You can install the current preview build of ADL using Node.js (14+) and `npm`:
+1. Install [Node.js 14 LTS](https://nodejs.org/en/download/) and ensure you are able to run the `npm` command in a command prompt:
 
-```
-npm install -g @azure-tools/adl
-```
+   ```
+   npm --version
+   ```
 
-ADL will now be accessible via the `adl` command in your shell.
+2. Create a folder for your new ADL project
+
+3. In a command prompt, run the following commands:
+
+   ```
+   cd path\to\adl\project
+   npm init -y
+   npm install -g @azure-tools/adl
+   npm install @azure-tools/adl-rest @azure-tools/adl-openapi @azure-tools/adl-rpaas
+   ```
+
+   This will create a `package.json` file for your ADL project and add the necessary ADL dependencies to it.
+
+4. Install the ADL extension for your editor of choice:
+
+   - [Instructions for Visual Studio](#installing-visual-studio-extension)
+   - [Instructions for Visual Studio Code](#installing-vs-code-extension)
+
+5. Open the folder in your editor and create a new file with a `.adl` extension
+
+6. [Follow our tutorial](docs/tutorial.md) to get started writing ADL!
+
+7. Once you're ready to compile your ADL to Swagger, save the file and type this at the command prompt in your project folder:
+
+   ```
+   npx adl compile .
+   ```
+
+   This will compile the ADL files in the project folder into one output file: `.\adl-output\openapi.json`.
+
+You can also check out a variety of samples in the [adl-samples](packages/adl-samples/) folder.
 
 ## Usage
 
