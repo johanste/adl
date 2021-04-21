@@ -174,7 +174,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
         throwDiagnostic("Resource goes on namespace", resource);
       }
 
-      emitResource(<NamespaceType>resource);
+      emitResource(resource as NamespaceType);
     }
     emitReferences();
     emitTags();
@@ -742,7 +742,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       }
 
       // We already know it's not a model type
-      values.push((<any>option).value);
+      values.push((option as any).value);
     }
 
     const schema: any = { type };
