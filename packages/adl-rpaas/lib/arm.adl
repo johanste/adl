@@ -72,8 +72,6 @@ model NameParameter {
 
 @doc("Response envelope for ARM operations.")
 model ArmResponseBase {
-  @header statusCode: 200;
-
   @header("x-ms-client-request-id")
   clientRequestId: string;
 
@@ -83,6 +81,13 @@ model ArmResponseBase {
 
 @doc("Typed response envelope for ARM operations.")
 model ArmResponse<T> {
+  ... OkResponse<T>;
+  ... ArmResponseBase;
+}
+
+@doc("Typed response envelope for ARM PUT operations.")
+model ArmCreatedResponse<T> {
+  ... CreatedResponse;
   ... ArmResponseBase;
   @body body: T;
 }
