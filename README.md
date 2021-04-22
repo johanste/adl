@@ -4,9 +4,36 @@ This project is a work in progress, more information will be provided at a later
 date.
 
 You can try a work-in-progress build of the compiler by following the steps in
-the Installation section below.  Please feel free to [file
+the Installation section below. Please feel free to [file
 issues](https://github.com/Azure/adl/issues) for any issues you encounter while
 using the preview.
+
+## Packages
+
+| Name                                        | Changelog                    | Latest                                                     |
+| ------------------------------------------- | ---------------------------- | ---------------------------------------------------------- |
+| Core functionality                          |
+| [@azure-tools/adl][adl_src]                 | [Changelog][adl_chg]         | ![](https://img.shields.io/npm/v/@azure-tools/adl)         |
+| ADL Libraries                               |
+| [@azure-tools/adl-rest][adl-rest_src]       | [Changelog][adl-rest_chg]    | ![](https://img.shields.io/npm/v/@azure-tools/adl-rest)    |
+| [@azure-tools/adl-rpaas][adl-rpaas_src]     | [Changelog][adl-rpaas_chg]   | ![](https://img.shields.io/npm/v/@azure-tools/adl-rpaas)   |
+| [@azure-tools/adl-openapi][adl-openapi_src] | [Changelog][adl-openapi_chg] | ![](https://img.shields.io/npm/v/@azure-tools/adl-openapi) |
+| ADL Tools                                   |
+| [@azure-tools/adl-vs][adl-vs_src]           | [Changelog][adl-vs_chg]      | ![](https://img.shields.io/npm/v/@azure-tools/adl-vs)      |
+| [@azure-tools/adl-vscode][adl-vscode_src]   | [Changelog][adl-vscode_chg]  | ![](https://img.shields.io/npm/v/adl-vscode)               |
+
+[adl_src]: packages/adl
+[adl_chg]: packages/adl/CHANGELOG.md
+[adl-rest_src]: packages/adl-rest
+[adl-rest_chg]: packages/adl-rest/CHANGELOG.md
+[adl-rpaas_src]: packages/adl-rpaas
+[adl-rpaas_chg]: packages/adl-rpaas/CHANGELOG.md
+[adl-openapi_src]: packages/adl-openapi
+[adl-openapi_chg]: packages/adl-openapi/CHANGELOG.md
+[adl-vs_src]: packages/adl-vs
+[adl-vs_chg]: packages/adl-vs/CHANGELOG.md
+[adl-vscode_src]: packages/adl-vscode
+[adl-vscode_chg]: packages/adl-vscode/CHANGELOG.md
 
 ## Getting Started
 
@@ -80,15 +107,13 @@ adl generate --client samples/petstore/
 
 Parameters for generating clients in other languages will be added soon.
 
-
 ### Installing VS Code Extension
 
 ```
 adl code install
 ```
 
-This will download and install the latest VS Code extension. Use `adl code
-uninstall` to remove it. Pass `--insiders` if you use VS Code Insiders edition.
+This will download and install the latest VS Code extension. Use `adl code uninstall` to remove it. Pass `--insiders` if you use VS Code Insiders edition.
 
 If `adl-server` cannot be found on PATH by VS Code in your setup, you can
 configure its location in VS Code settings. Search for "ADL" in File ->
@@ -98,12 +123,10 @@ need to restart VS Code after changing this.
 You can also configure a project to use a local npm install of
 `@azure-tools/adl`. See [local-adl sample](packages/adl/samples/local-adl).
 
-
 ### Installing Visual Studio Extension
 
 ```
 adl vs install
 ```
 
-This will download and install the latest Visual Studio extension. Use `adl vs
-uninstall` to remove it.
+This will download and install the latest Visual Studio extension. Use `adl vs uninstall` to remove it.
