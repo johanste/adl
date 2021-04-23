@@ -33,7 +33,7 @@ model TrackedResource<TProperties> extends TrackedResourceBase {
 
   @doc("System metadata for this resource.")
   @visibility("read")
-  systemData: SystemData;
+  systemData?: SystemData;
 }
 
 @armCommonDefinition("ProxyResource")
@@ -42,7 +42,7 @@ model ProxyResourceBase {
 
   @doc("System metadata for this resource.")
   @visibility("read")
-  systemData: SystemData;
+  systemData?: SystemData;
 };
 
 @doc("Concrete proxy resource types can be created by aliasing this type using a specific property type.")
@@ -61,7 +61,7 @@ model ExtensionResource<TProperties> extends ArmResource {
 
   @doc("System metadata for this resource.")
   @visibility("read")
-  systemData: SystemData;
+  systemData?: SystemData;
 }
 
 @doc("The default name parameter type")

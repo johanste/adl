@@ -578,8 +578,7 @@
       },
       "description": "A CodeSignAccount resource",
       "required": [
-        "properties",
-        "systemData"
+        "properties"
       ],
       "allOf": [
         {
