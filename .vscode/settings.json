@@ -2,24 +2,12 @@
   "files.eol": "\n",
   "files.insertFinalNewline": true,
   "files.exclude": {
+    "**/node_modules/**": true,
     "**/common/temp/**": true,
-    "node_modules/**": true,
-    "**/generated/**": false,
     "**/dist/**": true,
-    "**/dist/dist/**": false,
     "**/obj/**": true,
     "**/bin/**": true,
-    "**/node_modules/**": true,
-    "**/*.js.map": true,
-    "**/*.js": {
-      "when": "$(basename).ts"
-    },
-    "**/*.d.tsx": {
-      "when": "$(basename).ts"
-    },
     "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
     "**/.DS_Store": true
   },
   "[javascript]": {
