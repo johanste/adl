@@ -179,7 +179,7 @@ export function armStandardDelete(program: Program, target: Type, documentation?
     `@doc("${documentation}")
      @_delete op Delete(${getOperationPathArguments(
        operationParams
-     )}): ArmResponse<{}> | ErrorResponse;`
+     )}): ArmDeletedResponse | ArmDeleteAcceptedResponse | ErrorResponse;`
   );
 }
 
