@@ -2,49 +2,47 @@
   "files.eol": "\n",
   "files.insertFinalNewline": true,
   "files.exclude": {
+    "**/node_modules/**": true,
     "**/common/temp/**": true,
-    "node_modules/**": true,
-    "**/generated/**": false,
     "**/dist/**": true,
-    "**/dist/dist/**": false,
     "**/obj/**": true,
     "**/bin/**": true,
-    "**/node_modules/**": true,
-    "**/*.js.map": true,
-    "**/*.js": {
-      "when": "$(basename).ts"
-    },
-    "**/*.d.tsx": {
-      "when": "$(basename).ts"
-    },
     "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
     "**/.DS_Store": true
   },
   "[javascript]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
   },
   "[typescript]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
   },
   "[json]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
   },
   "[jsonc]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
+  },
+  "[yaml]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
   },
   "files.associations": {
     "rush.json": "jsonc",
@@ -65,5 +63,6 @@
     "ADL_VERBOSE_TEST_OUTPUT": "true",
     "NODE_OPTIONS": "--stack-trace-limit=50"
   },
+  "testExplorer.errorDecoration": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

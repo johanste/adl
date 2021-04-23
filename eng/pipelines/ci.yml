@@ -5,27 +5,27 @@ trigger:
 pr: none
 
 pool:
-  vmImage: 'windows-2019'
+  vmImage: windows-2019
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '14.x'
-  displayName: 'Install Node.js'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: 14.x
+    displayName: Install Node.js
 
-- script: echo '##vso[task.setvariable variable=ADL_REQUIRE_VS_BUILD;]true'
-  displayName: Enable Visual Studio extension build
+  - script: echo '##vso[task.setvariable variable=ADL_REQUIRE_VS_BUILD;]true'
+    displayName: Enable Visual Studio extension build
 
-- script: node common/scripts/install-run-rush.js install
-  displayName: "Install Dependencies"
+  - script: node common/scripts/install-run-rush.js install
+    displayName: Install Dependencies
 
-- script: node common/scripts/install-run-rush.js rebuild --verbose
-  displayName: Build
+  - script: node common/scripts/install-run-rush.js rebuild --verbose
+    displayName: Build
 
-- script: node common/scripts/install-run-rush.js test
-  displayName: Test
+  - script: node common/scripts/install-run-rush.js test
+    displayName: Test
 
-- script: |
-    set NPM_AUTH_TOKEN=$(azure-sdk-npm-token)
-    node common/scripts/install-run-rush.js publish --publish --include-all --set-access-level public
-  displayName: Release
+  - script: |
+      set NPM_AUTH_TOKEN=$(azure-sdk-npm-token)
+      node common/scripts/install-run-rush.js publish --publish --include-all --set-access-level public
+    displayName: Release
