@@ -1,11 +1,10 @@
-**/*.yml
-**/*.yaml
-**/*.d.ts
 **/dist/
 **/dist-dev/
 **/test/output/
+**/bin/
 **/obj/
 common/temp/
 common/scripts/
 common/changes/
+common/config/rush/pnpm-lock.yaml
 packages/adl/samples/rpaas/types.json

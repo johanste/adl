@@ -13,26 +13,36 @@
   "[javascript]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
   },
   "[typescript]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
   },
   "[json]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
   },
   "[jsonc]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
     "editor.tabSize": 2,
     "editor.detectIndentation": false
+  },
+  "[yaml]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
   },
   "files.associations": {
     "rush.json": "jsonc",
