@@ -53,5 +53,6 @@
     "ADL_VERBOSE_TEST_OUTPUT": "true",
     "NODE_OPTIONS": "--stack-trace-limit=50"
   },
+  "testExplorer.errorDecoration": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
