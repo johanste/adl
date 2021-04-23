@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl-rest",
+      "comment": "Replace several internal compiler errors with diagnostics",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl-rest",
+  "email": "nicholg@microsoft.com"
+}

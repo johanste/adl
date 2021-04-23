@@ -69,7 +69,10 @@ export function useRef(program: Program, entity: Type, refUrl: string): void {
   if (entity.kind === "Model" || entity.kind === "ModelProperty") {
     refTargets.set(entity, refUrl);
   } else {
-    throw new Error("@useRef decorator can only be applied to models and operation parameters.");
+    throwDiagnostic(
+      "@useRef decorator can only be applied to models and operation parameters.",
+      entity
+    );
   }
 }
 
@@ -94,7 +97,10 @@ export function _addSecurityRequirement(
   scopes: string[]
 ): void {
   if (!_checkIfServiceNamespace(namespace)) {
-    throw new Error("Cannot add security details to a namespace other than the service namespace.");
+    throwDiagnostic(
+      "Cannot add security details to a namespace other than the service namespace.",
+      namespace
+    );
   }
 
   const req: any = {};
@@ -104,7 +110,10 @@ export function _addSecurityRequirement(
 
 export function _addSecurityDefinition(namespace: NamespaceType, name: string, details: any): void {
   if (!_checkIfServiceNamespace(namespace)) {
-    throw new Error("Cannot add security details to a namespace other than the service namespace.");
+    throwDiagnostic(
+      "Cannot add security details to a namespace other than the service namespace.",
+      namespace
+    );
   }
 
   securityDetails.definitions[name] = details;
@@ -302,8 +311,6 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     const fullPath =
       resolvedPath +
       (newPathParams.length > 0 ? "/" + newPathParams.map((p) => "{" + p + "}").join("/") : "");
-
-    if (fullPath === undefined) throw new Error("uhoh");
 
     // If path contains a literal query string parameter, add it to x-ms-paths instead
     let pathsObject = fullPath.indexOf("?") < 0 ? root.paths : root["x-ms-paths"];

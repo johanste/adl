@@ -123,11 +123,6 @@ export function armResource(program: Program, resourceType: Type, resourceDetail
     throwDiagnostic("The parameter to @armResource must be a model expression.", resourceType);
   }
 
-  const checker = program.checker;
-  if (checker === undefined) {
-    throw new Error("Program does not have a checker assigned");
-  }
-
   if (resourceType.kind !== "Model") {
     throwDiagnostic("The @armResource decorator can only be applied to model types.", resourceType);
   }
@@ -211,7 +206,7 @@ export function armResource(program: Program, resourceType: Type, resourceDetail
   const resourceNameParam = resourceParamType
     ? getPathParameterInfo(resourceParamType, resourceType)
     : undefined;
-  const parentNamespace = checker.getNamespaceString(resourceType.namespace);
+  const parentNamespace = program.checker!.getNamespaceString(resourceType.namespace);
 
   // Mark the type as an Azure resource
   extension(program, resourceType, "x-ms-azure-resource", true);

@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl-openapi",
+      "comment": "Replace several internal compiler errors with diagnostics",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl-openapi",
+  "email": "nicholg@microsoft.com"
+}
