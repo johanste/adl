@@ -22,6 +22,7 @@ const sampleFolders = [
   "rpaas/servicelinker",
   "rpaas/liftr.confluent",
   "rpaas/liftr.frs",
+  "rpaas/logz",
   "tags",
   "testserver/media-types",
   "testserver/body-boolean",
