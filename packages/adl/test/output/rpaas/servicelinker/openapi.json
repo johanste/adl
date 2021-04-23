@@ -467,8 +467,7 @@
         }
       },
       "required": [
-        "properties",
-        "systemData"
+        "properties"
       ],
       "allOf": [
         {

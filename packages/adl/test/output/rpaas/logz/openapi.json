@@ -1506,8 +1506,7 @@
         }
       },
       "required": [
-        "properties",
-        "systemData"
+        "properties"
       ],
       "allOf": [
         {
@@ -1535,8 +1534,7 @@
         }
       },
       "required": [
-        "properties",
-        "systemData"
+        "properties"
       ],
       "allOf": [
         {
@@ -1610,8 +1608,7 @@
         }
       },
       "required": [
-        "properties",
-        "systemData"
+        "properties"
       ],
       "allOf": [
         {
@@ -1661,8 +1658,7 @@
         }
       },
       "required": [
-        "properties",
-        "systemData"
+        "properties"
       ],
       "allOf": [
         {
