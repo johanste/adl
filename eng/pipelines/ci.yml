@@ -13,11 +13,14 @@ steps:
       versionSpec: 14.x
     displayName: Install Node.js
 
-  - script: echo '##vso[task.setvariable variable=ADL_REQUIRE_VS_BUILD;]true'
-    displayName: Enable Visual Studio extension build
+  - script: echo '##vso[task.setvariable variable=ADL_VS_CI_BUILD;]true'
+    displayName: Enable official Visual Studio extension build
 
   - script: node common/scripts/install-run-rush.js install
-    displayName: Install Dependencies
+    displayName: Install JavaScript Dependencies
+
+  - script: node packages/adl-vs/scripts/build.js --restore
+    displayName: Restore .NET Dependencies
 
   - script: node common/scripts/install-run-rush.js rebuild --verbose
     displayName: Build

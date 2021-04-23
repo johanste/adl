@@ -9,7 +9,10 @@ steps:
     displayName: Verify Change Files
 
   - script: node common/scripts/install-run-rush.js install
-    displayName: Install Dependencies
+    displayName: Install JavaScript Dependencies
+
+  - script: node packages/adl-vs/scripts/build.js --restore
+    displayName: Restore .NET Dependencies
 
   - script: node common/scripts/install-run-rush.js check
     displayName: Check For Dependency Version Mismatches
