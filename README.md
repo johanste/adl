@@ -1,10 +1,12 @@
 # ADL
 
-This project is a work in progress, more information will be provided at a later
-date.
+ADL is a language for describing cloud service APIs and generating other API
+description languages, client and service code, documentation, and other assets.
+ADL provides highly extensible core language primitives that can describe API
+shapes common among REST, GraphQL, gRPC, and other protocols.
 
 You can try a work-in-progress build of the compiler by following the steps in
-the Installation section below. Please feel free to [file
+the Getting Started section below. Please feel free to [file
 issues](https://github.com/Azure/adl/issues) for any issues you encounter while
 using the preview.
 
