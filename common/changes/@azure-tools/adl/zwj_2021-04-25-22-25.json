@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl",
+      "comment": "Fix parsing edge cases and optimize parsing slightly",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl",
+  "email": "nicholg@microsoft.com"
+}

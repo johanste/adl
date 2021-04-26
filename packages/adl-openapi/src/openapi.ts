@@ -400,7 +400,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
           case undefined:
             break;
           case "status-code":
-            if (type.kind == "Number") {
+            if (type.kind === "Number") {
               statusCode = String(type.value);
             }
             break;
@@ -622,11 +622,11 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     ph.description = getDoc(param);
 
     let schema = getSchemaOrRef(param.type);
-    if (kind == "body") {
+    if (kind === "body") {
       ph.schema = schema;
     } else {
       schema = getSchemaForType(param.type);
-      if (param.type.kind == "Array") {
+      if (param.type.kind === "Array") {
         schema.items = getSchemaForType(param.type.elementType);
       }
       for (const property in schema) {
@@ -730,7 +730,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     const values = [];
     if (type === "model") {
       // Model unions can only ever be a model type with 'null'
-      if (nonNullOptions.length == 1) {
+      if (nonNullOptions.length === 1) {
         // Get the schema for the model type
         const schema: any = getSchemaForType(nonNullOptions[0]);
         schema["x-nullable"] = nullable;

@@ -1,5 +1,5 @@
 import {
-  CharacterCodes,
+  CharCode,
   isAsciiIdentifierContinue,
   isAsciiIdentifierStart,
   isBinaryDigit,
@@ -9,8 +9,10 @@ import {
   isLineBreak,
   isNonAsciiIdentifierContinue,
   isNonAsciiIdentifierStart,
+  isNonAsciiLineBreak,
+  isNonAsciiWhiteSpaceSingleLine,
   isWhiteSpaceSingleLine,
-} from "./character-codes.js";
+} from "./charcode.js";
 import { createSourceFile, Message, throwOnError } from "./diagnostics.js";
 import { SourceFile } from "./types.js";
 
@@ -82,6 +84,7 @@ const MaxPunctuation = Token.At;
 const MinStatementKeyword = Token.ImportKeyword;
 const MaxStatementKeyword = Token.OpKeyword;
 
+/** @internal */
 export const TokenDisplay: readonly string[] = [
   "<none>",
   "<invalid>",
@@ -122,6 +125,7 @@ export const TokenDisplay: readonly string[] = [
   "'false'",
 ];
 
+/** @internal */
 export const Keywords: ReadonlyMap<string, Token> = new Map([
   ["import", Token.ImportKeyword],
   ["model", Token.ModelKeyword],
@@ -133,7 +137,13 @@ export const Keywords: ReadonlyMap<string, Token> = new Map([
   ["false", Token.FalseKeyword],
 ]);
 
-export const maxKeywordLength = 9;
+/** @internal */
+export const enum KeywordLimit {
+  MinLength = 2,
+  MaxLength = 9,
+  MinStartChar = CharCode.e,
+  MaxStartChar = CharCode.u,
+}
 
 export interface Scanner {
   /** The source code being scanned. */
@@ -258,138 +268,147 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
     if (!eof()) {
       const ch = input.charCodeAt(position);
       switch (ch) {
-        case CharacterCodes.carriageReturn:
-          if (lookAhead(1) === CharacterCodes.lineFeed) {
+        case CharCode.CarriageReturn:
+          if (lookAhead(1) === CharCode.LineFeed) {
             position++;
           }
         // fallthrough
-        case CharacterCodes.lineFeed:
-        case CharacterCodes.lineSeparator:
-        case CharacterCodes.paragraphSeparator:
+        case CharCode.LineFeed:
           return next(Token.NewLine);
 
-        case CharacterCodes.tab:
-        case CharacterCodes.verticalTab:
-        case CharacterCodes.formFeed:
-        case CharacterCodes.space:
-        case CharacterCodes.nonBreakingSpace:
-        case CharacterCodes.ogham:
-        case CharacterCodes.enQuad:
-        case CharacterCodes.emQuad:
-        case CharacterCodes.enSpace:
-        case CharacterCodes.emSpace:
-        case CharacterCodes.threePerEmSpace:
-        case CharacterCodes.fourPerEmSpace:
-        case CharacterCodes.sixPerEmSpace:
-        case CharacterCodes.figureSpace:
-        case CharacterCodes.punctuationSpace:
-        case CharacterCodes.thinSpace:
-        case CharacterCodes.hairSpace:
-        case CharacterCodes.zeroWidthSpace:
-        case CharacterCodes.narrowNoBreakSpace:
-        case CharacterCodes.mathematicalSpace:
-        case CharacterCodes.ideographicSpace:
-        case CharacterCodes.byteOrderMark:
+        case CharCode.Space:
+        case CharCode.Tab:
+        case CharCode.VerticalTab:
+        case CharCode.FormFeed:
           return scanWhitespace();
 
-        case CharacterCodes.openParen:
+        case CharCode.OpenParen:
           return next(Token.OpenParen);
 
-        case CharacterCodes.closeParen:
+        case CharCode.CloseParen:
           return next(Token.CloseParen);
 
-        case CharacterCodes.comma:
+        case CharCode.Comma:
           return next(Token.Comma);
 
-        case CharacterCodes.colon:
+        case CharCode.Colon:
           return next(Token.Colon);
 
-        case CharacterCodes.semicolon:
+        case CharCode.Semicolon:
           return next(Token.Semicolon);
 
-        case CharacterCodes.openBracket:
+        case CharCode.OpenBracket:
           return next(Token.OpenBracket);
 
-        case CharacterCodes.closeBracket:
+        case CharCode.CloseBracket:
           return next(Token.CloseBracket);
 
-        case CharacterCodes.openBrace:
+        case CharCode.OpenBrace:
           return next(Token.OpenBrace);
 
-        case CharacterCodes.closeBrace:
+        case CharCode.CloseBrace:
           return next(Token.CloseBrace);
 
-        case CharacterCodes.at:
+        case CharCode.At:
           return next(Token.At);
 
-        case CharacterCodes.question:
+        case CharCode.Question:
           return next(Token.Question);
 
-        case CharacterCodes.ampersand:
+        case CharCode.Ampersand:
           return next(Token.Ampersand);
 
-        case CharacterCodes.dot:
-          return lookAhead(1) === CharacterCodes.dot && lookAhead(2) === CharacterCodes.dot
+        case CharCode.Dot:
+          return lookAhead(1) === CharCode.Dot && lookAhead(2) === CharCode.Dot
             ? next(Token.Elipsis, 3)
             : next(Token.Dot);
 
-        case CharacterCodes.slash:
+        case CharCode.Slash:
           switch (lookAhead(1)) {
-            case CharacterCodes.slash:
+            case CharCode.Slash:
               return scanSingleLineComment();
-            case CharacterCodes.asterisk:
+            case CharCode.Asterisk:
               return scanMultiLineComment();
           }
           return scanInvalidCharacter();
 
-        case CharacterCodes._0:
+        case CharCode._0:
           switch (lookAhead(1)) {
-            case CharacterCodes.x:
+            case CharCode.x:
               return scanHexNumber();
-            case CharacterCodes.b:
+            case CharCode.b:
               return scanBinaryNumber();
           }
         // fallthrough
-        case CharacterCodes._1:
-        case CharacterCodes._2:
-        case CharacterCodes._3:
-        case CharacterCodes._4:
-        case CharacterCodes._5:
-        case CharacterCodes._6:
-        case CharacterCodes._7:
-        case CharacterCodes._8:
-        case CharacterCodes._9:
+        case CharCode._1:
+        case CharCode._2:
+        case CharCode._3:
+        case CharCode._4:
+        case CharCode._5:
+        case CharCode._6:
+        case CharCode._7:
+        case CharCode._8:
+        case CharCode._9:
           return scanNumber();
 
-        case CharacterCodes.lessThan:
+        case CharCode.LessThan:
           return isConflictMarker()
             ? next(Token.ConflictMarker, mergeConflictMarkerLength)
             : next(Token.LessThan);
 
-        case CharacterCodes.greaterThan:
+        case CharCode.GreaterThan:
           return isConflictMarker()
             ? next(Token.ConflictMarker, mergeConflictMarkerLength)
             : next(Token.GreaterThan);
 
-        case CharacterCodes.equals:
+        case CharCode.Equals:
           return isConflictMarker()
             ? next(Token.ConflictMarker, mergeConflictMarkerLength)
             : next(Token.Equals);
 
-        case CharacterCodes.bar:
+        case CharCode.Bar:
           return isConflictMarker()
             ? next(Token.ConflictMarker, mergeConflictMarkerLength)
             : next(Token.Bar);
 
-        case CharacterCodes.doubleQuote:
-          return scanString();
+        case CharCode.DoubleQuote:
+          return lookAhead(1) === CharCode.DoubleQuote && lookAhead(2) === CharCode.DoubleQuote
+            ? scanTripleQuotedString()
+            : scanString();
 
         default:
-          return scanIdentifierOrKeyword();
+          if (isAsciiIdentifierStart(ch)) {
+            return scanIdentifierOrKeyword();
+          }
+
+          if (ch <= CharCode.MaxAscii) {
+            return scanInvalidCharacter();
+          }
+
+          return scanNonAsciiToken();
       }
     }
 
     return (token = Token.EndOfFile);
+  }
+
+  function scanNonAsciiToken() {
+    const ch = input.charCodeAt(position);
+
+    if (isNonAsciiLineBreak(ch)) {
+      return next(Token.NewLine);
+    }
+
+    if (isNonAsciiWhiteSpaceSingleLine(ch)) {
+      return scanWhitespace();
+    }
+
+    const codePoint = input.codePointAt(position)!;
+    if (isNonAsciiIdentifierStart(codePoint)) {
+      return scanNonAsciiIdentifierContinue(codePoint);
+    }
+
+    return scanInvalidCharacter();
   }
 
   function scanInvalidCharacter() {
@@ -409,10 +428,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
             return false;
           }
         }
-        return (
-          ch === CharacterCodes.equals ||
-          lookAhead(mergeConflictMarkerLength) === CharacterCodes.space
-        );
+        return ch === CharCode.Equals || lookAhead(mergeConflictMarkerLength) === CharCode.Space;
       }
     }
 
@@ -426,159 +442,184 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
   function scanWhitespace(): Token {
     do {
       position++;
-    } while (isWhiteSpaceSingleLine(input.charCodeAt(position)));
+    } while (!eof() && isWhiteSpaceSingleLine(input.charCodeAt(position)));
 
     return (token = Token.Whitespace);
   }
 
-  function scanDigits() {
-    while (isDigit(input.charCodeAt(position))) {
-      position++;
-    }
-  }
-
   function scanNumber() {
-    scanDigits();
-
-    let ch = input.charCodeAt(position);
-
-    if (ch === CharacterCodes.dot) {
-      position++;
-      scanDigits();
-    }
-
-    ch = input.charCodeAt(position);
-    if (ch === CharacterCodes.e) {
-      position++;
-      ch = input.charCodeAt(position);
-      if (ch === CharacterCodes.plus || ch == CharacterCodes.minus) {
-        position++;
-        ch = input.charCodeAt(position);
-      }
-
-      if (isDigit(ch)) {
-        position++;
-        scanDigits();
-      } else {
-        error(Message.DigitExpected);
+    scanKnownDigits();
+    if (!eof()) {
+      switch (input.charCodeAt(position)) {
+        case CharCode.Dot:
+          scanFractionAndExponent();
+          break;
+        case CharCode.e:
+          scanExponent();
+          break;
       }
     }
-
     return (token = Token.NumericLiteral);
   }
 
-  function scanHexNumber() {
-    if (!isHexDigit(lookAhead(2))) {
-      error(Message.HexDigitExpected);
-      return next(Token.NumericLiteral, 2);
-    }
+  function scanKnownDigits() {
+    do {
+      position++;
+    } while (!eof() && isDigit(input.charCodeAt(position)));
+  }
 
-    position += 2;
-    scanUntil((ch) => !isHexDigit(ch), "Hex Digit");
+  function scanOptionalDigits() {
+    if (!eof() && isDigit(input.charCodeAt(position))) {
+      scanKnownDigits();
+    }
+  }
+
+  function scanRequiredDigits() {
+    if (eof() || !isDigit(input.charCodeAt(position))) {
+      error(Message.DigitExpected);
+      return;
+    }
+    scanKnownDigits();
+  }
+
+  function scanFractionAndExponent() {
+    position++; // consume '.'
+    scanOptionalDigits();
+    if (!eof() && input.charCodeAt(position) === CharCode.e) {
+      scanExponent();
+    }
+  }
+
+  function scanExponent() {
+    position++; // consume 'e'
+    if (eof()) {
+      error(Message.DigitExpected);
+      return;
+    }
+    const ch = input.charCodeAt(position);
+    if (ch === CharCode.Plus || ch === CharCode.Minus) {
+      position++;
+    }
+    scanRequiredDigits();
+  }
+
+  function scanHexNumber() {
+    position += 2; // consume '0x'
+
+    if (eof() || !isHexDigit(input.charCodeAt(position))) {
+      error(Message.HexDigitExpected);
+      return (token = Token.NumericLiteral);
+    }
+    do {
+      position++;
+    } while (!eof() && isHexDigit(input.charCodeAt(position)));
+
     return (token = Token.NumericLiteral);
   }
 
   function scanBinaryNumber() {
-    if (!isBinaryDigit(lookAhead(2))) {
-      error(Message.BinaryDigitExpected);
-      return next(Token.NumericLiteral, 2);
-    }
+    position += 2; // consume '0b'
 
-    position += 2;
-    scanUntil((ch) => !isBinaryDigit(ch), "Binary Digit");
+    if (eof() || !isBinaryDigit(input.charCodeAt(position))) {
+      error(Message.BinaryDigitExpected);
+      return (token = Token.NumericLiteral);
+    }
+    do {
+      position++;
+    } while (!eof() && isBinaryDigit(input.charCodeAt(position)));
+
     return (token = Token.NumericLiteral);
   }
 
-  function scanUntil(
-    predicate: (char: number) => boolean,
-    expectedClose?: string,
-    consumeClose?: number
-  ) {
-    let ch: number;
+  function scanSingleLineComment() {
+    position += 2; // consume '//'
 
-    do {
-      position++;
-
-      if (eof()) {
-        if (expectedClose) {
-          error(Message.UnexpectedEndOfFile, [expectedClose]);
-        }
+    while (!eof()) {
+      if (isLineBreak(input.charCodeAt(position))) {
         break;
       }
-
-      ch = input.charCodeAt(position);
-    } while (!predicate(ch));
-
-    if (consumeClose) {
-      position += consumeClose;
+      position++;
     }
-  }
 
-  function scanSingleLineComment() {
-    scanUntil(isLineBreak);
     return (token = Token.SingleLineComment);
   }
 
   function scanMultiLineComment() {
-    scanUntil(
-      (ch) => ch === CharacterCodes.asterisk && lookAhead(1) === CharacterCodes.slash,
-      "*/",
-      2
-    );
+    position += 2; // consume '/*'
+
+    while (!eof()) {
+      if (input.charCodeAt(position) === CharCode.Asterisk && lookAhead(1) === CharCode.Slash) {
+        position += 2;
+        return (token = Token.MultiLineComment);
+      }
+      position++;
+    }
+
+    error(Message.Unterminated, ["comment"]);
     return (token = Token.MultiLineComment);
   }
 
   function scanString() {
-    let quoteLength = 1;
-    let closing = '"';
-    let isEscaping = false;
+    position++; // consume '"'
 
-    const tripleQuoted =
-      lookAhead(1) === CharacterCodes.doubleQuote && lookAhead(2) === CharacterCodes.doubleQuote;
-
-    if (tripleQuoted) {
-      tokenFlags |= TokenFlags.TripleQuoted;
-      quoteLength = 3;
-      position += 2;
-      closing = '"""';
+    loop: while (!eof()) {
+      const ch = input.charCodeAt(position);
+      switch (ch) {
+        case CharCode.CarriageReturn:
+          if (lookAhead(1) === CharCode.LineFeed) {
+            tokenFlags |= TokenFlags.HasCrlf;
+            position++;
+          }
+          break;
+        case CharCode.Backslash:
+          tokenFlags |= TokenFlags.Escaped;
+          position++;
+          if (eof()) {
+            break loop;
+          }
+          break;
+        case CharCode.DoubleQuote:
+          position++;
+          return (token = Token.StringLiteral);
+      }
+      position++;
     }
 
-    scanUntil(
-      (ch) => {
-        if (isEscaping) {
-          isEscaping = false;
-          return false;
-        }
+    error(Message.Unterminated, ["string literal"]);
+    return (token = Token.StringLiteral);
+  }
 
-        switch (ch) {
-          case CharacterCodes.carriageReturn:
-            if (lookAhead(1) === CharacterCodes.lineFeed) {
-              tokenFlags |= TokenFlags.HasCrlf;
-            }
-            return false;
+  function scanTripleQuotedString() {
+    tokenFlags |= TokenFlags.TripleQuoted;
+    position += 3; // consume '"""'
 
-          case CharacterCodes.backslash:
-            isEscaping = true;
-            tokenFlags |= TokenFlags.Escaped;
-            return false;
+    loop: while (!eof()) {
+      const ch = input.charCodeAt(position);
+      switch (ch) {
+        case CharCode.CarriageReturn:
+          if (lookAhead(1) === CharCode.LineFeed) {
+            tokenFlags |= TokenFlags.HasCrlf;
+            position++;
+          }
+          break;
+        case CharCode.Backslash:
+          tokenFlags |= TokenFlags.Escaped;
+          position++;
+          if (eof()) {
+            break loop;
+          }
+          break;
+        case CharCode.DoubleQuote:
+          if (lookAhead(1) === CharCode.DoubleQuote && lookAhead(2) === CharCode.DoubleQuote) {
+            position += 3;
+            return (token = Token.StringLiteral);
+          }
+          break;
+      }
+      position++;
+    }
 
-          case CharacterCodes.doubleQuote:
-            if (tripleQuoted) {
-              return (
-                lookAhead(1) === CharacterCodes.doubleQuote &&
-                lookAhead(2) === CharacterCodes.doubleQuote
-              );
-            }
-            return true;
-
-          default:
-            return false;
-        }
-      },
-      closing,
-      quoteLength
-    );
-
+    error(Message.Unterminated, ["string literal"]);
     return (token = Token.StringLiteral);
   }
 
@@ -586,11 +627,10 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
     if (tokenValue !== undefined) {
       return tokenValue;
     }
+    return (tokenValue = token === Token.StringLiteral ? getStringTokenValue() : getTokenText());
+  }
 
-    if (token !== Token.StringLiteral) {
-      return (tokenValue = getTokenText());
-    }
-
+  function getStringTokenValue() {
     // strip quotes
     const quoteLength = tokenFlags & TokenFlags.TripleQuoted ? 3 : 1;
     let value = input.substring(tokenPosition + quoteLength, position - quoteLength);
@@ -699,7 +739,7 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
 
     while (pos < end) {
       let ch = text.charCodeAt(pos);
-      if (ch != CharacterCodes.backslash) {
+      if (ch != CharCode.Backslash) {
         pos++;
         continue;
       }
@@ -709,19 +749,19 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
       ch = text.charCodeAt(pos);
 
       switch (ch) {
-        case CharacterCodes.r:
+        case CharCode.r:
           result += "\r";
           break;
-        case CharacterCodes.n:
+        case CharCode.n:
           result += "\n";
           break;
-        case CharacterCodes.t:
+        case CharCode.t:
           result += "\t";
           break;
-        case CharacterCodes.doubleQuote:
+        case CharCode.DoubleQuote:
           result += '"';
           break;
-        case CharacterCodes.backslash:
+        case CharCode.Backslash:
           result += "\\";
           break;
         default:
@@ -739,30 +779,28 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
   }
 
   function scanIdentifierOrKeyword() {
-    let ch = input.charCodeAt(position);
-
-    if (!isAsciiIdentifierStart(ch)) {
-      return scanNonAsciiIdentifier();
-    }
-
+    const startChar = input.charCodeAt(position);
+    let ch = startChar;
     do {
       position++;
-      if (eof()) {
-        break;
-      }
-      ch = input.charCodeAt(position);
-    } while (isAsciiIdentifierContinue(ch));
+    } while (!eof() && isAsciiIdentifierContinue((ch = input.charCodeAt(position))));
 
-    if (!eof() && ch > CharacterCodes.maxAsciiCharacter) {
+    if (ch > CharCode.MaxAscii) {
       const codePoint = input.codePointAt(position)!;
       if (isNonAsciiIdentifierContinue(codePoint)) {
         return scanNonAsciiIdentifierContinue(codePoint);
       }
     }
 
-    if (position - tokenPosition <= maxKeywordLength) {
-      const value = getTokenValue();
-      const keyword = Keywords.get(value);
+    const length = position - tokenPosition;
+    if (
+      length >= KeywordLimit.MinLength &&
+      length <= KeywordLimit.MaxLength &&
+      startChar >= KeywordLimit.MinStartChar &&
+      startChar <= KeywordLimit.MaxStartChar
+    ) {
+      tokenValue = getTokenText();
+      const keyword = Keywords.get(tokenValue);
       if (keyword) {
         return (token = keyword);
       }
@@ -771,23 +809,11 @@ export function createScanner(source: string | SourceFile, onError = throwOnErro
     return (token = Token.Identifier);
   }
 
-  function scanNonAsciiIdentifier() {
-    let codePoint = input.codePointAt(position)!;
-    return isNonAsciiIdentifierStart(codePoint)
-      ? scanNonAsciiIdentifierContinue(codePoint)
-      : scanInvalidCharacter();
-  }
-
   function scanNonAsciiIdentifierContinue(startCodePoint: number) {
     let codePoint = startCodePoint;
-
     do {
       position += utf16CodeUnits(codePoint);
-      if (eof()) {
-        break;
-      }
-      codePoint = input.codePointAt(position)!;
-    } while (isIdentifierContinue(codePoint));
+    } while (!eof() && isIdentifierContinue((codePoint = input.codePointAt(position)!)));
 
     return (token = Token.Identifier);
   }
