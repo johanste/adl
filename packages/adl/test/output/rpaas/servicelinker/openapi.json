@@ -305,10 +305,28 @@
                 "type": "string"
               }
             },
-            "description": "Typed response envelope for ARM operations.",
+            "description": "Resource deleted successfully.",
             "schema": {
               "type": "object",
               "properties": {},
+              "description": "Resource deleted successfully.",
+              "x-adl-name": "{}"
+            }
+          },
+          "202": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Resource deletion accepted.",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "description": "Resource deletion accepted.",
               "x-adl-name": "{}"
             }
           },

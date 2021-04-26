@@ -92,6 +92,18 @@ model ArmCreatedResponse<T> {
   @body body: T;
 }
 
+@doc("Resource deleted successfully.")
+model ArmDeletedResponse {
+  ... ArmResponseBase,
+  @header statusCode: 200;
+}
+
+@doc("Resource deletion accepted.")
+model ArmDeleteAcceptedResponse {
+  ... ArmResponseBase,
+  @header statusCode: 202;
+}
+
 @doc("Paged response")
 model Page<T> {
   @doc("The items on this page")
