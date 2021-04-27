@@ -70,7 +70,6 @@ whenever you save.
 # Using VS Code
 
 ## Recommended extensions
-
 1. [Mocha Test
    Explorer](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-mocha-test-adapter):
    Run tests from the IDE.
@@ -88,7 +87,6 @@ at a time in the IDE.
  * Or run `code /path/to/repo/root` on the command line
 
 ## Building
-
 * Terminal -> Run Build Task (`Ctrl+Shift+B`)
 
 This will setup a an incremental watching build for the whole
@@ -104,7 +102,6 @@ Terminal pane will have three parallel watch tasks running:
     tmlanguage.ts changes
 
 ## Testing
-
 With [Mocha Test
 Explorer](https://marketplace.visualstudio.com/items?itemName=hbenl.vscode-mocha-test-adapter)
 installed, click on its icon in the sidebar, then click on the play
@@ -118,7 +115,6 @@ output pane. Unlike the command line, no environment variable is
 needed.
 
 ## Debugging
-
 There are several "Run and Debug" tasks set up. Click on the Run and
 Debug icon on the sidebar, pick one from its down, and press F5 to
 debug the last one you chose.
@@ -148,27 +144,24 @@ debug the last one you chose.
    attach to the language server process in addition to the VS Code
    client process.
 
-## Developing the Visual Studio Extension
+# Developing the Visual Studio Extension
 
-### Prerequisites
-
+## Prerequisites
 Install [Visual Studio](https://visualstudio.microsoft.com/vs/) 16.9
 or later.  It is not currently possible to build the VS extension
 without it, and of course you'll need Visual Studio to run and debug
 the Visual Studio extension.
 
-### Build VS extension on the command line
-
-See the command line build steps above. If you do have it installed,
+## Build VS extension on the command line
+See the command line build steps above. If you have VS installed,
 the VS extension will be included in your command line full repo
 builds automatically.
 
-If you do not have it installed the command line build steps above
+If you do not have VS installed the command line build steps above
 will simply skip building the VS extension and only build the VS Code
 extension.
 
-### Build VS extension in VS
-
+## Build VS extension in VS
 * Open packages/adl-vs/Microsoft.Adl.VisualStudio.sln in Visual Studio
 * Build -> Build solution (`Ctrl+Shift+B`)
 
@@ -176,17 +169,14 @@ Unlike TypeScript in VS Code above, this is not a watching build, but
 it is relatively fast to run. Press Ctrl+Shift+B again to build any
 changes after you make them.
 
-### Debug VS extension
-
+## Debug VS extension
 * Click on the play icon in the toolbar or press `F5`
 
 This will run and debug an experimental instance of VS with a version
 of the ADL extension for VS Code running live with any of your changes
 to the extension or the ADL language server.
 
-
 # Publishing a release
-
 To publish a release of the packages in this repository, first create
 a branch starting with `publish/` (e.g. `publish/0.4.0`) and run the
 following command:
@@ -205,7 +195,6 @@ updated packages will automatically be published to `npm`.
 
 
 # Installing your build
-
 ```
 rush dogfood
 ```
