@@ -58,6 +58,7 @@
   "mochaExplorer.mochaPath": "./packages/adl/node_modules/mocha",
   "mochaExplorer.timeout": 500000,
   "mochaExplorer.require": "source-map-support/register",
+  "mochaExplorer.debuggerConfig": "Tests",
   "mochaExplorer.env": {
     "ADL_VERBOSE_TEST_OUTPUT": "true",
     "NODE_OPTIONS": "--stack-trace-limit=50"
