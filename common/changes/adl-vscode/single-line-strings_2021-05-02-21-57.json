@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "adl-vscode",
+      "comment": "Update syntax highlighting for string literal change",
+      "type": "patch"
+    }
+  ],
+  "packageName": "adl-vscode",
+  "email": "nicholg@microsoft.com"
+}
