@@ -20,7 +20,7 @@ steps:
   - script: node common/scripts/install-run-rush.js rebuild --verbose
     displayName: Build
 
-  - script: node common/scripts/install-run-rush.js test
+  - script: node common/scripts/install-run-rush.js test-official
     displayName: Test
 
   - script: node common/scripts/install-run-rush.js check-format

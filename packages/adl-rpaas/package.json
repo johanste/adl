@@ -25,7 +25,8 @@
   "scripts": {
     "build": "tsc -p .",
     "watch": "tsc -p . --watch",
-    "test": "mocha --timeout 5000 --require source-map-support/register --ignore 'dist/test/manual/**/*.js' 'dist/test/**/*.js'"
+    "test": "mocha --timeout 5000 --require source-map-support/register --ignore 'dist/test/manual/**/*.js' 'dist/test/**/*.js'",
+    "test-official": "mocha --forbid-only --timeout 5000 --require source-map-support/register --ignore 'dist/test/manual/**/*.js' 'dist/test/**/*.js'"
   },
   "files": [
     "lib/*.adl",
