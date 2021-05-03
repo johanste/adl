@@ -1,3 +1,1 @@
-describe("foo", () => {
-  it("works", async () => {});
-});
+// No tests implemented yet

@@ -1,7 +1,7 @@
 import { deepStrictEqual, ok, strictEqual } from "assert";
 import { openApiFor } from "./testHost.js";
 
-describe("definitions", () => {
+describe("openapi: definitions", () => {
   it("defines models", async () => {
     const res = await oapiForModel(
       "Foo",
@@ -347,7 +347,7 @@ describe("definitions", () => {
   });
 });
 
-describe("primitives", () => {
+describe("openapi: primitives", () => {
   const cases = [
     ["int32", { type: "integer", format: "int32" }],
     ["int64", { type: "integer", format: "int64" }],
@@ -375,7 +375,7 @@ describe("primitives", () => {
   }
 });
 
-describe("literals", () => {
+describe("openapi: literals", () => {
   const cases = [
     ["1", { type: "number", enum: [1] }],
     ['"hello"', { type: "string", enum: ["hello"] }],
