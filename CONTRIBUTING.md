@@ -114,6 +114,29 @@ You can see additional information logged by each test using
 output pane. Unlike the command line, no environment variable is
 needed.
 
+### Known Test Explorer Isssues on Windows
+
+1. Double clicking on test takes you to .js instead of .ts
+2. Some tests fail in strange ways. For example:
+```
+TypeError: Cannot read property 'get' of undefined
+    at oapiForModel (file:///c:/s/adl/packages/adl-openapi/test/test-openapi-output.ts:251:37)
+```
+
+We're trying to contribute fixes for these issues:
+https://github.com/hbenl/vscode-mocha-test-adapter/pull/153
+
+In the meantime,  you can install a private build with our proposed fixes.
+To do so, close VS Code, then:
+```
+git clone https://github.com/nguerrera/vscode-mocha-test-adapter
+cd vscode-mocha-test-adapter
+git checkout pending
+npm install && npm run build && npm run package
+code --uninstall-extension hbenl.vscode-mocha-test-adapter
+code --install-extension vscode-mocha-test-adapter-2.11.0.vsix
+```
+
 ## Debugging
 There are several "Run and Debug" tasks set up. Click on the Run and
 Debug icon on the sidebar, pick one from its down, and press F5 to
