@@ -15,7 +15,8 @@
     "editor.formatOnPaste": true,
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
     "editor.formatOnSave": true,
@@ -30,19 +31,37 @@
     "editor.formatOnPaste": true,
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[jsonc]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.insertSpaces": true,
     "editor.tabSize": 2,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[yaml]": {
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[adl]": {
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2
+  },
+  "[csharp]": {
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 2
+  },
+  "[xml]": {
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
     "editor.tabSize": 2
   },
   "files.associations": {
@@ -63,6 +82,5 @@
     "ADL_VERBOSE_TEST_OUTPUT": "true",
     "NODE_OPTIONS": "--stack-trace-limit=50"
   },
-  "testExplorer.errorDecoration": false,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "testExplorer.errorDecoration": false
 }
