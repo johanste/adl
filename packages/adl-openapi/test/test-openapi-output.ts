@@ -375,7 +375,7 @@ describe("primitives", () => {
   }
 });
 
-describe.only("literals", () => {
+describe("literals", () => {
   const cases = [
     ["1", { type: "number", enum: [1] }],
     ['"hello"', { type: "string", enum: ["hello"] }],

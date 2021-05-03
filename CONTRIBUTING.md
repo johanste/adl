@@ -142,30 +142,26 @@ There are several "Run and Debug" tasks set up. Click on the Run and
 Debug icon on the sidebar, pick one from its down, and press F5 to
 debug the last one you chose.
 
-1. **Attach to Default Port**: Use this to attach to a manually run
-   `node --debug` command.
-2. **Attach to Language Server**: Use this to attach to the language
-   server process of an already running "VS Code Extension". It's
-   usually easier to use "VS Code Extension (Client/Server) to
-   automatically attach to both VS Code and the language server
-   process.
-3. **Compile Scratch**: Use this to debug compiling
+1. **VS Code Extension**: This will run and debug an experimental
+   instance of VS Code with the ADL extension for VS Code and ADL
+   language serever running live with any of your changes. It will
+   attach to both the VS Code client process and the language server
+   process automatically.
+2. **Compile Scratch**: Use this to debug compiling
    `packages/adl-samples/scratch/*.adl`. The ADL source code in that
    folder is excluded from source control by design. Create ADL files
    there to experiment and debug how the compiler reacts.
-4. **Compile Scratch (nostdlib)**: Same as above, but skips parsing
+3. **Compile Scratch (nostdlib)**: Same as above, but skips parsing
    and evaluating the ADL standard library. Sometimes it's easier to
-   debug an issue without that.
-5. **Regenerate .tmlanguage**: This runs the code that produces the
+4. **Attach to Default Port**: Use this to attach to a manually run
+   `node --debug` command.
+5. **Attach to Language Server**: Use this to attach to the language
+   server process of an already running client process. Useful if you
+   want to debug the language server in VS Code while debugging the VS
+   client in VS.
+6. **Regenerate .tmlanguage**: This runs the code that produces the
    adl.tmlanguage file that provides syntax highlighting of ADL in VS
    and VS Code. Select this to debug its build process.
-6. **VS Code Extension**: This will run and debug an experimental
-   instance of VS Code with a version of the ADL extension for VS Code
-   running live with any of your changes to the extension or the ADL
-   language server.
-7. **VS Code Extension (Client/Server)**: Same as above, but attach
-   attach to the language server process in addition to the VS Code
-   client process.
 
 # Developing the Visual Studio Extension
 
@@ -198,6 +194,10 @@ changes after you make them.
 This will run and debug an experimental instance of VS with a version
 of the ADL extension for VS Code running live with any of your changes
 to the extension or the ADL language server.
+
+The VS debugger will attach only to the VS client process. Use "Attach
+to Lanugage Server" described above to debug the language server in
+VS Code.
 
 # Publishing a release
 To publish a release of the packages in this repository, first create
