@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "adl-vscode",
+      "comment": "Implement alias and enum, remove model =",
+      "type": "minor"
+    }
+  ],
+  "packageName": "adl-vscode",
+  "email": "brian.terlson@microsoft.com"
+}

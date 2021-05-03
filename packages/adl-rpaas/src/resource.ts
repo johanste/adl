@@ -18,7 +18,11 @@ export interface ParameterInfo {
   resourceType?: Type;
 }
 
-function getPathParameterInfo(paramType: Type, resourceType?: Type): ParameterInfo {
+function getPathParameterInfo(
+  program: Program,
+  paramType: Type,
+  resourceType?: Type
+): ParameterInfo {
   if (paramType.kind !== "Model") {
     throwDiagnostic("Path parameter type must be a model.", paramType);
   }
@@ -29,7 +33,7 @@ function getPathParameterInfo(paramType: Type, resourceType?: Type): ParameterIn
 
   const paramName: string = paramType.properties.keys().next().value;
   const propType = paramType.properties.get(paramName);
-  if (getIntrinsicType(propType) !== "string") {
+  if (getIntrinsicType(program, propType) !== "string") {
     throwDiagnostic("Path parameter type must be a string.", propType!);
   }
 
@@ -40,8 +44,8 @@ function getPathParameterInfo(paramType: Type, resourceType?: Type): ParameterIn
   };
 }
 
-function getPathParameters(pathParameters: Type[]): ParameterInfo[] {
-  return pathParameters.map((p) => getPathParameterInfo(p));
+function getPathParameters(program: Program, pathParameters: Type[]): ParameterInfo[] {
+  return pathParameters.map((p) => getPathParameterInfo(program, p));
 }
 
 type ResourceKind = "Tracked" | "Proxy" | "Extension" | "Plain";
@@ -64,14 +68,14 @@ export interface ArmResourceInfo {
   resourcePath?: ArmResourcePath;
 }
 
-const armResourceNamespaces = new Map<Type, ArmResourceInfo>();
+const armResourceNamespacesKey = Symbol();
 
-export function getArmResourceInfo(resourceType: Type): ArmResourceInfo {
+export function getArmResourceInfo(program: Program, resourceType: Type): ArmResourceInfo {
   if (resourceType.kind !== "Model") {
     throwDiagnostic("Decorator can only be applied to model types.", resourceType);
   }
 
-  const resourceInfo = armResourceNamespaces.get(resourceType);
+  const resourceInfo = program.stateMap(armResourceNamespacesKey).get(resourceType);
 
   if (!resourceInfo) {
     throwDiagnostic(
@@ -153,7 +157,7 @@ export function armResource(program: Program, resourceType: Type, resourceDetail
   );
 
   // Special case: passing 'null' for the parameter type clears it
-  if (isIntrinsic(resourceParamType) && resourceParamType.name === "null") {
+  if (isIntrinsic(program, resourceParamType) && resourceParamType.name === "null") {
     resourceParamType = undefined;
   }
 
@@ -192,7 +196,7 @@ export function armResource(program: Program, resourceType: Type, resourceDetail
   );
 
   // Locate the ARM namespace in the namespace hierarchy
-  let armNamespace = getArmNamespace(resourceType.namespace);
+  let armNamespace = getArmNamespace(program, resourceType.namespace);
   if (!armNamespace) {
     throwDiagnostic(
       "The @armNamespace decorator must be used to define the ARM namespace of the service.  This is best applied to the file-level namespace.",
@@ -204,7 +208,7 @@ export function armResource(program: Program, resourceType: Type, resourceDetail
   const resourceModelName = resourceType.name;
   const resourceListModelName = `${resourceModelName}ListResult`;
   const resourceNameParam = resourceParamType
-    ? getPathParameterInfo(resourceParamType, resourceType)
+    ? getPathParameterInfo(program, resourceParamType, resourceType)
     : undefined;
   const parentNamespace = program.checker!.getNamespaceString(resourceType.namespace);
 
@@ -213,8 +217,8 @@ export function armResource(program: Program, resourceType: Type, resourceDetail
 
   // Detect the resource type
   let resourceKind: ResourceKind = "Plain";
-  if (resourceType.assignmentType) {
-    const coreType = resourceType.assignmentType;
+  if (resourceType.baseModels.length === 1) {
+    const coreType = resourceType.baseModels[0];
     if (coreType.kind === "Model") {
       if (coreType.name.startsWith("TrackedResource")) {
         resourceKind = "Tracked";
@@ -239,6 +243,7 @@ export function armResource(program: Program, resourceType: Type, resourceDetail
   };
 
   armResourceInfo.resourcePath = getResourcePath(
+    program,
     armResourceInfo,
     resourceType,
     resourcePathType.value,
@@ -253,7 +258,7 @@ export function armResource(program: Program, resourceType: Type, resourceDetail
   program.evalAdlScript(`
       namespace ${armResourceInfo.parentNamespace} {
         @doc("The response of a ${armResourceInfo.resourceModelName} list operation.")
-        model ${armResourceInfo.resourceListModelName} = Page<${armResourceInfo.resourceModelName}>;
+        model ${armResourceInfo.resourceListModelName} extends Page<${armResourceInfo.resourceModelName}> { };
 
         @resource("${finalPath}")
         @tag("${armResourceInfo.collectionName}")
@@ -262,7 +267,7 @@ export function armResource(program: Program, resourceType: Type, resourceDetail
       }
   `);
 
-  armResourceNamespaces.set(resourceType, armResourceInfo);
+  program.stateMap(armResourceNamespacesKey).set(resourceType, armResourceInfo);
 
   _generateStandardOperations(program, resourceType, armResourceInfo.standardOperations);
 }
@@ -301,6 +306,7 @@ function appendResourcePath(basePath: ArmResourcePath, newPath: ArmResourcePath)
 }
 
 function getResourcePath(
+  program: Program,
   armResourceInfo: ArmResourceInfo,
   resourceType: Type,
   resourcePath: string,
@@ -308,7 +314,7 @@ function getResourcePath(
 ): ArmResourcePath {
   let armResourcePath: ArmResourcePath | undefined;
   if (armResourceInfo.parentResourceType) {
-    const parentResourceInfo = getArmResourceInfo(armResourceInfo.parentResourceType);
+    const parentResourceInfo = getArmResourceInfo(program, armResourceInfo.parentResourceType);
     if (!parentResourceInfo.resourcePath) {
       throwDiagnostic("Parent type has no resource path information specified", resourceType);
     }
@@ -335,7 +341,7 @@ function getResourcePath(
 
   appendResourcePath(armResourcePath, {
     path: resourcePath,
-    parameters: getPathParameters(pathParameterTypes),
+    parameters: getPathParameters(program, pathParameterTypes),
   });
 
   return armResourcePath;

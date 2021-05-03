@@ -23,7 +23,7 @@ export function armResourceOperations(program: Program, target: Type, resourceTy
   }
 
   // Verify that this is a registered resource
-  const armResourceInfo = getArmResourceInfo(resourceType);
+  const armResourceInfo = getArmResourceInfo(program, resourceType);
 
   if (!armResourceInfo.resourcePath) {
     throwDiagnostic(
@@ -71,8 +71,13 @@ function getOperationPathArguments(pathParameters: ParameterInfo[]): string {
   return [apiVersionParameter, ...pathParameters].map((param) => `...${param.typeName}`).join(", ");
 }
 
-function prepareOperationInfo(decoratorName: string, resourceType: Type, operationGroup?: string) {
-  const armResourceInfo = getArmResourceInfo(resourceType);
+function prepareOperationInfo(
+  program: Program,
+  decoratorName: string,
+  resourceType: Type,
+  operationGroup?: string
+) {
+  const armResourceInfo = getArmResourceInfo(program, resourceType);
   if (!armResourceInfo.resourcePath) {
     throwDiagnostic(
       `The @${decoratorName} decorator can only be applied to a resource type with a resource path.`,
@@ -105,6 +110,7 @@ function evalInNamespace(program: Program, namespace: string, adlScript: string)
 
 export function armStandardRead(program: Program, target: Type, documentation?: string): void {
   const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
+    program,
     "armStandardRead",
     target
   );
@@ -125,6 +131,7 @@ export function armStandardRead(program: Program, target: Type, documentation?: 
 
 export function armStandardCreate(program: Program, target: Type, documentation?: string): void {
   const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
+    program,
     "armStandardCreate",
     target
   );
@@ -145,6 +152,7 @@ export function armStandardCreate(program: Program, target: Type, documentation?
 
 export function armStandardUpdate(program: Program, target: Type, documentation?: string): void {
   const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
+    program,
     "armStandardUpdate",
     target
   );
@@ -165,6 +173,7 @@ export function armStandardUpdate(program: Program, target: Type, documentation?
 
 export function armStandardDelete(program: Program, target: Type, documentation?: string): void {
   const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
+    program,
     "armStandardDelete",
     target
   );
@@ -185,6 +194,7 @@ export function armStandardDelete(program: Program, target: Type, documentation?
 
 export function armStandardList(program: Program, target: Type, documentation?: string): void {
   const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
+    program,
     "armStandardList",
     target
   );
@@ -309,7 +319,7 @@ export function armListBy(
   operationName: string,
   documentation?: string
 ): void {
-  const armResourceInfo = getArmResourceInfo(target);
+  const armResourceInfo = getArmResourceInfo(program, target);
   if (!armResourceInfo.resourcePath) {
     throwDiagnostic(
       "The @armListBy decorator can only be applied to a resource type with a resource path.",

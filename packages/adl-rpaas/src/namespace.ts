@@ -2,7 +2,7 @@ import { NamespaceType, Program, throwDiagnostic, Type } from "@azure-tools/adl"
 import { _addSecurityDefinition, _addSecurityRequirement } from "@azure-tools/adl-openapi";
 import { consumes, produces, _setServiceNamespace } from "@azure-tools/adl-rest";
 
-const armNamespaces = new Map<Type, string>();
+const armNamespacesKey = Symbol();
 
 // NOTE: This can be considered the entrypoint for marking a service definition as
 // an ARM service so that we might enable ARM-specific Swagger emit behavior.
@@ -13,7 +13,7 @@ export function armNamespace(program: Program, entity: Type, armNamespace?: stri
   }
 
   // armNamespace will set the service namespace if it's not done already
-  _setServiceNamespace(entity);
+  _setServiceNamespace(program, entity);
 
   // 'namespace' is optional, use the actual namespace string if omitted
   const adlNamespace = program.checker!.getNamespaceString(entity);
@@ -21,7 +21,7 @@ export function armNamespace(program: Program, entity: Type, armNamespace?: stri
     armNamespace = adlNamespace;
   }
 
-  armNamespaces.set(entity, armNamespace);
+  program.stateMap(armNamespacesKey).set(entity, armNamespace);
 
   // Add the /operations endpoint for the ARM namespace
   program.evalAdlScript(`
@@ -38,8 +38,8 @@ export function armNamespace(program: Program, entity: Type, armNamespace?: stri
   consumes(program, entity, "application/json");
 
   // Set default security definitions
-  _addSecurityRequirement(entity, "azure_auth", ["user_impersonation"]);
-  _addSecurityDefinition(entity, "azure_auth", {
+  _addSecurityRequirement(program, entity, "azure_auth", ["user_impersonation"]);
+  _addSecurityDefinition(program, entity, "azure_auth", {
     type: "oauth2",
     authorizationUrl: "https://login.microsoftonline.com/common/oauth2/authorize",
     flow: "implicit",
@@ -50,11 +50,11 @@ export function armNamespace(program: Program, entity: Type, armNamespace?: stri
   });
 }
 
-export function getArmNamespace(namespace: NamespaceType): string | undefined {
+export function getArmNamespace(program: Program, namespace: NamespaceType): string | undefined {
   let currentNamespace: NamespaceType | undefined = namespace;
   let armNamespace: string | undefined;
   while (currentNamespace) {
-    armNamespace = armNamespaces.get(currentNamespace);
+    armNamespace = program.stateMap(armNamespacesKey).get(currentNamespace);
     if (armNamespace) {
       return armNamespace;
     }
