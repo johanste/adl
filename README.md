@@ -109,6 +109,17 @@ adl generate --client samples/petstore/
 
 Parameters for generating clients in other languages will be added soon.
 
+### Formatting adl files
+
+ADL provides an auto-formatter to keep your specs clean and organized.
+
+```bash
+adl format <patterns...>
+
+# Format all the files in the current directly with the adl extension.
+adl format **/*.adl
+```
+
 ### Installing VS Code Extension
 
 ```

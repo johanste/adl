@@ -69,6 +69,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@azure-tools/prettier-plugin-adl",
+      "projectFolder": "packages/prettier-plugin-adl",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@azure-tools/adl-language",
       "projectFolder": "packages/adl-language",
       "reviewCategory": "production",
