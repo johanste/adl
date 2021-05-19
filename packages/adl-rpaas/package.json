@@ -1,6 +1,6 @@
 {
   "name": "@azure-tools/adl-rpaas",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "Microsoft Corporation",
   "description": "Azure RPaaS ADL Library",
   "homepage": "https://github.com/Azure/adl",
@@ -34,9 +34,9 @@
     "!dist/test/**"
   ],
   "dependencies": {
-    "@azure-tools/adl": "0.10.0",
-    "@azure-tools/adl-openapi": "0.2.0",
-    "@azure-tools/adl-rest": "0.2.0"
+    "@azure-tools/adl": "0.11.0",
+    "@azure-tools/adl-openapi": "0.2.1",
+    "@azure-tools/adl-rest": "0.2.1"
   },
   "devDependencies": {
     "@types/mocha": "~7.0.2",
