@@ -16,6 +16,7 @@
   "projectFolderMaxDepth": 5,
   "gitPolicy": {},
   "repository": {
+    "defaultBranch": "main",
     "url": "https://github.com/Azure/adl"
   },
   /**

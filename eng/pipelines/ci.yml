@@ -1,7 +1,7 @@
 # Continuous Integration
 
 trigger:
-  - master
+  - main
 pr: none
 
 pool:
