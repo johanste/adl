@@ -74,7 +74,7 @@
   },
   "typescript.tsdk": "./packages/adl/node_modules/typescript/lib",
   "git.ignoreLimitWarning": true,
-  "mochaExplorer.files": "./packages/*/dist/test/**/*.js",
+  "mochaExplorer.files": ["./packages/*/dist/test/**/*.js", "./packages/*/test/**/*.js"],
   "mochaExplorer.ignore": "./packages/*/dist/test/manual/**/*.js",
   "mochaExplorer.mochaPath": "./packages/adl/node_modules/mocha",
   "mochaExplorer.timeout": 500000,
