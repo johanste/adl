@@ -1,4 +1,4 @@
-import { NamespaceType, Program, throwDiagnostic, Type } from "@azure-tools/adl";
+import { NamespaceType, Program, Type } from "@azure-tools/adl";
 import { resource } from "@azure-tools/adl-rest";
 import { ArmResourceInfo, getArmResourceInfo, ParameterInfo } from "./resource.js";
 
@@ -16,20 +16,25 @@ const resourceOperationNamespaces = new Map<NamespaceType, Type>();
 
 export function armResourceOperations(program: Program, target: Type, resourceType: Type): void {
   if (target.kind !== "Namespace") {
-    throwDiagnostic(
+    program.reportDiagnostic(
       `The @armResourceOperations decorator can only be applied to namespaces.`,
       target
     );
+    return;
   }
 
   // Verify that this is a registered resource
   const armResourceInfo = getArmResourceInfo(program, resourceType);
+  if (!armResourceInfo) {
+    return;
+  }
 
   if (!armResourceInfo.resourcePath) {
-    throwDiagnostic(
+    program.reportDiagnostic(
       `The @armResourceOperations decorator can only be used for resource types that have an @armResourcePath configured.`,
       target
     );
+    return;
   }
 
   // Set the resource path
@@ -41,22 +46,28 @@ export function armResourceOperations(program: Program, target: Type, resourceTy
 
 export function armResourceParams(program: Program, operation: Type): void {
   if (operation.kind !== "Operation") {
-    throwDiagnostic(`The @armOperation decorator can only be applied to operations.`, operation);
+    program.reportDiagnostic(
+      `The @armOperation decorator can only be applied to operations.`,
+      operation
+    );
+    return;
   }
 
   if (!operation.namespace) {
-    throwDiagnostic(
+    program.reportDiagnostic(
       `The @armOperation decorator can only be applied to an operation that is defined inside of a namespace.`,
       operation
     );
+    return;
   }
 
   const resourceType = resourceOperationNamespaces.get(operation.namespace);
   if (!resourceType) {
-    throwDiagnostic(
+    program.reportDiagnostic(
       `The @armOperation decorator can only be applied to an operation that is defined inside of a namespace marked with @armResourceOperations.`,
       operation
     );
+    return;
   }
 
   // TODO: Automatically add base parameters
@@ -78,11 +89,15 @@ function prepareOperationInfo(
   operationGroup?: string
 ) {
   const armResourceInfo = getArmResourceInfo(program, resourceType);
+  if (!armResourceInfo) {
+    return;
+  }
   if (!armResourceInfo.resourcePath) {
-    throwDiagnostic(
+    program.reportDiagnostic(
       `The @${decoratorName} decorator can only be applied to a resource type with a resource path.`,
       resourceType
     );
+    return;
   }
 
   const nameParamList = armResourceInfo.resourceNameParam
@@ -109,12 +124,13 @@ function evalInNamespace(program: Program, namespace: string, adlScript: string)
 }
 
 export function armStandardRead(program: Program, target: Type, documentation?: string): void {
-  const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
-    program,
-    "armStandardRead",
-    target
-  );
+  const info = prepareOperationInfo(program, "armStandardRead", target);
 
+  if (!info) {
+    return;
+  }
+
+  const { armResourceInfo, operationParams, namespace } = info;
   if (!documentation) {
     documentation = `Get a ${armResourceInfo.resourceModelName}`;
   }
@@ -130,12 +146,13 @@ export function armStandardRead(program: Program, target: Type, documentation?: 
 }
 
 export function armStandardCreate(program: Program, target: Type, documentation?: string): void {
-  const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
-    program,
-    "armStandardCreate",
-    target
-  );
+  const info = prepareOperationInfo(program, "armStandardCreate", target);
 
+  if (!info) {
+    return;
+  }
+
+  const { armResourceInfo, operationParams, namespace } = info;
   if (!documentation) {
     documentation = `Create a ${armResourceInfo.resourceModelName}`;
   }
@@ -151,12 +168,13 @@ export function armStandardCreate(program: Program, target: Type, documentation?
 }
 
 export function armStandardUpdate(program: Program, target: Type, documentation?: string): void {
-  const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
-    program,
-    "armStandardUpdate",
-    target
-  );
+  const info = prepareOperationInfo(program, "armStandardUpdate", target);
 
+  if (!info) {
+    return;
+  }
+
+  const { armResourceInfo, operationParams, namespace } = info;
   if (!documentation) {
     documentation = `Update a ${armResourceInfo.resourceModelName}`;
   }
@@ -172,12 +190,13 @@ export function armStandardUpdate(program: Program, target: Type, documentation?
 }
 
 export function armStandardDelete(program: Program, target: Type, documentation?: string): void {
-  const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
-    program,
-    "armStandardDelete",
-    target
-  );
+  const info = prepareOperationInfo(program, "armStandardDelete", target);
 
+  if (!info) {
+    return;
+  }
+
+  const { armResourceInfo, operationParams, namespace } = info;
   if (!documentation) {
     documentation = `Delete a ${armResourceInfo.resourceModelName}`;
   }
@@ -193,12 +212,13 @@ export function armStandardDelete(program: Program, target: Type, documentation?
 }
 
 export function armStandardList(program: Program, target: Type, documentation?: string): void {
-  const { armResourceInfo, operationParams, namespace } = prepareOperationInfo(
-    program,
-    "armStandardList",
-    target
-  );
+  const info = prepareOperationInfo(program, "armStandardList", target);
 
+  if (!info) {
+    return;
+  }
+
+  const { armResourceInfo, operationParams, namespace } = info;
   if (armResourceInfo.resourceKind === "Tracked") {
     armListByInternal(
       program,
@@ -230,7 +250,7 @@ export function _generateStandardOperations(
     if (generator) {
       generator(program, resourceType);
     } else {
-      throwDiagnostic(`The standard operation type '${op}' is unknown.`, resourceType);
+      program.reportDiagnostic(`The standard operation type '${op}' is unknown.`, resourceType);
     }
   }
 }
@@ -245,10 +265,11 @@ function armListByInternal(
 ) {
   const resourcePath = armResourceInfo.resourcePath;
   if (!resourcePath) {
-    throwDiagnostic(
+    program.reportDiagnostic(
       "List operations can only be created for a resource type with a resource path.",
       target
     );
+    return;
   }
 
   // There are two cases here:
@@ -266,7 +287,8 @@ function armListByInternal(
       : pathParams.find((p) => p.typeName === paramTypeName);
 
   if (!paramInfo) {
-    throwDiagnostic("Parameter type not a part of the resource", target);
+    program.reportDiagnostic("Parameter type not a part of the resource", target);
+    return;
   }
 
   let basePath = "";
@@ -320,15 +342,20 @@ export function armListBy(
   documentation?: string
 ): void {
   const armResourceInfo = getArmResourceInfo(program, target);
+  if (!armResourceInfo) {
+    return;
+  }
   if (!armResourceInfo.resourcePath) {
-    throwDiagnostic(
+    program.reportDiagnostic(
       "The @armListBy decorator can only be applied to a resource type with a resource path.",
       target
     );
+    return;
   }
 
   if (paramType.kind !== "Model") {
-    throwDiagnostic("Parameter type is not a model", target);
+    program.reportDiagnostic("Parameter type is not a model", target);
+    return;
   }
 
   armListByInternal(program, target, armResourceInfo, paramType.name, operationName, documentation);

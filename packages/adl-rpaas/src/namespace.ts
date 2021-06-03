@@ -1,4 +1,4 @@
-import { NamespaceType, Program, throwDiagnostic, Type } from "@azure-tools/adl";
+import { NamespaceType, Program, Type } from "@azure-tools/adl";
 import { _addSecurityDefinition, _addSecurityRequirement } from "@azure-tools/adl-openapi";
 import { consumes, produces, _setServiceNamespace } from "@azure-tools/adl-rest";
 
@@ -9,7 +9,11 @@ const armNamespacesKey = Symbol();
 
 export function armNamespace(program: Program, entity: Type, armNamespace?: string) {
   if (entity.kind !== "Namespace") {
-    throwDiagnostic("The @armNamespace decorator can only be applied to namespaces.", entity);
+    program.reportDiagnostic(
+      "The @armNamespace decorator can only be applied to namespaces.",
+      entity
+    );
+    return;
   }
 
   // armNamespace will set the service namespace if it's not done already

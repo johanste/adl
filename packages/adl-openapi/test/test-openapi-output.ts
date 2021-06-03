@@ -40,7 +40,7 @@ describe("openapi: definitions", () => {
     });
   });
 
-  it("defines templated modules", async () => {
+  it("defines templated models", async () => {
     const res = await oapiForModel(
       "Foo<int32>",
       `model Foo<T> {
@@ -59,7 +59,7 @@ describe("openapi: definitions", () => {
     });
   });
 
-  it("defines templated modules when template param is in a namespace", async () => {
+  it("defines templated models when template param is in a namespace", async () => {
     const res = await oapiForModel(
       "Foo<Test.M>",
       `
@@ -318,7 +318,6 @@ describe("openapi: definitions", () => {
     });
   });
 
-  // fails
   it("defines models extended from primitives with new attrs", async () => {
     const res = await oapiForModel(
       "Pet",
