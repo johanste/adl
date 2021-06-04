@@ -38,5 +38,5 @@ export async function openApiFor(code: string) {
   const outPath = resolve("/openapi.json");
   host.addAdlFile("./main.adl", `import "adl-rest"; import "adl-openapi";${code}`);
   await host.compile("./main.adl", { noEmit: false, swaggerOutputFile: outPath });
-  return JSON.parse(host.fs[outPath]);
+  return JSON.parse(host.fs.get(outPath)!);
 }

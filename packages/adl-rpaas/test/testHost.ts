@@ -49,5 +49,5 @@ export async function openApiFor(code: string) {
     `import "adl-rest"; import "adl-openapi"; import "adl-rpaas";${code}`
   );
   await host.compile("./main.adl", { noEmit: false, swaggerOutputFile: outPath });
-  return JSON.parse(host.fs[outPath]);
+  return JSON.parse(host.fs.get(outPath)!);
 }
