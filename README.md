@@ -134,7 +134,7 @@ Preferences -> Settings, and adjust `adl.adl-server.path` accordingly. You may
 need to restart VS Code after changing this.
 
 You can also configure a project to use a local npm install of
-`@azure-tools/adl`. See [local-adl sample](packages/adl/samples/local-adl).
+`@azure-tools/adl`. See [local-adl sample](packages/adl-samples/local-adl).
 
 ### Installing Visual Studio Extension
 
