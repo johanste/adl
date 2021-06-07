@@ -47,7 +47,7 @@ function main() {
 function getSampleFolders() {
   const samples = new Set();
   const excludes = new Set(excludedSamples.map(normalize));
-  walk("", rootInputPath);
+  walk("");
   return samples;
 
   function walk(relativeDir) {
