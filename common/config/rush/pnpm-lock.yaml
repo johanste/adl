@@ -34,11 +34,11 @@ dependencies:
   onigasm: 2.2.5
   plist: 3.0.2
   prettier: 2.2.1
-  prettier-plugin-organize-imports: 1.1.1_prettier@2.2.1+typescript@4.2.4
+  prettier-plugin-organize-imports: 1.1.1_prettier@2.2.1+typescript@4.3.2
   resolve: 1.20.0
   rollup: 2.41.5
   source-map-support: 0.5.19
-  typescript: 4.2.4
+  typescript: 4.3.2
   vsce: 1.85.1
   vscode-languageclient: 7.0.0
   vscode-languageserver: 7.0.0
@@ -1977,10 +1977,10 @@ packages:
       node: '>= 0.8.0'
     resolution:
       integrity: sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
-  /prettier-plugin-organize-imports/1.1.1_prettier@2.2.1+typescript@4.2.4:
+  /prettier-plugin-organize-imports/1.1.1_prettier@2.2.1+typescript@4.3.2:
     dependencies:
       prettier: 2.2.1
-      typescript: 4.2.4
+      typescript: 4.3.2
     dev: false
     peerDependencies:
       prettier: '>=1.10'
@@ -2509,6 +2509,13 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
+  /typescript/4.3.2:
+    dev: false
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-zZ4hShnmnoVnAHpVHWpTcxdv7dWP60S2FsydQLV8V5PbS3FifjWFFRiHSWpDJahly88PRyV5teTSLoq4eG7mKw==
   /uc.micro/1.0.6:
     dev: false
     resolution:
@@ -2835,22 +2842,22 @@ packages:
       '@types/node': 14.0.27
       mocha: 8.3.2
       prettier: 2.2.1
-      typescript: 4.2.4
+      typescript: 4.3.2
     dev: false
     name: '@rush-temp/adl-openapi'
     resolution:
-      integrity: sha512-nfqfi1kUeTEjfkTeQCXAhHrn3h6hTR+CQ4kbaxpPpcmLA7UfQ7JzUnXcljoED24gza/Wrboe790bdEuhpfwuyQ==
+      integrity: sha512-cdCTT950NOOvQRYH0NkAiYlq5uABexk3PY/e6smBAgES4PdUm3n9Rjc8VrPN+rguloyaW5y8RVYcGFdKbpjl2A==
       tarball: file:projects/adl-openapi.tgz
     version: 0.0.0
   file:projects/adl-rest.tgz:
     dependencies:
       '@types/node': 14.0.27
       prettier: 2.2.1
-      typescript: 4.2.4
+      typescript: 4.3.2
     dev: false
     name: '@rush-temp/adl-rest'
     resolution:
-      integrity: sha512-ILAgBuC52aIoiKTrWSFIyW5DOuDB0JoutycUFqgcm4/H0146wJQ57zdLytP2ezK5emRTQK0Qub9n1JnDcxyyTg==
+      integrity: sha512-HAQxqXvdmoNBnmd67UoYNYSkyeUEIfxHKYRsdAmZad0WLcB4j9tAOITjIuOy8H3m9+0h16q76e8ohEyCpVsE/w==
       tarball: file:projects/adl-rest.tgz
     version: 0.0.0
   file:projects/adl-rpaas.tgz:
@@ -2859,11 +2866,11 @@ packages:
       '@types/node': 14.0.27
       mocha: 8.3.2
       prettier: 2.2.1
-      typescript: 4.2.4
+      typescript: 4.3.2
     dev: false
     name: '@rush-temp/adl-rpaas'
     resolution:
-      integrity: sha512-R0rltd9BzbK1Dkb/cN57vSiGwG7M4m2SBZDE7uLVeqvjRCDA+TBkzzeO9SUiYSzc+xcmfF10RDBaYXg1h4Kxcg==
+      integrity: sha512-qGxzh6audCUjPPiegP2tHvsQdH5oTPNxjr9LZrVpz+CQ3CwhxIao6xvBA40s4EKuzy2ip8eBmWDcc3LvAJUgjw==
       tarball: file:projects/adl-rpaas.tgz
     version: 0.0.0
   file:projects/adl-samples.tgz:
@@ -2874,14 +2881,14 @@ packages:
     dev: false
     name: '@rush-temp/adl-samples'
     resolution:
-      integrity: sha512-DTN61xQtOEfgMEOyBLX8lxQMdUPh8I82xheaw91QitDC9MsYtwweOa1BCrg/f5PuF7KIx3gN8sZvaG+SGF6mVw==
+      integrity: sha512-QW9j/WDN5pZof6z2SyEBeDchV1FFHElWRLiXi3vYKPArQiYa2UxdchttwwP9T4NjSvFUawV0/u1+7gTqrGxhaw==
       tarball: file:projects/adl-samples.tgz
     version: 0.0.0
   file:projects/adl-vs.tgz:
     dev: false
     name: '@rush-temp/adl-vs'
     resolution:
-      integrity: sha512-xYRgbzgp9JPXvNfqZgPk6jRJvcCX78SK6JKmh0Zj7jx8gGzEg90MFRUCS/DLVhQAQQ34UBBaT+mBl7Y1hZsD9A==
+      integrity: sha512-yXEMMs59EMAjIgc141qc/Pz3XNdVKyKak6/vHMWItJ0NCLZuXMY11/qKaQjzPTB5tYPFZHe7D8QqUxIzOkxS4A==
       tarball: file:projects/adl-vs.tgz
     version: 0.0.0
   file:projects/adl-vscode.tgz:
@@ -2893,14 +2900,14 @@ packages:
       '@types/vscode': 1.53.0
       mkdirp: 1.0.4
       rollup: 2.41.5
-      typescript: 4.2.4
+      typescript: 4.3.2
       vsce: 1.85.1
       vscode-languageclient: 7.0.0
       watch: 1.0.2
     dev: false
     name: '@rush-temp/adl-vscode'
     resolution:
-      integrity: sha512-naC/ADYvXZi6nvxe7FmQ7kIBE1tLWjmjq9uYiJf2o7rBH3JsiYivfQbgogZ5fIio70tinZLE90djNf2M3yXQSw==
+      integrity: sha512-VZfPRWSTEL1wCaHvpdmV53etF7hLPzFJEonWDDQv2ojdi99YvQDnK3P74BLtBDOPDGDVEPcBo8aus/nS7T9EGw==
       tarball: file:projects/adl-vscode.tgz
     version: 0.0.0
   file:projects/adl.tgz:
@@ -2921,17 +2928,17 @@ packages:
       mkdirp: 1.0.4
       mocha: 8.3.2
       prettier: 2.2.1
-      prettier-plugin-organize-imports: 1.1.1_prettier@2.2.1+typescript@4.2.4
+      prettier-plugin-organize-imports: 1.1.1_prettier@2.2.1+typescript@4.3.2
       resolve: 1.20.0
       source-map-support: 0.5.19
-      typescript: 4.2.4
+      typescript: 4.3.2
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.1
       yargs: 16.2.0
     dev: false
     name: '@rush-temp/adl'
     resolution:
-      integrity: sha512-zFYINbHs9xGUEC/Jx4mMdEtDT0FZXGonlb/Y2uXauIXWvXvh2ZO3gRBL8DG658WsC1vnsd9CmxbVYsqon9zGHQ==
+      integrity: sha512-wdkccDD4n6yctoQdt+PWbIkUTh9rs4h4XpYt0F90Nbhfb66Xs8OJfGUOe0Y3TP6c3RkqQrZ2GXHHtI4q0bCsRQ==
       tarball: file:projects/adl.tgz
     version: 0.0.0
   file:projects/prettier-plugin-adl.tgz:
@@ -2940,12 +2947,13 @@ packages:
       '@rollup/plugin-json': 4.1.0_rollup@2.41.5
       '@rollup/plugin-node-resolve': 11.2.1_rollup@2.41.5
       '@rollup/plugin-replace': 2.4.2_rollup@2.41.5
+      mocha: 8.3.2
       prettier: 2.2.1
       rollup: 2.41.5
     dev: false
     name: '@rush-temp/prettier-plugin-adl'
     resolution:
-      integrity: sha512-14f805530WgLpm4/ATT/At0ZR23cXDeDifAJ0MIbgVKu21txs3JjINvcLaCXKVScAjrgQ2Hxz/29csyapDFwJQ==
+      integrity: sha512-fetGiA6q1YzfbohML82LL+vxsPm7Gd1tows5L6VXuX4ZkYvB5yDG02ajFP4hFEUSIc3hqncoRzhIybBU7JmEKQ==
       tarball: file:projects/prettier-plugin-adl.tgz
     version: 0.0.0
   file:projects/tmlanguage-generator.tgz:
@@ -3001,7 +3009,7 @@ specifiers:
   resolve: ~1.20.0
   rollup: ~2.41.4
   source-map-support: ~0.5.19
-  typescript: ~4.2.4
+  typescript: ~4.3.2
   vsce: ~1.85.1
   vscode-languageclient: ~7.0.0
   vscode-languageserver: ~7.0.0
