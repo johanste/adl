@@ -13,6 +13,7 @@ import {
   isList,
   isNumericType,
   isSecret,
+  isStringType,
   ModelType,
   ModelTypeProperty,
   NamespaceType,
@@ -650,6 +651,12 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     ph.required = !param.optional;
     ph.description = getDoc(program, param);
 
+    // Apply decorators to a copy of the parameter definition.  We use
+    // Object.assign here because applyIntrinsicDecorators returns a new object
+    // based on the target object and we need to apply its changes back to the
+    // original parameter.
+    Object.assign(ph, applyIntrinsicDecorators(param, ph));
+
     let schema = getSchemaOrRef(param.type);
     if (kind === "body") {
       ph.schema = schema;
@@ -962,55 +969,55 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     return false;
   }
 
-  function applyIntrinsicDecorators(adlType: Type, schemaType: any): any {
+  function applyIntrinsicDecorators(adlType: Type, target: any): any {
     const pattern = getFormat(program, adlType);
-    if (schemaType.type === "string" && !schemaType.format && pattern) {
-      schemaType = {
-        ...schemaType,
+    if (isStringType(program, adlType) && !target.pattern && pattern) {
+      target = {
+        ...target,
         pattern,
       };
     }
 
     const minLength = getMinLength(program, adlType);
-    if (schemaType.type === "string" && !schemaType.minLength && minLength !== undefined) {
-      schemaType = {
-        ...schemaType,
+    if (isStringType(program, adlType) && !target.minLength && minLength !== undefined) {
+      target = {
+        ...target,
         minLength,
       };
     }
 
     const maxLength = getMaxLength(program, adlType);
-    if (schemaType.type === "string" && !schemaType.maxLength && maxLength !== undefined) {
-      schemaType = {
-        ...schemaType,
+    if (isStringType(program, adlType) && !target.maxLength && maxLength !== undefined) {
+      target = {
+        ...target,
         maxLength,
       };
     }
 
     const minValue = getMinValue(program, adlType);
-    if (isNumericType(program, adlType) && !schemaType.minimum && minValue !== undefined) {
-      schemaType = {
-        ...schemaType,
+    if (isNumericType(program, adlType) && !target.minimum && minValue !== undefined) {
+      target = {
+        ...target,
         minimum: minValue,
       };
     }
 
     const maxValue = getMinValue(program, adlType);
-    if (isNumericType(program, adlType) && !schemaType.maximum && maxValue !== undefined) {
-      schemaType = {
-        ...schemaType,
+    if (isNumericType(program, adlType) && !target.maximum && maxValue !== undefined) {
+      target = {
+        ...target,
         maximum: maxValue,
       };
     }
 
     if (isSecret(program, adlType)) {
-      schemaType = {
-        ...schemaType,
+      target = {
+        ...target,
         format: "password",
       };
     }
 
-    return schemaType;
+    return target;
   }
 
   function addXMSEnum(type: StringLiteralType | UnionType | EnumType, schema: any): any {

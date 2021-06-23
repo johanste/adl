@@ -901,6 +901,7 @@
       "in": "path",
       "required": true,
       "description": "Code Signing account name",
+      "pattern": "^[a-zA-Z0-9-]{3,24}$",
       "type": "string"
     },
     "ProfileNameParameter": {
@@ -909,6 +910,7 @@
       "in": "path",
       "required": true,
       "description": "Certificate profile name",
+      "pattern": "^[a-zA-Z0-9-]{3,24}$",
       "type": "string"
     }
   }
