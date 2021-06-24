@@ -9,6 +9,7 @@ import {
   getMinLength,
   getMinValue,
   getVisibility,
+  isErrorType,
   isIntrinsic,
   isList,
   isNumericType,
@@ -186,43 +187,56 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   return { emitOpenAPI };
 
   async function emitOpenAPI() {
-    for (let resource of getResources(program)) {
-      if (resource.kind !== "Namespace") {
-        program.reportDiagnostic("Resource goes on namespace", resource);
-        continue;
+    try {
+      for (let resource of getResources(program)) {
+        if (resource.kind !== "Namespace") {
+          program.reportDiagnostic("Resource goes on namespace", resource);
+          continue;
+        }
+
+        emitResource(resource as NamespaceType);
+      }
+      emitReferences();
+      emitTags();
+
+      // Finalize global produces/consumes
+      if (globalProduces.size > 0) {
+        root.produces = [...globalProduces.values()];
+      } else {
+        delete root.produces;
+      }
+      if (globalConsumes.size > 0) {
+        root.consumes = [...globalConsumes.values()];
+      } else {
+        delete root.consumes;
       }
 
-      emitResource(resource as NamespaceType);
-    }
-    emitReferences();
-    emitTags();
+      // Clean up empty entries
+      if (Object.keys(root["x-ms-paths"]).length === 0) {
+        delete root["x-ms-paths"];
+      }
+      if (Object.keys(root.security).length === 0) {
+        delete root["security"];
+      }
+      if (Object.keys(root.securityDefinitions).length === 0) {
+        delete root["securityDefinitions"];
+      }
 
-    // Finalize global produces/consumes
-    if (globalProduces.size > 0) {
-      root.produces = [...globalProduces.values()];
-    } else {
-      delete root.produces;
-    }
-    if (globalConsumes.size > 0) {
-      root.consumes = [...globalConsumes.values()];
-    } else {
-      delete root.consumes;
-    }
-
-    // Clean up empty entries
-    if (Object.keys(root["x-ms-paths"]).length === 0) {
-      delete root["x-ms-paths"];
-    }
-    if (Object.keys(root.security).length === 0) {
-      delete root["security"];
-    }
-    if (Object.keys(root.securityDefinitions).length === 0) {
-      delete root["securityDefinitions"];
-    }
-
-    if (!program.compilerOptions.noEmit && !program.hasError()) {
-      // Write out the OpenAPI document to the output path
-      await program.host.writeFile(path.resolve(options.outputFile), JSON.stringify(root, null, 2));
+      if (!program.compilerOptions.noEmit && !program.hasError()) {
+        // Write out the OpenAPI document to the output path
+        await program.host.writeFile(
+          path.resolve(options.outputFile),
+          JSON.stringify(root, null, 2)
+        );
+      }
+    } catch (err) {
+      if (err instanceof ErrorTypeFoundError) {
+        // Return early, there must be a parse error if an ErrorType was
+        // inserted into the ADL output
+        return;
+      } else {
+        throw err;
+      }
     }
   }
 
@@ -493,6 +507,13 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       // happen if ADL identifier uses characters that are problematic for OpenAPI.
       // Users will have to rename / alias type to have it get ref'ed.
       const schema = getSchemaForType(type);
+
+      if (schema === undefined && isErrorType(type)) {
+        // Exit early so that syntax errors are exposed.  This error will
+        // be caught and handled in emitOpenAPI.
+        throw new ErrorTypeFoundError();
+      }
+
       // helps to read output and correlate to ADL
       schema["x-adl-name"] = name;
       return schema;
@@ -1116,4 +1137,10 @@ function isRefSafeName(name: string) {
 
 function getRefSafeName(name: string) {
   return name.replace(/^[A-Za-z0-9-_.]/g, "_");
+}
+
+class ErrorTypeFoundError extends Error {
+  constructor() {
+    super("Error type found in evaluated ADL output");
+  }
 }
