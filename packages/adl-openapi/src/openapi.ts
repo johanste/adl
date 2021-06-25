@@ -935,7 +935,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
     // Special case: if a model type extends a single *templated* base type and
     // has no properties of its own, absorb the definition of the base model
     // into this schema definition.  The assumption here is that any model type
-    // defined like this is just mean to rename the underlying instance of a
+    // defined like this is just meant to rename the underlying instance of a
     // templated type.
     if (
       model.baseModels.length === 1 &&
