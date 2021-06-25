@@ -324,6 +324,20 @@
               "$ref": "#/definitions/ArmDeleteAcceptedResponse"
             }
           },
+          "204": {
+            "headers": {
+              "x-ms-client-request-id": {
+                "type": "string"
+              },
+              "x-ms-correlation-request-id": {
+                "type": "string"
+              }
+            },
+            "description": "Resource deleted successfully.",
+            "schema": {
+              "$ref": "#/definitions/ArmDeletedNoContentResponse"
+            }
+          },
           "default": {
             "description": "Common error response for all Azure Resource Manager APIs to return error details for failed operations.",
             "schema": {
@@ -501,6 +515,11 @@
       "type": "object",
       "properties": {},
       "description": "Resource deletion accepted."
+    },
+    "ArmDeletedNoContentResponse": {
+      "type": "object",
+      "properties": {},
+      "description": "Resource deleted successfully."
     },
     "LinkerStatus": {
       "type": "string",

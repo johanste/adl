@@ -234,7 +234,7 @@ export function armStandardDelete(program: Program, target: Type, documentation?
     `@doc("${documentation}")
      @_delete op Delete(${getOperationPathArguments(
        operationParams
-     )}): ArmDeletedResponse | ArmDeleteAcceptedResponse | ErrorResponse;`
+     )}): ArmDeletedResponse | ArmDeleteAcceptedResponse | ArmDeletedNoContentResponse | ErrorResponse;`
   );
 }
 
