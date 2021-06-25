@@ -1947,7 +1947,7 @@
             },
             "provisioningState": {
               "$ref": "#/definitions/ProvisioningState",
-              "description": "The provisiong state of the SSO resource"
+              "description": "The provisioning state of the SSO resource"
             }
           },
           "x-adl-name": "(anonymous model)"
@@ -2204,7 +2204,7 @@
         },
         "provisioningState": {
           "$ref": "#/definitions/ProvisioningState",
-          "description": "The provisiong state of the SSO resource"
+          "description": "The provisioning state of the SSO resource"
         }
       },
       "required": [

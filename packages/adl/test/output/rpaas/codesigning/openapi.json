@@ -827,7 +827,7 @@
     "ProvisioningState": {
       "type": "string",
       "enum": [
-        "Suceeded",
+        "Succeeded",
         "Failed",
         "Cancelled",
         "Provisioning",
