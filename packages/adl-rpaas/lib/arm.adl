@@ -43,10 +43,6 @@ model TrackedResource<TProperties> extends TrackedResourceBase {
 @armCommonDefinition("ProxyResource")
 model ProxyResourceBase {
   ...ArmResource,
-
-  @doc("System metadata for this resource.")
-  @visibility("read")
-  systemData?: SystemData;
 };
 
 @doc("Concrete proxy resource types can be created by aliasing this type using a specific property type.")
@@ -55,6 +51,10 @@ model ProxyResource<TProperties> extends ProxyResourceBase {
   @visibility("read", "create")
   @extension("x-ms-client-flatten", true)
   properties: TProperties;
+
+  @doc("System metadata for this resource.")
+  @visibility("read")
+  systemData?: SystemData;
 }
 
 model ExtensionResource<TProperties> extends ArmResource {
