@@ -572,11 +572,29 @@
   "definitions": {
     "CodeSignAccount": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/CodeSignAccountProperties",
+          "description": "The resource-specific properties for this resource.",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
+        },
+        "systemData": {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
+          "description": "System metadata for this resource.",
+          "readOnly": true
+        }
+      },
       "description": "A CodeSignAccount resource",
+      "required": [
+        "properties"
+      ],
       "allOf": [
         {
-          "$ref": "#/definitions/TrackedResource_CodeSignAccountProperties"
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
         }
       ],
       "x-ms-azure-resource": true
@@ -610,64 +628,6 @@
     },
     "CodeSignAccountListResult": {
       "type": "object",
-      "properties": {},
-      "description": "The response of a CodeSignAccount list operation.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_CodeSignAccount"
-        }
-      ]
-    },
-    "CertificateProfile": {
-      "type": "object",
-      "properties": {},
-      "allOf": [
-        {
-          "$ref": "#/definitions/ProxyResource_CertificateProfileProperties"
-        }
-      ],
-      "x-ms-azure-resource": true
-    },
-    "CertificateProfileListResult": {
-      "type": "object",
-      "properties": {},
-      "description": "The response of a CertificateProfile list operation.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_CertificateProfile"
-        }
-      ]
-    },
-    "TrackedResource_CodeSignAccountProperties": {
-      "type": "object",
-      "properties": {
-        "properties": {
-          "$ref": "#/definitions/CodeSignAccountProperties",
-          "description": "The resource-specific properties for this resource.",
-          "x-ms-mutability": [
-            "read",
-            "create"
-          ],
-          "x-ms-client-flatten": true
-        },
-        "systemData": {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
-          "description": "System metadata for this resource.",
-          "readOnly": true
-        }
-      },
-      "description": "Concrete tracked resource types can be created by aliasing this type using a specific property type.",
-      "required": [
-        "properties"
-      ],
-      "allOf": [
-        {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
-        }
-      ]
-    },
-    "Page_CodeSignAccount": {
-      "type": "object",
       "properties": {
         "value": {
           "type": "array",
@@ -682,13 +642,13 @@
           "description": "The link to the next page of items"
         }
       },
-      "description": "Paged response",
+      "description": "The response of a CodeSignAccount list operation.",
       "required": [
         "value",
         "nextLink"
       ]
     },
-    "ProxyResource_CertificateProfileProperties": {
+    "CertificateProfile": {
       "type": "object",
       "properties": {
         "properties": {
@@ -701,7 +661,6 @@
           "x-ms-client-flatten": true
         }
       },
-      "description": "Concrete proxy resource types can be created by aliasing this type using a specific property type.",
       "required": [
         "properties"
       ],
@@ -709,9 +668,10 @@
         {
           "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/ProxyResource"
         }
-      ]
+      ],
+      "x-ms-azure-resource": true
     },
-    "Page_CertificateProfile": {
+    "CertificateProfileListResult": {
       "type": "object",
       "properties": {
         "value": {
@@ -727,7 +687,7 @@
           "description": "The link to the next page of items"
         }
       },
-      "description": "Paged response",
+      "description": "The response of a CertificateProfile list operation.",
       "required": [
         "value",
         "nextLink"

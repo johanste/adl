@@ -548,10 +548,28 @@
     },
     "FluidRelayServer": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/FluidRelayServerProperties",
+          "description": "The resource-specific properties for this resource.",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
+        },
+        "systemData": {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
+          "description": "System metadata for this resource.",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "properties"
+      ],
       "allOf": [
         {
-          "$ref": "#/definitions/TrackedResource_FluidRelayServerProperties"
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
         }
       ],
       "x-ms-azure-resource": true
@@ -585,12 +603,24 @@
     },
     "FluidRelayServerListResult": {
       "type": "object",
-      "properties": {},
-      "description": "The response of a FluidRelayServer list operation.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_FluidRelayServer"
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FluidRelayServer"
+          },
+          "x-adl-name": "Microsoft.FluidRelay.FluidRelayServer[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
         }
+      },
+      "description": "The response of a FluidRelayServer list operation.",
+      "required": [
+        "value",
+        "nextLink"
       ]
     },
     "KeyName": {
@@ -607,56 +637,6 @@
     "SecretKey": {
       "type": "string",
       "format": "password"
-    },
-    "TrackedResource_FluidRelayServerProperties": {
-      "type": "object",
-      "properties": {
-        "properties": {
-          "$ref": "#/definitions/FluidRelayServerProperties",
-          "description": "The resource-specific properties for this resource.",
-          "x-ms-mutability": [
-            "read",
-            "create"
-          ],
-          "x-ms-client-flatten": true
-        },
-        "systemData": {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
-          "description": "System metadata for this resource.",
-          "readOnly": true
-        }
-      },
-      "description": "Concrete tracked resource types can be created by aliasing this type using a specific property type.",
-      "required": [
-        "properties"
-      ],
-      "allOf": [
-        {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
-        }
-      ]
-    },
-    "Page_FluidRelayServer": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/FluidRelayServer"
-          },
-          "x-adl-name": "Microsoft.FluidRelay.FluidRelayServer[]",
-          "description": "The items on this page"
-        },
-        "nextLink": {
-          "type": "string",
-          "description": "The link to the next page of items"
-        }
-      },
-      "description": "Paged response",
-      "required": [
-        "value",
-        "nextLink"
-      ]
     },
     "FluidRelayServerProperties": {
       "type": "object",

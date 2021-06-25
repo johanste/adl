@@ -859,7 +859,7 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
   }
 
   function getSchemaForModel(model: ModelType) {
-    const modelSchema: any = {
+    let modelSchema: any = {
       type: "object",
       properties: {},
       description: getDoc(program, model),
@@ -911,7 +911,25 @@ function createOAPIEmitter(program: Program, options: OpenAPIEmitterOptions) {
       attachExtensions(prop, modelSchema.properties[name]);
     }
 
-    if (model.baseModels.length > 0) {
+    // Special case: if a model type extends a single *templated* base type and
+    // has no properties of its own, absorb the definition of the base model
+    // into this schema definition.  The assumption here is that any model type
+    // defined like this is just mean to rename the underlying instance of a
+    // templated type.
+    if (
+      model.baseModels.length === 1 &&
+      model.baseModels[0].templateArguments &&
+      model.baseModels[0].templateArguments.length > 0 &&
+      Object.keys(modelSchema.properties).length === 0
+    ) {
+      // Take the base model schema but carry across the documentation property
+      // that we set before
+      const baseSchema = getSchemaForType(model.baseModels[0]);
+      modelSchema = {
+        ...baseSchema,
+        description: modelSchema.description,
+      };
+    } else if (model.baseModels.length > 0) {
       for (let base of model.baseModels) {
         if (!modelSchema.allOf) {
           modelSchema.allOf = [];

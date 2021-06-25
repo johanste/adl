@@ -700,20 +700,50 @@
     },
     "ConfluentAgreementResourceListResult": {
       "type": "object",
-      "properties": {},
-      "description": "The response of a ConfluentAgreementResource list operation.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_ConfluentAgreementResource"
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConfluentAgreementResource"
+          },
+          "x-adl-name": "Microsoft.Confluent.ConfluentAgreementResource[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
         }
+      },
+      "description": "The response of a ConfluentAgreementResource list operation.",
+      "required": [
+        "value",
+        "nextLink"
       ]
     },
     "Organization": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/OrganizationProperties",
+          "description": "The resource-specific properties for this resource.",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
+        },
+        "systemData": {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
+          "description": "System metadata for this resource.",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "properties"
+      ],
       "allOf": [
         {
-          "$ref": "#/definitions/TrackedResource_OrganizationProperties"
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
         }
       ],
       "x-ms-azure-resource": true
@@ -737,70 +767,6 @@
     },
     "OrganizationListResult": {
       "type": "object",
-      "properties": {},
-      "description": "The response of a Organization list operation.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_Organization"
-        }
-      ]
-    },
-    "ConfluentAgreementResourceProperties": {
-      "type": "object",
-      "properties": {}
-    },
-    "Page_ConfluentAgreementResource": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConfluentAgreementResource"
-          },
-          "x-adl-name": "Microsoft.Confluent.ConfluentAgreementResource[]",
-          "description": "The items on this page"
-        },
-        "nextLink": {
-          "type": "string",
-          "description": "The link to the next page of items"
-        }
-      },
-      "description": "Paged response",
-      "required": [
-        "value",
-        "nextLink"
-      ]
-    },
-    "TrackedResource_OrganizationProperties": {
-      "type": "object",
-      "properties": {
-        "properties": {
-          "$ref": "#/definitions/OrganizationProperties",
-          "description": "The resource-specific properties for this resource.",
-          "x-ms-mutability": [
-            "read",
-            "create"
-          ],
-          "x-ms-client-flatten": true
-        },
-        "systemData": {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
-          "description": "System metadata for this resource.",
-          "readOnly": true
-        }
-      },
-      "description": "Concrete tracked resource types can be created by aliasing this type using a specific property type.",
-      "required": [
-        "properties"
-      ],
-      "allOf": [
-        {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
-        }
-      ]
-    },
-    "Page_Organization": {
-      "type": "object",
       "properties": {
         "value": {
           "type": "array",
@@ -815,11 +781,15 @@
           "description": "The link to the next page of items"
         }
       },
-      "description": "Paged response",
+      "description": "The response of a Organization list operation.",
       "required": [
         "value",
         "nextLink"
       ]
+    },
+    "ConfluentAgreementResourceProperties": {
+      "type": "object",
+      "properties": {}
     },
     "OrganizationProperties": {
       "type": "object",

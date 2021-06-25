@@ -442,10 +442,28 @@
     },
     "LinkerResource": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/LinkerProperties",
+          "description": "The resource-specific properties for this resource.",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
+        },
+        "systemData": {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
+          "description": "System metadata for this resource.",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "properties"
+      ],
       "allOf": [
         {
-          "$ref": "#/definitions/ExtensionResource_LinkerProperties"
+          "$ref": "#/definitions/ArmResource"
         }
       ],
       "x-ms-azure-resource": true
@@ -506,33 +524,6 @@
       "required": [
         "type",
         "linkConfig"
-      ]
-    },
-    "ExtensionResource_LinkerProperties": {
-      "type": "object",
-      "properties": {
-        "properties": {
-          "$ref": "#/definitions/LinkerProperties",
-          "description": "The resource-specific properties for this resource.",
-          "x-ms-mutability": [
-            "read",
-            "create"
-          ],
-          "x-ms-client-flatten": true
-        },
-        "systemData": {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
-          "description": "System metadata for this resource.",
-          "readOnly": true
-        }
-      },
-      "required": [
-        "properties"
-      ],
-      "allOf": [
-        {
-          "$ref": "#/definitions/ArmResource"
-        }
       ]
     },
     "LinkerProperties": {

@@ -1516,29 +1516,77 @@
   "definitions": {
     "MonitoredResourceListResponse": {
       "type": "object",
-      "properties": {},
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_MonitoredResource"
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MonitoredResource"
+          },
+          "x-adl-name": "MonitoredResource[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
         }
+      },
+      "required": [
+        "value",
+        "nextLink"
       ]
     },
     "LogzMonitorResource": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/LogzMonitorResourceProperties",
+          "description": "The resource-specific properties for this resource.",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
+        },
+        "systemData": {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
+          "description": "System metadata for this resource.",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "properties"
+      ],
       "allOf": [
         {
-          "$ref": "#/definitions/TrackedResource_LogzMonitorResourceProperties"
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
         }
       ],
       "x-ms-azure-resource": true
     },
     "SubAccountResource": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/LogzMonitorResourceProperties",
+          "description": "The resource-specific properties for this resource.",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
+        },
+        "systemData": {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
+          "description": "System metadata for this resource.",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "properties"
+      ],
       "allOf": [
         {
-          "$ref": "#/definitions/TrackedResource_LogzMonitorResourceProperties"
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
         }
       ],
       "x-ms-azure-resource": true
@@ -1589,58 +1637,74 @@
     },
     "LogzMonitorResourceListResult": {
       "type": "object",
-      "properties": {},
-      "description": "The response of a LogzMonitorResource list operation.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_LogzMonitorResource"
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/LogzMonitorResource"
+          },
+          "x-adl-name": "Microsoft.Logz.LogzMonitorResource[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
         }
+      },
+      "description": "The response of a LogzMonitorResource list operation.",
+      "required": [
+        "value",
+        "nextLink"
       ]
     },
     "SubAccountResourceListResult": {
       "type": "object",
-      "properties": {},
-      "description": "The response of a SubAccountResource list operation.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_SubAccountResource"
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubAccountResource"
+          },
+          "x-adl-name": "Microsoft.Logz.SubAccountResource[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
         }
+      },
+      "description": "The response of a SubAccountResource list operation.",
+      "required": [
+        "value",
+        "nextLink"
       ]
     },
     "SubAccountTagRuleResource": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "properties": {
+          "type": "object",
+          "properties": {},
+          "description": "The resource-specific properties for this resource.",
+          "x-adl-name": "(anonymous model)",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
+        },
+        "systemData": {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
+          "description": "System metadata for this resource.",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "properties"
+      ],
       "allOf": [
         {
-          "type": "object",
-          "properties": {
-            "properties": {
-              "type": "object",
-              "properties": {},
-              "description": "The resource-specific properties for this resource.",
-              "x-adl-name": "(anonymous model)",
-              "x-ms-mutability": [
-                "read",
-                "create"
-              ],
-              "x-ms-client-flatten": true
-            },
-            "systemData": {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
-              "description": "System metadata for this resource.",
-              "readOnly": true
-            }
-          },
-          "description": "Concrete tracked resource types can be created by aliasing this type using a specific property type.",
-          "required": [
-            "properties"
-          ],
-          "allOf": [
-            {
-              "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
-            }
-          ],
-          "x-adl-name": "TrackedResource<(anonymous model)>"
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
         }
       ],
       "x-ms-azure-resource": true
@@ -1664,20 +1728,50 @@
     },
     "SubAccountTagRuleResourceListResult": {
       "type": "object",
-      "properties": {},
-      "description": "The response of a SubAccountTagRuleResource list operation.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_SubAccountTagRuleResource"
+      "properties": {
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SubAccountTagRuleResource"
+          },
+          "x-adl-name": "Microsoft.Logz.SubAccountTagRuleResource[]",
+          "description": "The items on this page"
+        },
+        "nextLink": {
+          "type": "string",
+          "description": "The link to the next page of items"
         }
+      },
+      "description": "The response of a SubAccountTagRuleResource list operation.",
+      "required": [
+        "value",
+        "nextLink"
       ]
     },
     "SingleSignOnConfigurationResource": {
       "type": "object",
-      "properties": {},
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/LogzSingleSignOnProperties",
+          "description": "The resource-specific properties for this resource.",
+          "x-ms-mutability": [
+            "read",
+            "create"
+          ],
+          "x-ms-client-flatten": true
+        },
+        "systemData": {
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
+          "description": "System metadata for this resource.",
+          "readOnly": true
+        }
+      },
+      "required": [
+        "properties"
+      ],
       "allOf": [
         {
-          "$ref": "#/definitions/TrackedResource_LogzSingleSignOnProperties"
+          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
         }
       ],
       "x-ms-azure-resource": true
@@ -1701,160 +1795,6 @@
     },
     "SingleSignOnConfigurationResourceListResult": {
       "type": "object",
-      "properties": {},
-      "description": "The response of a SingleSignOnConfigurationResource list operation.",
-      "allOf": [
-        {
-          "$ref": "#/definitions/Page_SingleSignOnConfigurationResource"
-        }
-      ]
-    },
-    "Page_MonitoredResource": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MonitoredResource"
-          },
-          "x-adl-name": "MonitoredResource[]",
-          "description": "The items on this page"
-        },
-        "nextLink": {
-          "type": "string",
-          "description": "The link to the next page of items"
-        }
-      },
-      "description": "Paged response",
-      "required": [
-        "value",
-        "nextLink"
-      ]
-    },
-    "TrackedResource_LogzMonitorResourceProperties": {
-      "type": "object",
-      "properties": {
-        "properties": {
-          "$ref": "#/definitions/LogzMonitorResourceProperties",
-          "description": "The resource-specific properties for this resource.",
-          "x-ms-mutability": [
-            "read",
-            "create"
-          ],
-          "x-ms-client-flatten": true
-        },
-        "systemData": {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
-          "description": "System metadata for this resource.",
-          "readOnly": true
-        }
-      },
-      "description": "Concrete tracked resource types can be created by aliasing this type using a specific property type.",
-      "required": [
-        "properties"
-      ],
-      "allOf": [
-        {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
-        }
-      ]
-    },
-    "Page_LogzMonitorResource": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/LogzMonitorResource"
-          },
-          "x-adl-name": "Microsoft.Logz.LogzMonitorResource[]",
-          "description": "The items on this page"
-        },
-        "nextLink": {
-          "type": "string",
-          "description": "The link to the next page of items"
-        }
-      },
-      "description": "Paged response",
-      "required": [
-        "value",
-        "nextLink"
-      ]
-    },
-    "Page_SubAccountResource": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/SubAccountResource"
-          },
-          "x-adl-name": "Microsoft.Logz.SubAccountResource[]",
-          "description": "The items on this page"
-        },
-        "nextLink": {
-          "type": "string",
-          "description": "The link to the next page of items"
-        }
-      },
-      "description": "Paged response",
-      "required": [
-        "value",
-        "nextLink"
-      ]
-    },
-    "Page_SubAccountTagRuleResource": {
-      "type": "object",
-      "properties": {
-        "value": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/SubAccountTagRuleResource"
-          },
-          "x-adl-name": "Microsoft.Logz.SubAccountTagRuleResource[]",
-          "description": "The items on this page"
-        },
-        "nextLink": {
-          "type": "string",
-          "description": "The link to the next page of items"
-        }
-      },
-      "description": "Paged response",
-      "required": [
-        "value",
-        "nextLink"
-      ]
-    },
-    "TrackedResource_LogzSingleSignOnProperties": {
-      "type": "object",
-      "properties": {
-        "properties": {
-          "$ref": "#/definitions/LogzSingleSignOnProperties",
-          "description": "The resource-specific properties for this resource.",
-          "x-ms-mutability": [
-            "read",
-            "create"
-          ],
-          "x-ms-client-flatten": true
-        },
-        "systemData": {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/systemData",
-          "description": "System metadata for this resource.",
-          "readOnly": true
-        }
-      },
-      "description": "Concrete tracked resource types can be created by aliasing this type using a specific property type.",
-      "required": [
-        "properties"
-      ],
-      "allOf": [
-        {
-          "$ref": "../../../../../common-types/resource-management/v2/types.json#/definitions/TrackedResource"
-        }
-      ]
-    },
-    "Page_SingleSignOnConfigurationResource": {
-      "type": "object",
       "properties": {
         "value": {
           "type": "array",
@@ -1869,7 +1809,7 @@
           "description": "The link to the next page of items"
         }
       },
-      "description": "Paged response",
+      "description": "The response of a SingleSignOnConfigurationResource list operation.",
       "required": [
         "value",
         "nextLink"
