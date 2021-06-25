@@ -762,6 +762,36 @@
             "update",
             "create"
           ]
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "createdTime": {
+              "type": "string",
+              "format": "date-time",
+              "description": "UTC Time when Organization resource was created.",
+              "readOnly": true
+            },
+            "organizationId": {
+              "type": "string",
+              "description": "Id of the Confluent organization.",
+              "readOnly": true
+            },
+            "ssoUrl": {
+              "$ref": "#/definitions/Uri",
+              "description": "Single sign-on url for the Confluent organization.",
+              "readOnly": true
+            },
+            "offerDetail": {
+              "$ref": "#/definitions/OfferDetail",
+              "description": "Details of the product offering."
+            },
+            "userDetail": {
+              "$ref": "#/definitions/UserDetail",
+              "description": "Subscriber details."
+            }
+          },
+          "x-adl-name": "(anonymous model)"
         }
       }
     },

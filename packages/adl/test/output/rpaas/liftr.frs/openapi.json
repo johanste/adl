@@ -588,6 +588,26 @@
             "update",
             "create"
           ]
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "frsTenantId": {
+              "type": "string",
+              "description": "The Fluid tenantId for this server",
+              "readOnly": true
+            },
+            "fluidRelayEndpoints": {
+              "$ref": "#/definitions/FluidRelayEndpoints",
+              "description": "The Fluid service endpoints for this server.",
+              "readOnly": true
+            },
+            "provisioningState": {
+              "$ref": "#/definitions/ProvisioningState",
+              "description": "Provisioning states for FluidRelay RP"
+            }
+          },
+          "x-adl-name": "(anonymous model)"
         }
       }
     },
