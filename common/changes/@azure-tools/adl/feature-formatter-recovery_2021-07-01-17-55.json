@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl",
+      "comment": "Formatter can recover from parsing error that don't affect the validity of the tree",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl",
+  "email": "tiguerin@microsoft.com"
+}
