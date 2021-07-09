@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl-openapi",
+      "comment": "Absorb base templated model instance into derived type's schema definition when it's the only base type",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl-openapi",
+  "email": "daviwil@microsoft.com"
+}

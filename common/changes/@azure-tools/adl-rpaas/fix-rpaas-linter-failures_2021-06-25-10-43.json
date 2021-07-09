@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl-rpaas",
+      "comment": "Include 204 NoContent response with generated DELETE operations",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl-rpaas",
+  "email": "daviwil@microsoft.com"
+}

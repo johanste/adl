@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "packageName": "@azure-tools/adl-openapi",
+      "comment": "Catch ErrorType instances while walking ADL types so that it's easier to diagnose syntax issues in source files",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@azure-tools/adl-openapi",
+  "email": "daviwil@microsoft.com"
+}
