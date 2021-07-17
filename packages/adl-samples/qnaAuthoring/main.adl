@@ -1,0 +1,32 @@
+import "../../adl-jsazure";
+import "@azure-tools/adl-openapi";
+
+
+@azureService("hello", "v1.0", "POST")
+namespace QnA.Authoring;
+
+@azureResource("/projects", {
+  lifetime: "crud"
+})
+model Project {
+  projectName: string;
+  description: string;
+  language: string;
+  defaultAnswer: string;
+  multilingualResource: boolean;
+  @visibility("read")
+  createdDateTime: zonedDateTime;
+  @visibility("read")
+  lastModifiedDateTime: zonedDateTime;
+  @visibility("read")
+  lastDeployedDateTime: zonedDateTime;
+}
+
+@azureResource("/projects/{projectName}/synonyms", { lifetime: "ru" })
+model SynonymAsset {
+  synonyms: Synonyms;
+}
+
+model Synonyms {
+  alterations: string[]
+}
