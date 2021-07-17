@@ -1,0 +1,17 @@
+{
+  "name": "@azure-tools/adl-rest",
+  "entries": [
+    {
+      "version": "0.1.0",
+      "tag": "@azure-tools/adl-jsazure_v0.1.0",
+      "date": "Tue, 13 Jul 2021 15:23:29 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Initial version..."
+          }
+        ]
+      }
+    }
+  ]
+}

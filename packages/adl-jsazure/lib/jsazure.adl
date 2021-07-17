@@ -1,0 +1,12 @@
+import "../dist/jsazure.js";
+
+import "@azure-tools/adl-rest";
+
+model Paged<T> {
+  values: T[];
+  nextLink?: string;
+}
+model PostCreateResponse<T> {
+  @header statusCode: 201;
+  @header Location: string;
+}
